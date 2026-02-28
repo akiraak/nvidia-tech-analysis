@@ -582,8 +582,108 @@
     footer a { color: var(--nvidia-green); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
+    /* Key numbers dashboard */
+    .key-numbers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 4px;
+      margin: 1.5rem 0;
+    }
+    .kn {
+      background: var(--bg-card);
+      border-radius: 4px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .kn .kn-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--nvidia-green);
+    }
+    .kn .kn-label {
+      font-size: 0.72rem;
+      color: #787774;
+      margin-top: 0.2rem;
+    }
+
+    /* Phase compare */
+    .phase-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+    .phase-box {
+      background: var(--bg-card);
+      border-radius: 4px;
+      padding: 1.3rem;
+    }
+    .phase-box h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .phase-prefill h4 { color: var(--blue); }
+    .phase-decode h4 { color: var(--orange); }
+    .phase-item {
+      font-size: 0.84rem;
+      color: var(--text);
+      padding: 0.25rem 0;
+    }
+    .phase-item strong { color: #1a1a1a; }
+
+    /* Deployment cards */
+    .deploy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 0.8rem;
+    }
+    .deploy-card {
+      background: var(--bg-card);
+      border-radius: 4px;
+      padding: 1.3rem;
+      border-left: 3px solid var(--nvidia-green);
+    }
+    .deploy-card h4 {
+      font-size: 0.95rem;
+      color: #1a1a1a;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .deploy-card .deploy-meta {
+      font-size: 0.75rem;
+      color: #787774;
+      margin-bottom: 0.6rem;
+    }
+    .deploy-card p {
+      font-size: 0.84rem;
+      color: #555;
+    }
+    .deploy-card .deploy-stat {
+      display: inline-block;
+      background: #dbeddb;
+      border-radius: 3px;
+      padding: 0.1rem 0.4rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      font-size: 0.82rem;
+    }
+
+    /* Bridge text */
+    .bridge {
+      padding: 1.5rem 0;
+      font-size: 0.9rem;
+      color: #555;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    .bridge strong { color: var(--text-heading); }
+
     /* Responsive */
     @media (max-width: 900px) {
+      .phase-compare { grid-template-columns: 1fr; }
       .pillars { grid-template-columns: repeat(2, 1fr); }
       .gen-timeline { grid-template-columns: 1fr; }
       .scale-row { grid-template-columns: 1fr; }
@@ -1460,10 +1560,925 @@
     </div>
   </section>
 
+  <!-- ========== 11. AI 推論パイプライン ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">11</span>AI 推論パイプライン</h2>
+    <p class="section-desc">トレーニングが「AI モデルを作る」フェーズなら、推論は「作ったモデルを使ってユーザーの質問に答える」フェーズである。2025年以降、推論が AI データセンターの主要なワークロードとなり、トレーニングとは根本的に異なる技術的課題と最適化戦略が求められている。</p>
+
+    <div class="explain">
+      <div class="explain-title">トレーニングと推論の根本的な違い</div>
+      <p>トレーニングはモデルの全パラメータの勾配を計算して更新する作業で、大量のメモリと計算能力が必要。推論は学習済みモデルに入力を与えて出力を得る作業で、勾配計算が不要な代わりに <strong style="color:var(--text-heading)">レイテンシ（応答速度）</strong>が最重要指標となる。</p>
+    </div>
+
+    <!-- Prefill vs Decode -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">Prefill と Decode：推論の2つのフェーズ</h3>
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">LLM の推論は2つの全く異なる計算特性を持つフェーズに分かれる。この違いを理解することが推論最適化の出発点となる。</p>
+
+    <div class="phase-compare">
+      <div class="phase-box phase-prefill">
+        <h4>Prefill フェーズ（プロンプト処理）</h4>
+        <div class="phase-item"><strong>ボトルネック：</strong>計算能力（Compute-bound）</div>
+        <div class="phase-item"><strong>処理：</strong>入力トークン全体を並列に行列乗算</div>
+        <div class="phase-item"><strong>特徴：</strong>高い Arithmetic Intensity（演算密度）</div>
+        <div class="phase-item"><strong>指標：</strong>TTFT（最初のトークンが出るまでの時間）</div>
+        <div class="phase-item"><strong>GPU 利用率：</strong>Tensor Core 高稼働</div>
+        <div class="flow-techs"><span class="flow-tech ft-green">計算バウンド</span><span class="flow-tech ft-blue">大バッチ処理向き</span></div>
+      </div>
+      <div class="phase-box phase-decode">
+        <h4>Decode フェーズ（トークン生成）</h4>
+        <div class="phase-item"><strong>ボトルネック：</strong>メモリ帯域幅（Memory-bound）</div>
+        <div class="phase-item"><strong>処理：</strong>1トークンずつ逐次生成</div>
+        <div class="phase-item"><strong>特徴：</strong>低い Arithmetic Intensity</div>
+        <div class="phase-item"><strong>指標：</strong>ITL（トークン間の生成時間）</div>
+        <div class="phase-item"><strong>GPU 利用率：</strong>メモリ帯域が律速</div>
+        <div class="flow-techs"><span class="flow-tech ft-orange">メモリバウンド</span><span class="flow-tech ft-purple">低レイテンシ必須</span></div>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">例え話：Prefill と Decode の違い</div>
+      <p><strong style="color:var(--text-heading)">Prefill</strong> は「試験問題用紙をまとめて読み込む」作業 — 大量のテキストを一度に処理するので、読む速度（計算能力）が勝負。<strong style="color:var(--text-heading)">Decode</strong> は「回答を1文字ずつ書く」作業 — 毎回ノート（KV キャッシュ）を見返す必要があるので、ノートをめくる速度（メモリ帯域幅）が勝負。</p>
+    </div>
+
+    <!-- KV Cache -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">KV キャッシュ：推論のメモリボトルネック</h3>
+
+    <div class="explain">
+      <div class="explain-title">KV キャッシュとは何か</div>
+      <p>Transformer の Attention 機構では、各トークンの出力を計算するために過去の全トークンの Key (K) と Value (V) を参照する。毎回再計算するのは非効率なので、一度計算した K, V をキャッシュして再利用する。これが <strong style="color:var(--text-heading)">KV キャッシュ</strong>。キャッシュがないと N トークンの生成に O(N&sup2;) の計算が必要だが、キャッシュにより O(N) に削減できる。</p>
+    </div>
+
+    <p style="font-size:0.88rem; color:#555; margin:1rem 0 0.5rem;">KV キャッシュはコンテキスト長とバッチサイズに比例して爆発的に増大する。以下は Llama 2 70B (FP16) の例。</p>
+
+    <div class="table-wrap" style="margin-bottom:1rem;">
+      <table>
+        <thead><tr><th>コンテキスト長</th><th>バッチ 1</th><th>バッチ 8</th><th>バッチ 64</th><th>増大率</th></tr></thead>
+        <tbody>
+          <tr><td class="td-label">4,096</td><td>1.25 GB</td><td>10 GB</td><td>80 GB</td><td>ベースライン</td></tr>
+          <tr><td class="td-label">32,768</td><td>10 GB</td><td>80 GB</td><td>640 GB</td><td>8x</td></tr>
+          <tr><td class="td-label">128,000</td><td>39 GB</td><td>312 GB</td><td>2,500 GB</td><td>31x</td></tr>
+          <tr><td class="td-label">1,000,000</td><td>305 GB</td><td>2,440 GB</td><td>19,520 GB</td><td><span class="num-highlight">244x</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">例え話：KV キャッシュの爆発</div>
+      <p>会議の議事録を取る場面を想像する。出席者（バッチサイズ）が増え、会議時間（コンテキスト長）が伸びるほど、参照すべき過去の発言メモ（KV キャッシュ）が膨大になる。4K トークンが「1時間の会議」なら、1M トークンは「250時間の会議の全発言記録」を常に手元に置いて参照する状態。</p>
+    </div>
+
+    <!-- PagedAttention -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">PagedAttention：KV キャッシュのメモリ効率化</h3>
+
+    <div class="scale-row">
+      <div class="scale-box scale-up">
+        <h3>従来のアプローチ</h3>
+        <p style="font-size:0.84rem; color:#555;">リクエストごとに最大シーケンス長分の連続メモリを事前確保。実際に使用されるのは割り当て済みメモリの <strong style="color:var(--red)">20-38%</strong> のみ。内部断片化と外部断片化で <strong style="color:var(--red)">60-80%</strong> のメモリが浪費される。</p>
+      </div>
+      <div class="scale-box scale-out">
+        <h3>PagedAttention (vLLM)</h3>
+        <p style="font-size:0.84rem; color:#555;">OS の仮想メモリに着想を得て KV キャッシュを固定サイズブロックに分割。非連続メモリ配置が可能になり、無駄率は <strong style="color:var(--nvidia-green)">4% 未満</strong>。スループット <strong style="color:var(--nvidia-green)">2-4x 向上</strong>。</p>
+      </div>
+    </div>
+
+    <!-- Speculative Decoding -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">Speculative Decoding：投機的実行による高速化</h3>
+
+    <div class="explain">
+      <div class="explain-title">品質を一切低下させない高速化手法</div>
+      <p>小型の「ドラフトモデル」が複数トークンを投機的に生成し、大型の「ターゲットモデル」が並列に検証する。ターゲットモデルが同意するトークンを受理し、不同意なら修正する。<strong style="color:var(--text-heading)">数学的にターゲットモデル単体と完全に同一の出力分布を保証</strong>する点が特徴的。TensorRT-LLM で Llama 3.1 405B に適用すると最大 <span class="num-highlight">3.6x 高速化</span>。</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>1. ドラフト生成</h4>
+          <p>小型・高速のドラフトモデルが K 個のトークンを投機的に生成</p>
+          <div class="flow-techs"><span class="flow-tech ft-green">低コスト</span><span class="flow-tech ft-blue">高速</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>2. 並列検証</h4>
+          <p>ターゲットモデル（大型・高精度）が K 個のトークンを <strong style="color:var(--text-heading)">一度の Forward Pass</strong> で同時検証</p>
+          <div class="flow-techs"><span class="flow-tech ft-purple">品質保証</span><span class="flow-tech ft-green">並列実行</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>3. 受理 + 修正</h4>
+          <p>同意する最長の接頭辞を受理し、不同意の位置でターゲットモデルが正しいトークンを生成</p>
+          <div class="flow-techs"><span class="flow-tech ft-orange">受理率 &alpha; に依存</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <h4>効果：1 回の検証で複数トークン確定</h4>
+          <p>Llama 3.1 405B (4x H200): 最大 3.6x スループット向上。ReDrafter: 最大 3.5 トークン/生成ステップ</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disaggregated Serving -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">Disaggregated Serving：Prefill と Decode の分離</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">Prefill（計算バウンド）と Decode（メモリバウンド）を同じ GPU プールで実行すると、互いのリソース要件が干渉する。2025年には Prefill と Decode を別々の GPU プールで実行する <strong style="color:var(--text-heading)">Disaggregated Serving</strong> が事実上の標準アーキテクチャとなった。</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>クライアントリクエスト &rarr; Smart Router</h4>
+          <p>NVIDIA Dynamo の Smart Router が KV キャッシュの再利用を最大化する GPU にルーティング</p>
+          <div class="flow-techs"><span class="flow-tech ft-purple">KV Cache 認識</span><span class="flow-tech ft-blue">負荷分散</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>Prefill GPU プール</h4>
+          <p>高 FLOPS の GPU でプロンプト全体を高速に処理。大バッチで高スループットを実現</p>
+          <div class="flow-techs"><span class="flow-tech ft-green">計算バウンド最適化</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>KV Cache 転送（RDMA）</h4>
+          <p>Prefill 完了後、KV キャッシュを Decode GPU に転送。GPUDirect RDMA / ConnectX NIC で低レイテンシ転送</p>
+          <div class="flow-techs"><span class="flow-tech ft-blue">GPUDirect RDMA</span><span class="flow-tech ft-orange">帯域幅要求大</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>Decode GPU プール</h4>
+          <p>高メモリ帯域の GPU で1トークンずつ生成。ITL（トークン間レイテンシ）を安定化</p>
+          <div class="flow-techs"><span class="flow-tech ft-orange">メモリバウンド最適化</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <h4>効果：性能 2-7x 向上</h4>
+          <p>DeepSeek-R1 on GB200 NVL72: Prefill 3.8x 向上、Decode 4.8x 向上。独立スケーリングと ITL の安定化を両立</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quantization -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">量子化：推論の精度・速度トレードオフ</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">推論ではトレーニング時のように勾配の精度を維持する必要がないため、モデルの重みをより低い精度に量子化できる。Blackwell アーキテクチャは FP4 をハードウェアネイティブでサポートし、FP8 比 2 倍のスループットを実現する。</p>
+
+    <div class="bar-group">
+      <div class="bar-row">
+        <div class="bar-label">FP16</div>
+        <div class="bar-track"><div class="bar-fill" style="width:23%;background:var(--blue);"></div></div>
+        <div class="bar-value">1x (基準)</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">FP8</div>
+        <div class="bar-track"><div class="bar-fill" style="width:53%;background:var(--nvidia-green);"></div></div>
+        <div class="bar-value">2.3x</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">INT4 (AWQ)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--cyan);"></div></div>
+        <div class="bar-value">2.5x</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">FP4 (NVFP4)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--nvidia-green);"></div></div>
+        <div class="bar-value">FP8の2x</div>
+      </div>
+    </div>
+    <p class="diagram-label">スループット向上率（FP16 基準、Blackwell での測定）</p>
+
+    <!-- NVIDIA Dynamo -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">NVIDIA Dynamo：推論オーケストレーション</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">Dynamo は GTC 2025 で発表されたデータセンタースケールの推論サービングフレームワーク。DeepSeek-R1 (Blackwell) でリクエスト処理数 <span class="num-highlight">最大 30x 向上</span>。</p>
+
+    <div class="grid grid-2">
+      <div class="card card-accent-green">
+        <h3>Smart Router</h3>
+        <p>KV Cache 認識ルーティング。リクエストをハッシュ化し、GPU 全体のキャッシュ位置を追跡。キャッシュ再利用を最大化する GPU にルーティングしつつ、ワークロードバランシングも同時に考慮。</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h3>GPU Resource Planner</h3>
+        <p>GPU 容量メトリクスを継続的にモニタリングし、TTFT・ITL などの SLO と組み合わせて Prefill/Decode のワーカー数を動的にスケーリング。SLO 違反前にプロアクティブにリソースを調整。</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h3>KV Cache Manager</h3>
+        <p>各種メモリ階層間（HBM → CPU メモリ → SSD）での KV Cache 転送を管理。貴重な GPU メモリを解放しつつ、キャッシュヒット率 20% 向上を実現。</p>
+      </div>
+      <div class="card card-accent-cyan">
+        <h3>Low-Latency Comms</h3>
+        <p>GPU 間の KV Cache 転送を高速化。ヘテロジニアスメモリ・ストレージタイプ間でのデータ転送を加速し、Disaggregated Serving を支える通信基盤。</p>
+      </div>
+    </div>
+
+    <!-- Rubin CPX -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">Rubin CPX：推論特化 GPU の登場</h3>
+
+    <div class="card card-accent-green" style="margin-bottom:1rem;">
+      <h3>全く新しいクラスの GPU</h3>
+      <p>Rubin CPX は<strong style="color:var(--text-heading)">推論ワークロードに特化</strong>した GPU であり、特に 100 万トークン超のロングコンテキスト処理に最適化されている。HBM の代わりにコスト効率の高い <strong style="color:var(--text-heading)">GDDR7 メモリ（128 GB）</strong>を採用し、モノリシックダイで製造コストを抑制。Attention 高速化は GB300 NVL72 比 <span class="num-highlight">3x</span>。</p>
+      <div class="table-wrap" style="margin-top:0.8rem;">
+        <table>
+          <thead><tr><th>仕様</th><th>Rubin CPX</th><th>GB300（比較）</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">NVFP4 性能</td><td>30 PFLOPS</td><td>~10 PFLOPS</td></tr>
+            <tr><td class="td-label">メモリ</td><td>128 GB GDDR7</td><td>288 GB HBM3e</td></tr>
+            <tr><td class="td-label">Attention 高速化</td><td>GB300 NVL72 比 3x</td><td>ベースライン</td></tr>
+            <tr><td class="td-label">設計思想</td><td>モノリシック（コスト効率重視）</td><td>マルチチップレット</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">例え話：Disaggregated Serving と Rubin CPX の関係</div>
+      <p>Prefill は「工場の製造ライン」（計算重視）、Decode は「倉庫のピッキング作業」（メモリアクセス重視）。Rubin GPU が製造ラインを、Rubin CPX がピッキング専用ロボットを担当し、それぞれの作業に最適化された設備を使い分ける。</p>
+    </div>
+
+    <!-- NIM -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">NIM &amp; Triton：推論デプロイメント</h3>
+
+    <div class="scale-row">
+      <div class="scale-box" style="border-left:3px solid var(--nvidia-green);">
+        <h3 style="color:var(--nvidia-green);">NIM（Inference Microservices）</h3>
+        <p style="font-size:0.84rem; color:#555;">AI モデルの推論をマイクロサービスとして提供。TensorRT-LLM + Triton を含む事前最適化済みコンテナイメージで、デプロイ時間を数週間 → 数分に短縮。OpenAI 互換 API を提供し、AWS / GCP / Azure / OCI 等でネイティブサポート。Llama 3.1 8B で <span class="num-highlight">2.6x スループット向上</span>。</p>
+      </div>
+      <div class="scale-box" style="border-left:3px solid var(--blue);">
+        <h3 style="color:var(--blue);">Triton Inference Server</h3>
+        <p style="font-size:0.84rem; color:#555;">オープンソースの推論サービングソフトウェア。TensorRT / PyTorch / ONNX 等あらゆるフレームワークのモデルを統一的にデプロイ可能。Dynamic Batching でリクエストを動的にバッチ化してスループットを最大化。NIM の内部で推論エンジンとして使用されている。</p>
+      </div>
+    </div>
+
+    <div class="bridge">
+      <p>ここまでで推論パイプラインの全体像を見てきた。次は、NVIDIA が GPU のエコシステムをサードパーティに開放する <strong>NVLink Fusion</strong> と、次世代プラットフォーム <strong>Vera Rubin NVL72</strong> の詳細を見ていく。</p>
+    </div>
+  </section>
+
+  <!-- ========== 12. NVLink Fusion & Vera Rubin NVL72 ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">12</span>NVLink Fusion &amp; Vera Rubin NVL72</h2>
+    <p class="section-desc">NVLink Fusion は NVIDIA がインターコネクト技術をサードパーティに開放する戦略的プログラム。Vera Rubin NVL72 は NVLink 6 を搭載する次世代ラックスケールプラットフォームで、Blackwell 比で推論性能 5 倍を実現する。この2つは「NVIDIA のプラットフォーム化戦略」の両輪である。</p>
+
+    <div class="key-numbers">
+      <div class="kn"><div class="kn-value">900+ GB/s</div><div class="kn-label">NVLink-C2C 帯域幅</div></div>
+      <div class="kn"><div class="kn-value">3.6 TB/s</div><div class="kn-label">NVLink 6 GPU あたり</div></div>
+      <div class="kn"><div class="kn-value">260 TB/s</div><div class="kn-label">NVL72 合計帯域幅</div></div>
+      <div class="kn"><div class="kn-value">50 PFLOPS</div><div class="kn-label">R200 FP4 推論</div></div>
+      <div class="kn"><div class="kn-value">3.6 EFLOPS</div><div class="kn-label">NVL72 ラック性能</div></div>
+    </div>
+
+    <!-- NVLink Fusion -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">NVLink Fusion：サードパーティへの開放</h3>
+
+    <div class="explain">
+      <div class="explain-title">NVLink Fusion とは</div>
+      <p>サードパーティのカスタム CPU / XPU（アクセラレータ）を NVIDIA の NVLink スケールアップインターコネクトおよび OCP MGX ラックアーキテクチャに統合することを可能にするプログラム。<strong style="color:var(--text-heading)">NVLink-C2C IP</strong>（チップ間直接接続）または <strong style="color:var(--text-heading)">UCIe ブリッジチップレット</strong>（オープン標準経由）の2つの接続パスを提供する。</p>
+    </div>
+
+    <div class="scale-row">
+      <div class="scale-box scale-up" style="border-left:3px solid var(--nvidia-green);">
+        <h3>NVLink-C2C IP（推奨パス）</h3>
+        <p style="font-size:0.84rem; color:#555;"><strong>対象：</strong>カスタム CPU</p>
+        <p style="font-size:0.84rem; color:#555;">NVLink-C2C IP を直接チップに統合。<strong style="color:var(--text-heading)">900+ GB/s</strong>のコヒーレント接続、PCIe Gen5 比 <strong style="color:var(--text-heading)">25 倍</strong>のエネルギー効率、<strong style="color:var(--text-heading)">90 倍</strong>の面積効率。Arm AMBA CHI / CXL プロトコルをサポート。</p>
+      </div>
+      <div class="scale-box scale-out" style="border-left:3px solid var(--blue);">
+        <h3>UCIe ブリッジチップレット</h3>
+        <p style="font-size:0.84rem; color:#555;"><strong>対象：</strong>カスタム XPU / アクセラレータ</p>
+        <p style="font-size:0.84rem; color:#555;">UCIe（オープン標準）IP を使用し、NVIDIA 提供の UCIe-to-NVLink ブリッジチップレットを介して NVLink ファブリックに接続。相互運用性の柔軟性を提供するが、変換オーバーヘッドが若干発生。</p>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">例え話：NVLink Fusion = 他社の電車を NVIDIA の線路で走らせる</div>
+      <p>NVIDIA が建設した高速鉄道網（NVLink）に、他社が製造した電車（カスタム CPU/XPU）を乗り入れさせるプログラム。NVLink-C2C は「NVIDIA の標準軌道に直接対応する車輪を設計する」方式（最高速度で走行可能）。UCIe ブリッジは「変換アダプターで接続する」方式（柔軟だが若干の速度低下）。どちらの場合も、線路（NVLink Switch）と駅のインフラ（MGX ラック）は NVIDIA が提供する。</p>
+    </div>
+
+    <!-- Partners -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">NVLink Fusion パートナー</h3>
+
+    <div class="grid grid-2">
+      <div class="card card-accent-green">
+        <h3>AWS Trainium4</h3>
+        <p>Trainium4 に NVLink 6 を統合。NVIDIA MGX ラックアーキテクチャと組み合わせ、最大 72 カスタム ASIC を NVLink Switch で全対全接続。FP4 スループットは Trainium3 比 <span class="num-highlight">6x</span>。マルチジェネレーションの協業の第一弾。</p>
+        <div class="flow-techs" style="margin-top:0.5rem;"><span class="flow-tech ft-green">NVLink 6</span><span class="flow-tech ft-blue">MGX ラック</span><span class="flow-tech ft-orange">2026年後半</span></div>
+      </div>
+      <div class="card card-accent-blue">
+        <h3>Fujitsu MONAKA-X（FugakuNEXT）</h3>
+        <p>「富岳」後継機。MONAKA-X CPU に NVLink Fusion チップレットを統合し、NVSwitch 経由で NVIDIA GPU とメモリ共有。ゼタスケールを目指す。予算約 <span class="num-highlight">$740M</span>。2030 年稼働予定。</p>
+        <div class="flow-techs" style="margin-top:0.5rem;"><span class="flow-tech ft-green">Arm ベース</span><span class="flow-tech ft-purple">ヘテロジニアス</span><span class="flow-tech ft-orange">2030年</span></div>
+      </div>
+      <div class="card card-accent-purple">
+        <h3>MediaTek &amp; Marvell</h3>
+        <p>MediaTek はカスタム AI ASIC の設計パートナーとして高速インターコネクト IP を提供。Marvell はハイパースケーラー向けカスタムシリコンに NVLink Fusion ポートを統合。両社とも設計サービス・ソリューション提供開始済み。</p>
+        <div class="flow-techs" style="margin-top:0.5rem;"><span class="flow-tech ft-green">設計サービス</span><span class="flow-tech ft-blue">カスタム ASIC</span></div>
+      </div>
+      <div class="card card-accent-orange">
+        <h3>Qualcomm</h3>
+        <p>Arm ベースのデータセンター向け CPU（Nuvia アーキテクチャ）に NVLink Fusion ポートを統合。サウジアラビアの Humain と共同でカスタム DC CPU を開発中。</p>
+        <div class="flow-techs" style="margin-top:0.5rem;"><span class="flow-tech ft-green">Nuvia コア</span><span class="flow-tech ft-blue">サーバー CPU</span><span class="flow-tech ft-orange">仕様発表予定</span></div>
+      </div>
+    </div>
+
+    <!-- Strategic significance -->
+    <div class="explain" style="margin-top:1.5rem;">
+      <div class="explain-title">NVLink Fusion の戦略的意義</div>
+      <p>NVIDIA は「チップサプライヤー」から「プラットフォームプロバイダー」への変革を図っている。ハイパースケーラーが自社カスタム ASIC を使用する場合でも、NVLink Switch・MGX ラック・ソフトウェアスタックで NVIDIA が収益を得る構造。競合の <strong style="color:var(--text-heading)">UALink</strong>（オープン仕様）が複数企業間の利害対立で仕様策定が遅延する傾向がある中、NVLink Fusion は既に動作するソリューションを提供して先手を打つ。</p>
+    </div>
+
+    <!-- Vera Rubin NVL72 -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:2rem 0 0.5rem; font-weight:600;">Vera Rubin NVL72：第3世代ラックスケールプラットフォーム</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">CES 2026 で発表された次世代 AI プラットフォーム。6 種のコデザインチップを単一統合システムに構成し、ケーブルレス設計・ブラインドメイトコネクタにより組み立て時間を従来の <span class="num-highlight">18 分の 1</span> に短縮。</p>
+
+    <!-- Physical architecture -->
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>Rubin GPU (R200) &times; 72</h4>
+          <p>2 ダイ構成、TSMC 3nm クラス。50 PFLOPS (NVFP4)、288 GB HBM4、メモリ帯域幅 22 TB/s（B200 の 2.8 倍）</p>
+          <div class="flow-techs"><span class="flow-tech ft-green">第5世代 Tensor Core</span><span class="flow-tech ft-green">HBM4</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>Vera CPU &times; 36</h4>
+          <p>88 コア Arm "Olympus" カスタムコア、2,270 億トランジスタ。最大 1.5 TB LPDDR5x、帯域幅 1.2 TB/s</p>
+          <div class="flow-techs"><span class="flow-tech ft-blue">Armv9.2</span><span class="flow-tech ft-blue">NVLink-C2C 接続</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>NVLink 6 Switch &times; 36 チップ（9 ブレード）</h4>
+          <p>400G 双方向 SerDes、チップあたり 28.8 TB/s。全 72 GPU を全対全・非ブロッキングで接続。合計 260 TB/s</p>
+          <div class="flow-techs"><span class="flow-tech ft-green">SHARP FP8</span><span class="flow-tech ft-blue">3.6 TFLOP インネットワーク演算</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>ConnectX-9 SuperNIC + BlueField-4 DPU</h4>
+          <p>スケールアウトネットワーク接続。Spectrum-6 Ethernet Switch と組み合わせてラック間通信を提供</p>
+          <div class="flow-techs"><span class="flow-tech ft-blue">Scale-out</span><span class="flow-tech ft-purple">DPU オフロード</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <h4>物理設計の革新</h4>
+          <p>ケーブルレス・ファンレス・ホースレスのトレイ設計。ミッドプレーン導入で組み立て時間を GB300 NVL72 比 18 倍短縮。NVLink Switch トレイは稼働中に取り外し可能（ゼロダウンタイムメンテナンス）</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blackwell vs Vera Rubin -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">Blackwell Ultra vs Vera Rubin 比較</h3>
+
+    <div class="gen-timeline" style="grid-template-columns:1fr 1fr;">
+      <div class="gen-card gen-blackwell">
+        <h3>GB300 NVL72（Blackwell Ultra）</h3>
+        <div class="gen-item"><span class="gi-label">GPU TDP</span><span class="gi-value">~1,400 W</span></div>
+        <div class="gen-item"><span class="gi-label">ラック電力</span><span class="gi-value">~120 kW</span></div>
+        <div class="gen-item"><span class="gi-label">メモリ / GPU</span><span class="gi-value">288 GB HBM3e</span></div>
+        <div class="gen-item"><span class="gi-label">メモリ帯域幅 / GPU</span><span class="gi-value">8 TB/s</span></div>
+        <div class="gen-item"><span class="gi-label">NVLink / GPU</span><span class="gi-value">1.8 TB/s</span></div>
+        <div class="gen-item"><span class="gi-label">NVLink 合計</span><span class="gi-value">130 TB/s</span></div>
+        <div class="gen-item"><span class="gi-label">FP4 推論 / GPU</span><span class="gi-value">~10 PFLOPS</span></div>
+        <div class="gen-item"><span class="gi-label">FP4 推論 / ラック</span><span class="gi-value">~1.1 EFLOPS</span></div>
+      </div>
+      <div class="gen-card gen-rubin">
+        <h3>Vera Rubin NVL72</h3>
+        <div class="gen-item"><span class="gi-label">GPU TDP</span><span class="gi-value">~1,800-2,300 W</span></div>
+        <div class="gen-item"><span class="gi-label">ラック電力</span><span class="gi-value">~190-220 kW</span></div>
+        <div class="gen-item"><span class="gi-label">メモリ / GPU</span><span class="gi-value">288 GB HBM4</span></div>
+        <div class="gen-item"><span class="gi-label">メモリ帯域幅 / GPU</span><span class="gi-value">22 TB/s <span class="num-highlight">2.8x</span></span></div>
+        <div class="gen-item"><span class="gi-label">NVLink / GPU</span><span class="gi-value">3.6 TB/s <span class="num-highlight">2x</span></span></div>
+        <div class="gen-item"><span class="gi-label">NVLink 合計</span><span class="gi-value">260 TB/s <span class="num-highlight">2x</span></span></div>
+        <div class="gen-item"><span class="gi-label">FP4 推論 / GPU</span><span class="gi-value">50 PFLOPS <span class="num-highlight">5x</span></span></div>
+        <div class="gen-item"><span class="gi-label">FP4 推論 / ラック</span><span class="gi-value">3.6 EFLOPS <span class="num-highlight">3.3x</span></span></div>
+      </div>
+    </div>
+
+    <!-- DGX SuperPOD -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">DGX SuperPOD（Vera Rubin フル構成）</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>構成</th><th>NVL72 ラック数</th><th>GPU 総数</th><th>FP4 性能</th><th>HBM4 総容量</th></tr></thead>
+        <tbody>
+          <tr><td class="td-label">8 ラック構成</td><td>8</td><td>576</td><td>28.8 EFLOPS</td><td>~166 TB</td></tr>
+          <tr><td class="td-label">14 ラック構成（フル）</td><td>14</td><td>1,008</td><td><span class="num-highlight">50.4 EFLOPS</span></td><td><span class="num-highlight">~1 PB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:0.84rem; color:#555; margin-top:0.5rem;">出荷時期: 2026 年下半期。ラック内で NVLink 6 によるスケールアップ、ラック間で Spectrum-6 Ethernet + ConnectX-9 によるスケールアウトを実現。</p>
+
+    <div class="bridge">
+      <p>NVLink Fusion によるエコシステム開放と Vera Rubin による性能向上は、いずれも <strong>データセンターの物理的制約 — 電力と冷却</strong> — の中で実現される必要がある。次のセクションでは、AI データセンターの電力・冷却インフラとメモリ階層を詳しく見ていく。</p>
+    </div>
+  </section>
+
+  <!-- ========== 13. 冷却・電力インフラとメモリ階層 ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">13</span>冷却・電力インフラとメモリ階層</h2>
+    <p class="section-desc">AI データセンターの物理的基盤。GPU の計算能力がいくら向上しても、電力を供給し発熱を排出できなければ性能を引き出せない。2025年以降、電力供給がデータセンター拡張の最大のボトルネックとなっており、ラックあたりの消費電力は従来の 10 倍以上に達している。</p>
+
+    <!-- Rack power evolution -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">ラック消費電力の進化</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">わずか数年で、AI データセンターのラックあたり消費電力は一般的なサーバーの 10-60 倍に達し、今後も急増が続く。この電力密度の爆発的増加が、液冷への移行を必然にしている。</p>
+
+    <div class="bar-group">
+      <div class="bar-row">
+        <div class="bar-label">従来 DC</div>
+        <div class="bar-track"><div class="bar-fill" style="width:3%;background:var(--blue);"></div></div>
+        <div class="bar-value">10-20 kW</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">A100 時代</div>
+        <div class="bar-track"><div class="bar-fill" style="width:7%;background:var(--blue);"></div></div>
+        <div class="bar-value">30-40 kW</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Hopper</div>
+        <div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--cyan);"></div></div>
+        <div class="bar-value">40-56 kW</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Blackwell</div>
+        <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--nvidia-green);"></div></div>
+        <div class="bar-value">120 kW</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">B300</div>
+        <div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--nvidia-green);"></div></div>
+        <div class="bar-value">250 kW</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Rubin Ultra</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red);"></div></div>
+        <div class="bar-value">600 kW</div>
+      </div>
+    </div>
+    <p class="diagram-label">ラックあたり消費電力の推移（kW/ラック）</p>
+
+    <!-- GPU TDP -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">GPU TDP の世代別推移</h3>
+
+    <div class="bar-group">
+      <div class="bar-row">
+        <div class="bar-label">V100 (2017)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:8%;background:var(--blue);"></div></div>
+        <div class="bar-value">300 W</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">A100 (2020)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:11%;background:var(--blue);"></div></div>
+        <div class="bar-value">400 W</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">H100 (2022)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--cyan);"></div></div>
+        <div class="bar-value">700 W</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">B200 (2024)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--nvidia-green);"></div></div>
+        <div class="bar-value">1,200 W</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">R200 (2026)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--orange);"></div></div>
+        <div class="bar-value">2,300 W</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Rubin CPX</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red);"></div></div>
+        <div class="bar-value">3,700 W</div>
+      </div>
+    </div>
+    <p class="diagram-label">GPU 単体の TDP 推移（W）</p>
+
+    <!-- DLC -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">直接液冷（DLC）：Blackwell 以降の必須技術</h3>
+
+    <div class="explain">
+      <div class="explain-title">なぜ液冷が必須になったか</div>
+      <p>空冷の物理的限界は約 <strong style="color:var(--text-heading)">41.3 kW/ラック</strong>。GB200 NVL72 の 120 kW や Rubin Ultra の 600 kW は空冷では絶対に冷却できない。液冷は空気の <strong style="color:var(--text-heading)">30 倍の熱伝導効率</strong>を持ち、発熱の 98% を吸収する。Blackwell 以降の全 NVL72 プラットフォームで液冷が必須要件となっている。</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>コールドプレート（Cold Plate）</h4>
+          <p>GPU/CPU ダイに直接装着。ロウ付け銅製の微細流路（マイクロチャネル）で熱を吸収</p>
+          <div class="flow-techs"><span class="flow-tech ft-green">最大 1,600 W/コンポーネント</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>ラックマニフォールド</h4>
+          <p>ラック全体に冷却水を分配。Blind mate QD（クイックディスコネクト）でリークフリー接続</p>
+          <div class="flow-techs"><span class="flow-tech ft-blue">最大 130 LPM/ラック</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>CDU（冷却分配装置）</h4>
+          <p>施設冷却水系統とサーバー冷却系統の間で熱交換。冷却水入口 45&deg;C &rarr; 出口 65&deg;C</p>
+          <div class="flow-techs"><span class="flow-tech ft-blue">冗長ポンプ</span><span class="flow-tech ft-green">PG-25 冷媒</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <h4>外部冷却水（施設側）</h4>
+          <p>チラーやクーリングタワーで冷却水を冷却し循環。出水温度 45-65&deg;C は地域暖房にも利用可能（北欧で実用化）</p>
+          <div class="flow-techs"><span class="flow-tech ft-orange">廃熱再利用</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Air vs Liquid -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">空冷 vs 液冷のコスト・効率比較</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>比較項目</th><th>空冷</th><th>液冷（DLC）</th></tr></thead>
+        <tbody>
+          <tr><td class="td-label">PUE</td><td>1.2-1.8</td><td><span class="num-highlight">1.02-1.15</span></td></tr>
+          <tr><td class="td-label">最大ラック電力</td><td>~41.3 kW（物理限界）</td><td>100-600+ kW</td></tr>
+          <tr><td class="td-label">冷却エネルギー</td><td>ベースライン</td><td><span class="num-highlight">最大 90% 削減</span></td></tr>
+          <tr><td class="td-label">初期コスト</td><td>低い</td><td>2-3 倍</td></tr>
+          <tr><td class="td-label">10 年 TCO (10MW)</td><td>高い</td><td><span class="num-highlight">39% 削減（$111M 節約）</span></td></tr>
+          <tr><td class="td-label">サーバー寿命</td><td>3-4 年</td><td>5-7 年（可動部品なし）</td></tr>
+          <tr><td class="td-label">サーバー密度</td><td>ベースライン</td><td><span class="num-highlight">58% 向上</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PUE -->
+    <div class="analogy" style="margin-top:1.5rem;">
+      <div class="analogy-title">例え話：PUE = 「電力の燃費」</div>
+      <p>PUE (Power Usage Effectiveness) は「AI 計算に使う電力 1 W あたり、冷却や照明にどれだけ余計な電力を使うか」の指標。PUE 1.56（業界平均）は「計算に 100W 使うと冷却等で 56W 余計にかかる」こと。Google の PUE 1.09 は「わずか 9W の追加」で済む超効率的なデータセンター。液冷の PUE 1.02 はほぼ理想値。</p>
+    </div>
+
+    <!-- Memory hierarchy -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:2rem 0 0.5rem; font-weight:600;">GPU メモリ階層</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">GPU の演算性能がいくら高くても、データの供給が追いつかなければ性能は発揮できない。レジスタから HBM、CPU メモリ、ストレージまでの各メモリ階層は「速度 vs 容量」のトレードオフで設計されている。</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>レジスタ / L1 / 共有メモリ</h4>
+          <p>最速・最小。~1 サイクル / 128-256 KB/SM。SM 内でのみアクセス可能</p>
+          <div class="flow-techs"><span class="flow-tech ft-green">~0.3 ns</span><span class="flow-tech ft-green">数十 TB/s</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>L2 キャッシュ</h4>
+          <p>Blackwell で 126 MB に大幅拡大（Hopper 50 MB の 2.5 倍）。全 SM 間で共有</p>
+          <div class="flow-techs"><span class="flow-tech ft-blue">~100-200 ns</span><span class="flow-tech ft-blue">数 TB/s</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>HBM（VRAM）</h4>
+          <p>GPU のメインメモリ。B200: 192 GB / 8 TB/s。R200: 288 GB / 22 TB/s（HBM4）</p>
+          <div class="flow-techs"><span class="flow-tech ft-orange">~300-500 ns</span><span class="flow-tech ft-green">1-22 TB/s</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <h4>CPU メモリ（DDR5 / LPDDR5x）</h4>
+          <p>GPUDirect P2P / NVLink-C2C 経由でアクセス。KV キャッシュの退避先として利用</p>
+          <div class="flow-techs"><span class="flow-tech ft-blue">100-500 GB/s</span><span class="flow-tech ft-purple">NVLink-C2C</span></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-indicator"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <h4>NVMe SSD / ネットワークストレージ</h4>
+          <p>GPUDirect Storage で CPU バイパス。スループット <span class="num-highlight">460% 向上</span>（84 GB/s、CPU 使用率 15%）</p>
+          <div class="flow-techs"><span class="flow-tech ft-orange">~10-100 &mu;s</span><span class="flow-tech ft-purple">GPUDirect Storage</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HBM evolution -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">HBM の世代進化</h3>
+
+    <div class="nvlink-evo">
+      <div class="nvlink-gen">
+        <div class="gen-name">HBM2E</div>
+        <div class="gen-bw">~410 GB/s</div>
+        <div class="gen-arch">A100 / 2020</div>
+      </div>
+      <div class="nvlink-arrow">&rarr;</div>
+      <div class="nvlink-gen">
+        <div class="gen-name">HBM3</div>
+        <div class="gen-bw">~819 GB/s</div>
+        <div class="gen-arch">H100 / 2022</div>
+      </div>
+      <div class="nvlink-arrow">&rarr;</div>
+      <div class="nvlink-gen current">
+        <div class="gen-name">HBM3E</div>
+        <div class="gen-bw">~1.2 TB/s</div>
+        <div class="gen-arch">B200 / 2024</div>
+      </div>
+      <div class="nvlink-arrow">&rarr;</div>
+      <div class="nvlink-gen next">
+        <div class="gen-name">HBM4</div>
+        <div class="gen-bw">~2+ TB/s</div>
+        <div class="gen-arch">Rubin / 2026</div>
+      </div>
+    </div>
+
+    <div class="explain">
+      <div class="explain-title">HBM4 の技術的進化</div>
+      <p>HBM4 はバス幅を 1024-bit から <strong style="color:var(--text-heading)">2048-bit</strong> に倍増し、独立チャネル数を 16 から 32 に倍増。スタックあたり帯域幅は 2+ TB/s に達し、Rubin GPU では 8 スタックで <strong style="color:var(--text-heading)">22 TB/s</strong> のメモリ帯域幅を実現する。SK Hynix が世界初の HBM4 開発を完了し、2026 Q3 量産開始予定。</p>
+    </div>
+
+    <!-- Roofline -->
+    <div class="explain" style="margin-top:1rem;">
+      <div class="explain-title">なぜメモリ帯域幅が AI 推論のボトルネックか</div>
+      <p>LLM 推論の Decode フェーズでは、1 トークン生成のために<strong style="color:var(--text-heading)">モデル全パラメータ（70B = ~140 GB）を HBM から読み込む</strong>が、実行される演算量は 140 GFLOP に過ぎない。Arithmetic Intensity は 1 FLOP/Byte で、B200 の転換点 562.5 FLOP/Byte と比較して圧倒的に低い。つまり LLM の Decode は<strong style="color:var(--text-heading)">完全に Memory-bound</strong> であり、メモリ帯域幅の向上こそが推論性能を直接改善する。</p>
+    </div>
+
+    <!-- GPUDirect -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">GPUDirect テクノロジー</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">メモリ階層間のデータ転送を最適化し、CPU のバウンスバッファを排除する技術群。GPU メモリ（HBM）を中心としたフラットなデータアクセスを実現する。</p>
+
+    <div class="grid grid-3">
+      <div class="card card-accent-green">
+        <h3>GPUDirect P2P</h3>
+        <p>GPU 間の HBM を NVLink で直接転送。CPU メモリを経由せず、マルチ GPU トレーニング/推論で GPU 間 HBM を仮想的に統合されたメモリプールとして活用可能。</p>
+        <div class="flow-techs" style="margin-top:0.5rem;"><span class="flow-tech ft-green">NVLink 5: 1.8 TB/s</span></div>
+      </div>
+      <div class="card card-accent-blue">
+        <h3>GPUDirect RDMA</h3>
+        <p>NIC から GPU メモリへの直接 DMA 転送。CPU とシステムメモリのバウンスバッファを完全にバイパスし、従来パス比 <span class="num-highlight">10x</span> の性能向上。</p>
+        <div class="flow-techs" style="margin-top:0.5rem;"><span class="flow-tech ft-blue">ConnectX 対応</span></div>
+      </div>
+      <div class="card card-accent-cyan">
+        <h3>GPUDirect Storage</h3>
+        <p>NVMe SSD から GPU メモリへの直接 DMA 転送。スループット <span class="num-highlight">460%</span> 向上（33 GB/s → 84 GB/s）、CPU 使用率 15% に削減。</p>
+        <div class="flow-techs" style="margin-top:0.5rem;"><span class="flow-tech ft-cyan">PCIe P2P DMA</span></div>
+      </div>
+    </div>
+
+    <!-- Sustainability -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">サステナビリティと電力供給の課題</h3>
+
+    <div class="grid grid-2">
+      <div class="card card-accent-orange">
+        <h3>電力供給のボトルネック</h3>
+        <p>NVIDIA 本社所在地の Santa Clara でさえ、電力不足により AI データセンターが空のまま稼働できない事態が発生。グローバルの DC 電力消費は 460 TWh (2024) &rarr; 1,300 TWh (2035) に急増予測。2025 年の AI DC 投資額は約 5,800 億ドル。</p>
+      </div>
+      <div class="card card-accent-green">
+        <h3>原子力（SMR）への投資</h3>
+        <p>Google が Kairos Power と 500 MW の SMR 契約（米国初の企業向け）、Amazon が 200 億ドル+を原子力に投資。24/7 カーボンフリー電力を提供する原子力は、間欠性のある再エネの課題を解決する有力な選択肢。2030 年以降の実用化を目指す。</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h3>廃熱の再利用</h3>
+        <p>液冷 DC の出水温度（45-65&deg;C）は地域暖房に最適。Google Hamina (Finland) は地域暖房需要の 80% を DC 廃熱で供給。Microsoft はデンマークで住宅暖房に利用。DC の実質消費電力を 10-30% 削減可能。</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h3>NVIDIA の対策</h3>
+        <p>800 VDC 電源アーキテクチャへの移行、グリッドオペレーターとのパイロット、Omniverse DSX Blueprint によるギガワット級 AI ファクトリーの標準設計。Vera Rubin NVL72 は性能/ワットで Blackwell 比最大 10 倍の改善。</p>
+      </div>
+    </div>
+
+    <div class="bridge">
+      <p>電力・冷却・メモリの物理的基盤を理解した上で、最後のセクションでは <strong>MoE アーキテクチャ</strong>（現在のフロンティアモデルの主流構造）、<strong>大規模クラスタの耐障害性</strong>、そして<strong>実際のデプロイメント事例</strong>を見ていく。</p>
+    </div>
+  </section>
+
+  <!-- ========== 14. MoE・耐障害性・デプロイメント ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">14</span>MoE・耐障害性・デプロイメント事例</h2>
+    <p class="section-desc">MoE（Mixture of Experts）は GPT-4、DeepSeek-V3/R1、Gemini など主要フロンティアモデルが採用するアーキテクチャであり、AllReduce とは異なる All-to-All 通信パターンを必要とする。数万 GPU のクラスタでは数時間に1回の障害が不可避であり、高可用性の確保が大きな課題。本セクションでは技術と運用の両面から実態を整理する。</p>
+
+    <!-- MoE basics -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">MoE（Mixture of Experts）の仕組み</h3>
+
+    <div class="explain">
+      <div class="explain-title">Dense モデル vs MoE モデル</div>
+      <p><strong style="color:var(--text-heading)">Dense モデル</strong>は全パラメータを全入力に対して使用する。<strong style="color:var(--text-heading)">MoE モデル</strong>は入力ごとに一部の「Expert」（専門家サブネットワーク）のみを活性化する条件付き計算を導入。これにより、モデル容量（知識量）を増やしながら計算コストを一定に保てる。例えば DeepSeek-V3 は総パラメータ 671B だが活性化パラメータは 37B — <strong style="color:var(--text-heading)">全体の 5.5% しか使わない</strong>。</p>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">例え話：MoE = 総合病院</div>
+      <p>Dense モデルが「全科目を1人で診る万能医師」なら、MoE は「専門医が何人もいる総合病院」。患者（入力トークン）が来ると、受付の看護師（Router）が症状に応じて適切な専門医（Expert）を割り振る。全医師を同時に呼ぶ必要がないので、病院全体の効率が大幅に上がる。</p>
+    </div>
+
+    <!-- MoE models comparison -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">主要 MoE モデルの比較</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>モデル</th><th>総パラメータ</th><th>活性化パラメータ</th><th>Expert 数</th><th>Top-K</th><th>活性化率</th></tr></thead>
+        <tbody>
+          <tr><td class="td-label">Mixtral 8x7B</td><td>46.7B</td><td>13B</td><td>8</td><td>2</td><td>27.8%</td></tr>
+          <tr><td class="td-label">Mixtral 8x22B</td><td>141B</td><td>39B</td><td>8</td><td>2</td><td>27.7%</td></tr>
+          <tr><td class="td-label">GPT-4（推定）</td><td>~1.8T</td><td>不明</td><td>~16</td><td>不明</td><td>—</td></tr>
+          <tr><td class="td-label">DeepSeek-V3/R1</td><td>671B</td><td>37B</td><td>256+1</td><td>8</td><td><span class="num-highlight">5.5%</span></td></tr>
+          <tr><td class="td-label">Gemini 3 Pro（推定）</td><td>&gt;1T</td><td>5B-30B</td><td>不明</td><td>不明</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- All-to-All -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">All-to-All 通信：MoE 固有のネットワーク課題</h3>
+
+    <div class="explain">
+      <div class="explain-title">なぜ AllReduce ではなく All-to-All が必要か</div>
+      <p>Dense モデルの Data Parallelism では全 GPU が同じモデルのコピーを持ち、勾配を <strong style="color:var(--text-heading)">AllReduce</strong> で集約する。通信パターンは予測可能。一方、MoE の Expert Parallelism では Expert が異なる GPU に分散配置され、各トークンは Router によって<strong style="color:var(--text-heading)">動的に異なる Expert（= 異なる GPU）に送られる</strong>ため、全 GPU が全 GPU にデータを送る <strong style="color:var(--text-heading)">All-to-All</strong> 通信が必要になる。通信量は不均一かつ予測困難で、ネットワーク輻輳のリスクが高い。</p>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">例え話：AllReduce vs All-to-All</div>
+      <p><strong style="color:var(--text-heading)">AllReduce</strong> は「全員が同じ教科書のテストを受けて、平均点を計算して全員に配る」— 全員が同じ種類のデータを交換するので整然としている。<strong style="color:var(--text-heading)">All-to-All</strong> は「30 人のクラスで全員が全員に異なる手紙を出す」— 誰から誰に何を送るかは毎回変わり、郵便局（ネットワーク）が混雑しやすい。</p>
+    </div>
+
+    <!-- NVL72 + MoE -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">NVL72 での MoE 最適化</h3>
+
+    <div class="grid grid-2">
+      <div class="card card-accent-green">
+        <h3>Wide Expert Parallelism</h3>
+        <p>TensorRT-LLM の Wide-EP は NVL72 のラックスケール NVLink ドメイン（130 TB/s）を最大限に活用。EP=32 で EP=8 比 <span class="num-highlight">最大 1.8x</span> のスループット向上。重みロード圧力を削減し、GroupGEMM 効率を改善。</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h3>Hybrid-EP ライブラリ</h3>
+        <p>NVLink / InfiniBand / Ethernet / RDMA を統合活用した Expert Parallel 通信最適化ライブラリ。わずか 4 SM で NVLink 帯域幅をほぼ最大化。DeepSeek-V3 で <span class="num-highlight">約 14%</span> の性能改善。</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h3>ConnectX-8 All-to-All 最適化</h3>
+        <p>PCIe Gen6 + 800 Gb/s ネットワーキングを単一デバイスに統合。GPU あたり最大 400 Gb/s、NCCL All-to-All 性能で前世代比 <span class="num-highlight">2x</span> 高速化。</p>
+      </div>
+      <div class="card card-accent-cyan">
+        <h3>MoE 推論性能</h3>
+        <p>Blackwell NVL72 vs Hopper H200: MoE モデルで <span class="num-highlight">10x</span> の性能向上、トークンあたりコスト 1/10 に削減。DeepSeek-R1: 単一 DGX B200 で 250 TPS/user、最大 30,000 TPS。</p>
+      </div>
+    </div>
+
+    <!-- Fault tolerance -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:2rem 0 0.5rem; font-weight:600;">大規模クラスタの耐障害性</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">GPU 数が増えるほど障害は頻繁になる。16,384 GPU のクラスタでは約 3 時間に 1 回の障害が発生する。この現実に対処する技術と運用が、大規模 AI トレーニングの成否を分ける。</p>
+
+    <div class="explain">
+      <div class="explain-title">Meta Llama 3.1 405B トレーニングの障害レポート</div>
+      <p>16,384 台の H100 で 54 日間のトレーニング中に <strong style="color:var(--text-heading)">419 回の障害</strong>が発生（約 3 時間に 1 回）。GPU / HBM3 起因の障害が <strong style="color:var(--text-heading)">58.7%</strong> を占めた。それでもチェックポイント技術により<strong style="color:var(--text-heading)">有効トレーニング時間 90% 以上を維持</strong>し、チェックポイント + 回復のオーバーヘッドはわずか 2.1%。</p>
+    </div>
+
+    <!-- Failure breakdown -->
+    <div class="bar-group" style="margin-top:1rem;">
+      <div class="bar-row">
+        <div class="bar-label">GPU 関連</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--red);"></div></div>
+        <div class="bar-value">148 件 (30%)</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">HBM3 メモリ</div>
+        <div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--orange);"></div></div>
+        <div class="bar-value">72 件 (17%)</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">SRAM</div>
+        <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--cyan);"></div></div>
+        <div class="bar-value">19 件 (5%)</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">その他 HW/SW</div>
+        <div class="bar-track"><div class="bar-fill" style="width:41%;background:var(--blue);"></div></div>
+        <div class="bar-value">180 件 (43%)</div>
+      </div>
+    </div>
+    <p class="diagram-label">Meta Llama 3 トレーニング: 54 日間の障害 419 件の内訳</p>
+
+    <!-- MTBF -->
+    <div class="table-wrap" style="margin-top:1.5rem;">
+      <table>
+        <thead><tr><th>クラスタサイズ (GPU 数)</th><th>MTBF (平均故障間隔)</th><th>現実的な意味</th></tr></thead>
+        <tbody>
+          <tr><td class="td-label">8</td><td>~47.7 日</td><td>約 1.5 ヶ月に 1 回</td></tr>
+          <tr><td class="td-label">1,024</td><td>~7.9 時間</td><td>1 日に 3 回</td></tr>
+          <tr><td class="td-label">16,384</td><td>~1.8 時間</td><td>3 時間に 1 回</td></tr>
+          <tr><td class="td-label">131,072</td><td><span class="num-highlight">~14 分</span></td><td>常に何かが壊れている</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">例え話：大規模クラスタの障害</div>
+      <p>13 万 GPU のクラスタは「13 万人の工場作業員が全員同時に働いている」状態。14 分に 1 人が体調不良で倒れる。工場全体を止めるわけにはいかないので、素早く交代要員を入れて作業を継続する仕組み（チェックポイント + 自動回復）が不可欠。</p>
+    </div>
+
+    <!-- Checkpoint -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">チェックポイント技術</h3>
+
+    <div class="scale-row">
+      <div class="scale-box" style="border-left:3px solid var(--red);">
+        <h3 style="color:var(--red);">同期チェックポイント</h3>
+        <p style="font-size:0.84rem; color:#555;">全 GPU がトレーニングを停止し、モデルパラメータ・オプティマイザ状態をストレージに保存。大規模モデルのチェックポイントサイズは数百 GB〜数 TB。全 GPU がアイドル状態になるためオーバーヘッドが大きい。</p>
+      </div>
+      <div class="scale-box" style="border-left:3px solid var(--nvidia-green);">
+        <h3 style="color:var(--nvidia-green);">非同期チェックポイント（現在の主流）</h3>
+        <p style="font-size:0.84rem; color:#555;">GPU メモリから CPU メモリにコピー（短時間のブロッキング）した後、CPU スレッドがバックグラウンドでストレージに書き出し。GPU はすぐにトレーニングを再開。GPU ブロッキング時間を同期比 <span class="num-highlight">10x 以上削減</span>。Meta Llama 3 では 4 分ごと・2.5 秒で実行。</p>
+      </div>
+    </div>
+
+    <!-- Mission Control -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:1.5rem 0 0.5rem; font-weight:600;">NVIDIA Mission Control</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">大規模 AI クラスタの運用管理プラットフォーム。ハードウェア障害の自動検出・修復と、AI トレーニングジョブの自動回復を統合的に提供する。</p>
+
+    <div class="grid grid-3">
+      <div class="card card-accent-green">
+        <h3>AHR（自動 HW 回復）</h3>
+        <p>ハードウェア障害の自動検出と修復。NVLink リンク状態の継続監視、障害リンクの切り離し、RMA 後の自動復帰。非同期操作でラック間の並列修復を実行。</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h3>AJR（自動ジョブ回復）</h3>
+        <p>AI トレーニングジョブの自動障害検出・隔離・回復。FACT エンジンがシステムログ・ネットワークメトリクスを分析して障害原因を自動特定。手動介入を大幅に削減。</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h3>NetQ テレメトリ</h3>
+        <p>NVLink と Ethernet の統合可視化。リアルタイムのネットワークファブリック監視。パケットロス・HW 障害・設定エラーの即時検出。Spectrum-X からのテレメトリデータも統合。</p>
+      </div>
+    </div>
+
+    <!-- Deployments -->
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin:2rem 0 0.5rem; font-weight:600;">実デプロイメント事例</h3>
+
+    <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">AI データセンターの規模は急速に拡大している。以下は 2025-2026 年の主要なデプロイメント事例であり、ここまでのセクションで解説した技術が実際にどのように使われているかを示す。</p>
+
+    <div class="deploy-grid">
+      <div class="deploy-card">
+        <h4>xAI Colossus</h4>
+        <div class="deploy-meta">Memphis, Tennessee | 2024-2026</div>
+        <p>世界最大の GPU クラスタ。122 日間で 100K GPU を構築。現在 <span class="deploy-stat">230K+ GPU</span>、Colossus 2.0 で <span class="deploy-stat">555K GPU</span> / <span class="deploy-stat">2 GW</span> に拡張予定。Spectrum-X Ethernet でデータスループット 95% を達成。</p>
+      </div>
+      <div class="deploy-card">
+        <h4>Microsoft Azure (OpenAI 向け)</h4>
+        <div class="deploy-meta">グローバル | 2025</div>
+        <p>世界初の GB300 NVL72 大規模クラスタ。<span class="deploy-stat">4,608 GPU</span>（64 ラック）。各ラック 72 Blackwell Ultra GPU + 36 Grace CPU。全体 92.1 ExaFLOPS (FP4)。OpenAI のワークロードに供給。</p>
+      </div>
+      <div class="deploy-card">
+        <h4>Oracle OCI Supercluster</h4>
+        <div class="deploy-meta">2025 GA | 世界初ゼタスケール</div>
+        <p>最大 <span class="deploy-stat">131,072 Blackwell GPU</span>。<span class="deploy-stat">2.4 ゼタFLOPS</span>（FP4）— Frontier スパコンの 3 倍以上。2025 年に一般提供開始。</p>
+      </div>
+      <div class="deploy-card">
+        <h4>CoreWeave</h4>
+        <div class="deploy-meta">GPU-as-a-Service | 2025</div>
+        <p>元暗号通貨マイニング企業。現在 <span class="deploy-stat">250K GPU</span>。世界初の商用 GB200 NVL72 / GB300 NVL72 提供。OpenAI $12B + Meta $14.2B の契約。受注残高 <span class="deploy-stat">$66.8B</span>。2025 年売上 $5.1B（前年比 168% 増）。</p>
+      </div>
+      <div class="deploy-card">
+        <h4>Stargate</h4>
+        <div class="deploy-meta">米国国家プロジェクト | 2025-2029</div>
+        <p>OpenAI + SoftBank + Oracle + Microsoft による <span class="deploy-stat">$500B</span> 投資計画（4 年間）。旗艦サイトはテキサス州アビリーン（2025年9月オープン）。総計画容量 <span class="deploy-stat">~7 GW</span>。米国内で 10 万人以上の雇用創出を目指す。</p>
+      </div>
+      <div class="deploy-card">
+        <h4>Eli Lilly &amp; RIKEN（日本）</h4>
+        <div class="deploy-meta">医療・科学 | 2025-2026</div>
+        <p>Eli Lilly: 世界初の DGX SuperPOD w/ DGX B300（<span class="deploy-stat">1,016 GPU</span>）。共同イノベーションラボに $1B。RIKEN: <span class="deploy-stat">2,140 Blackwell GPU</span>（2026年春稼働）。FugakuNEXT は 2030年に $740M でゼタスケールを目指す。</p>
+      </div>
+    </div>
+
+  </section>
+
 </main>
 
 <footer>
-  <p>AI データセンター技術の関連性マップ &mdash; 調査日: 2026-02-27 | <a href="index.html">技術概要トップへ</a></p>
+  <p>AI データセンター技術の関連性マップ &mdash; 調査日: 2026-02-28 | <a href="index.html">技術概要トップへ</a></p>
   <p style="margin-top:0.3rem;">出典: <a href="https://www.nvidia.com/" target="_blank">nvidia.com</a>, <a href="https://developer.nvidia.com/" target="_blank">developer.nvidia.com</a>, <a href="https://nvidianews.nvidia.com/" target="_blank">nvidianews.nvidia.com</a></p>
 </footer>
 

@@ -78,7 +78,7 @@
       display: inline-block;
     }
     .section-num { color: var(--nvidia-green); font-weight: 700; margin-right: 0.4rem; }
-    .section-desc { color: #787774; margin-bottom: 1.8rem; font-size: 0.9rem; }
+    .section-desc { color: #787774; margin-bottom: 1.8rem; font-size: 0.9rem; line-height: 1.8; }
 
     .grid { display: grid; gap: 0.8rem; }
     .grid-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
@@ -132,6 +132,29 @@
     .badge-red { background: #f5d0d0; color: #8a2a2a; }
     .badge-cyan { background: #d0eaea; color: #1a6a6a; }
 
+    /* Key Numbers Dashboard */
+    .key-numbers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.6rem;
+      margin: 1.5rem 0 0;
+    }
+    .kn {
+      text-align: center;
+      padding: 1.3rem 0.8rem;
+      background: var(--bg-card);
+      border: none;
+      border-radius: 4px;
+    }
+    .kn .number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--nvidia-green);
+      line-height: 1.2;
+    }
+    .kn .unit { font-size: 0.82rem; color: #555; }
+    .kn .desc { font-size: 0.75rem; color: #787774; margin-top: 0.3rem; }
+
     .sub-title {
       font-size: 1.15rem;
       color: var(--text-heading);
@@ -165,6 +188,7 @@
     .td-no { color: var(--red); font-weight: 600; }
     .td-na { color: #aaa; }
 
+    /* Bar Chart */
     .bar-group { margin-bottom: 1.5rem; }
     .bar-row {
       display: grid;
@@ -175,57 +199,163 @@
     }
     .bar-label { font-size: 0.82rem; color: #555; text-align: right; }
     .bar-track { background: var(--border-light); border-radius: 3px; height: 20px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+    .bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
     .bar-value { font-size: 0.82rem; font-weight: 600; color: #1a1a1a; }
 
-    .diagram {
+    /* Flow Diagram */
+    .flow { display: flex; flex-direction: column; gap: 0; }
+    .flow-step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 0;
+    }
+    .flow-indicator { display: flex; flex-direction: column; align-items: center; }
+    .flow-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid var(--nvidia-green);
+      background: var(--bg); flex-shrink: 0; margin-top: 1.2rem;
+    }
+    .flow-dot.active { background: var(--nvidia-green); }
+    .flow-line { width: 1px; flex: 1; background: var(--border); }
+    .flow-content {
       background: var(--bg-card);
-      border: none;
-      border-radius: 4px;
-      padding: 1.5rem;
-      overflow-x: auto;
+      border: none; border-radius: 4px;
+      padding: 1rem 1.2rem; margin-bottom: 0.4rem;
     }
-    .diagram pre {
-      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
-      font-size: 0.82rem;
-      line-height: 1.6;
-      color: var(--text);
-      white-space: pre;
-      margin: 0;
+    .flow-content h4 { font-size: 0.92rem; color: #1a1a1a; margin-bottom: 0.3rem; font-weight: 600; }
+    .flow-content p { font-size: 0.84rem; color: #555; margin-bottom: 0.3rem; }
+    .flow-techs { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+    .flow-tech {
+      display: inline-block; padding: 0.1rem 0.45rem; border-radius: 3px;
+      font-size: 0.72rem; font-weight: 500;
     }
-    .diagram-label {
-      font-size: 0.75rem;
-      color: #787774;
-      text-align: center;
-      margin-top: 0.6rem;
-      font-style: italic;
+    .ft-green { background: #dbeddb; color: #1a1a1a; }
+    .ft-blue { background: #d3e5ef; color: #1a1a1a; }
+    .ft-purple { background: #e8deee; color: #1a1a1a; }
+    .ft-cyan { background: #d3e5ef; color: #1a1a1a; }
+    .ft-orange { background: #fadec9; color: #1a1a1a; }
+
+    /* Scale Comparison */
+    .scale-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem; }
+    .scale-box { background: var(--bg-card); border: none; border-radius: 4px; padding: 1.3rem; }
+    .scale-box h3 { font-size: 1.02rem; margin-bottom: 0.8rem; font-weight: 600; }
+    .scale-box p, .scale-box li { font-size: 0.84rem; color: #555; }
+    .scale-box ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .scale-box li { margin-bottom: 0.2rem; }
+    .scale-up h3 { color: var(--cyan); }
+    .scale-out h3 { color: var(--blue); }
+
+    /* NVLink Evolution Timeline */
+    .nvlink-evo {
+      display: flex; align-items: stretch; gap: 4px; margin-bottom: 1.5rem;
+    }
+    .nvlink-gen {
+      flex: 1; text-align: center; padding: 1rem 0.5rem;
+      border: none; border-radius: 4px; background: var(--bg-card);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .nvlink-gen .gen-name { font-size: 0.72rem; color: #787774; }
+    .nvlink-gen .gen-bw { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; }
+    .nvlink-gen .gen-arch { font-size: 0.72rem; color: #787774; margin-top: 0.2rem; }
+    .nvlink-arrow {
+      display: flex; align-items: center; padding: 0 0.2rem;
+      font-size: 1.2rem; color: var(--nvidia-green);
+    }
+    .nvlink-gen.current { background: #dbeddb; }
+    .nvlink-gen.next { background: #ffe2dd; }
+    .nvlink-gen.next .gen-bw { color: var(--red); }
+
+    /* Decision Tree */
+    .decision-tree { background: var(--bg-card); border: none; border-radius: 4px; padding: 1.5rem; }
+    .dt-node { padding: 0.6rem 1rem; border-radius: 3px; margin-bottom: 0.5rem; font-size: 0.85rem; }
+    .dt-question { background: #d3e5ef; border: none; color: #1a1a1a; font-weight: 600; }
+    .dt-answer {
+      margin-left: 1.5rem; background: #dbeddb; border: none; color: var(--text);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .dt-answer .label {
+      font-weight: 600; font-size: 0.72rem; padding: 0.1rem 0.4rem; border-radius: 3px;
+    }
+    .dt-yes .label { background: rgba(118,185,0,0.2); color: #1a1a1a; }
+    .dt-no .label { background: #ffe2dd; color: #1a1a1a; }
+
+    /* Concept Grid */
+    .concept-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 0.8rem; margin: 1.5rem 0;
+    }
+    .concept {
+      background: var(--bg-card); border: none; border-radius: 4px;
+      padding: 1.3rem; transition: background 0.15s;
+    }
+    .concept:hover { background: var(--bg-hover); }
+    .concept h4 { font-size: 0.95rem; color: #1a1a1a; margin-bottom: 0.2rem; font-weight: 600; }
+    .concept .concept-sub { font-size: 0.75rem; color: var(--nvidia-green); margin-bottom: 0.6rem; font-weight: 500; }
+    .concept p { font-size: 0.85rem; color: #555; margin-bottom: 0.4rem; }
+    .concept .concept-analogy {
+      font-size: 0.82rem; color: var(--text);
+      background: #dbeddb; border-radius: 4px; padding: 0.5rem 0.8rem; margin-top: 0.6rem;
     }
 
+    /* Analogy Box */
+    .analogy {
+      background: #dbeddb; border: none; border-radius: 4px;
+      padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.88rem;
+    }
+    .analogy-title { font-size: 0.72rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.4rem; }
+    .analogy p { color: var(--text); margin-bottom: 0.3rem; }
+    .analogy p:last-child { margin-bottom: 0; }
+
+    /* Explain Box */
     .explain {
-      background: #d3e5ef;
-      border-radius: 4px;
-      padding: 1rem 1.2rem;
-      margin: 1rem 0;
+      background: #d3e5ef; border: none; border-radius: 4px;
+      padding: 1rem 1.3rem; margin: 1rem 0; font-size: 0.88rem;
     }
-    .explain-title { font-size: 0.85rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.3rem; }
-    .explain p { font-size: 0.85rem; color: #555; }
+    .explain-title { font-size: 0.72rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.4rem; }
+    .explain p { color: var(--text); margin-bottom: 0.3rem; }
+    .explain p:last-child { margin-bottom: 0; }
 
+    /* Highlight Box */
     .highlight-box {
-      background: #dbeddb;
-      border-radius: 4px;
-      padding: 1rem 1.2rem;
-      margin: 1rem 0;
+      background: #dbeddb; border-radius: 4px; padding: 1rem 1.2rem; margin: 1rem 0;
     }
     .highlight-box p { font-size: 0.85rem; color: #3a6f3a; }
     .highlight-box strong { color: #1a1a1a; }
 
+    /* Bridge Text */
+    .bridge {
+      padding: 1.2rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-style: italic;
+      border-left: 3px solid var(--nvidia-green);
+      padding-left: 1.2rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    /* Diagram */
+    .diagram {
+      background: var(--bg-card); border: none; border-radius: 4px;
+      padding: 1.5rem; overflow-x: auto;
+    }
+    .diagram pre {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+      font-size: 0.82rem; line-height: 1.6; color: var(--text); white-space: pre; margin: 0;
+    }
+    .diagram-label {
+      font-size: 0.75rem; color: #787774; text-align: center; margin-top: 0.6rem; font-style: italic;
+    }
+
+    /* Num highlight */
+    .num-highlight {
+      display: inline-block; background: #dbeddb; border: none; border-radius: 3px;
+      padding: 0.1rem 0.4rem; font-weight: 600; color: #1a1a1a; font-size: 0.88rem;
+    }
+
     footer {
       border-top: 1px solid var(--border);
-      padding: 2rem;
-      text-align: center;
-      color: #787774;
-      font-size: 0.82rem;
-      margin-top: 2rem;
+      padding: 2rem; text-align: center; color: #787774; font-size: 0.82rem; margin-top: 2rem;
     }
     footer a { color: var(--nvidia-green); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
@@ -234,6 +364,9 @@
       .grid-3 { grid-template-columns: repeat(2, 1fr); }
       .grid-4 { grid-template-columns: repeat(2, 1fr); }
       .bar-row { grid-template-columns: 140px 1fr 50px; }
+      .scale-row { grid-template-columns: 1fr; }
+      .nvlink-evo { flex-wrap: wrap; }
+      .concept-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
       .hero h1 { font-size: 1.7rem; }
@@ -241,6 +374,8 @@
       .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
       .bar-row { grid-template-columns: 100px 1fr 40px; }
       .bar-label { font-size: 0.75rem; }
+      .nvlink-evo { flex-direction: column; }
+      .nvlink-arrow { justify-content: center; transform: rotate(90deg); }
     }
   </style>
 </head>
@@ -252,7 +387,35 @@
 
 <header class="hero">
   <h1>NVIDIA 以外の<span> AI データセンター</span>構成</h1>
-  <p class="subtitle">Google TPU、AMD Instinct、AWS Trainium、Intel Gaudi をはじめとする各社 AI 半導体のデータセンター構成を比較し、NVIDIA エコシステムとの互換性・差別化戦略を整理する。</p>
+  <p class="subtitle">Google TPU、AMD Instinct、AWS Trainium、Intel Gaudi をはじめとする各社 AI 半導体のデータセンター構成を比較し、NVIDIA エコシステムとの互換性・差別化戦略を整理する。AI データセンターは NVIDIA の独壇場ではなく、複数の有力な選択肢が急速に台頭している。</p>
+
+  <div class="key-numbers">
+    <div class="kn">
+      <div class="number">8+</div>
+      <div class="unit">社</div>
+      <div class="desc">主要 AI 半導体メーカー</div>
+    </div>
+    <div class="kn">
+      <div class="number">4,614</div>
+      <div class="unit">TFLOPS</div>
+      <div class="desc">Google Ironwood FP8 性能</div>
+    </div>
+    <div class="kn">
+      <div class="number">9,216</div>
+      <div class="unit">チップ</div>
+      <div class="desc">TPU Ironwood Pod 最大構成</div>
+    </div>
+    <div class="kn">
+      <div class="number">$200億</div>
+      <div class="unit"></div>
+      <div class="desc">NVIDIA の Groq 買収額</div>
+    </div>
+    <div class="kn">
+      <div class="number">70-75%</div>
+      <div class="unit"></div>
+      <div class="desc">2028年 推論 ASIC 予測シェア</div>
+    </div>
+  </div>
 </header>
 
 <main class="container">
@@ -262,7 +425,12 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">01</span>AI 半導体エコシステムの全体像</h2>
-  <p class="section-desc">NVIDIA 以外の主要 AI 半導体メーカーと、その市場ポジション・差別化戦略を概観する。</p>
+  <p class="section-desc">AI の急成長に伴い、NVIDIA GPU 以外にも多数の AI 半導体が登場している。各社のアプローチは大きく異なり、Google のように独自チップ + 独自インフラで完全に垂直統合する企業もあれば、AMD のように標準規格で NVIDIA の代替を目指す企業もある。ここでは8つの主要プレイヤーの全体像を概観する。</p>
+
+  <div class="explain">
+    <p class="explain-title">ASIC とは</p>
+    <p><strong>ASIC</strong>（Application-Specific Integrated Circuit）は、特定の用途に特化して設計されたチップのこと。汎用的に何でもできる GPU と異なり、AI の推論やトレーニングなど特定の処理だけを極めて高効率に実行する。スマートフォンで例えると、GPU は「何でもできるスマホ」、ASIC は「電話だけに特化した固定電話」のようなもの。専用設計であるぶん、特定用途では圧倒的に効率が良い。</p>
+  </div>
 
   <div class="grid grid-4">
     <div class="card card-accent-blue">
@@ -270,58 +438,129 @@
       <h3>Google TPU</h3>
       <div class="key-stat">4,614 TFLOPS</div>
       <div class="key-label">Ironwood (v7) FP8</div>
-      <p>独自チップ + 独自ネットワーク + 独自ソフトウェアの完全垂直統合。GCP 専用。</p>
+      <p>独自チップ + 独自ネットワーク + 独自ソフトウェアの完全垂直統合。GCP でのみ利用可能。自社 AI モデル Gemini の開発基盤でもある。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">Compute</span>
+        <span class="flow-tech ft-blue">ICI / OCS</span>
+        <span class="flow-tech ft-purple">JAX / XLA</span>
+      </div>
     </div>
     <div class="card card-accent-red">
       <span class="badge badge-red">オープンエコシステム</span>
       <h3>AMD Instinct</h3>
       <div class="key-stat">~10,100 TFLOPS</div>
       <div class="key-label">MI350X FP8</div>
-      <p>NVIDIA の最大の直接競合。ROCm + 標準 Ethernet でオープン路線。</p>
+      <p>NVIDIA の最大の直接競合。ROCm + 標準 Ethernet でオープン路線を貫き、ベンダロックインを回避する戦略。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">Compute</span>
+        <span class="flow-tech ft-blue">xGMI / Ethernet</span>
+        <span class="flow-tech ft-purple">ROCm / HIP</span>
+      </div>
     </div>
     <div class="card card-accent-orange">
       <span class="badge badge-orange">AWS 専用</span>
       <h3>AWS Trainium</h3>
       <div class="key-stat">2.52 PFLOPS</div>
       <div class="key-label">Trainium3 FP8</div>
-      <p>AWS 閉鎖環境で最適化。Project Rainier（50万チップ）。NVLink Fusion 採用予定。</p>
+      <p>AWS の閉鎖環境で最適化されたカスタムチップ。Project Rainier（50万チップ）で大規模実績。次世代 Trn4 で NVLink Fusion を採用予定。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">Compute</span>
+        <span class="flow-tech ft-blue">NeuronLink / EFA</span>
+        <span class="flow-tech ft-purple">Neuron SDK</span>
+      </div>
     </div>
     <div class="card card-accent-cyan">
       <span class="badge badge-cyan">Ethernet 統合</span>
       <h3>Intel Gaudi</h3>
       <div class="key-stat">1.8 PFLOPS</div>
       <div class="key-label">Gaudi 3 FP8/BF16</div>
-      <p>オンチップ RoCE NIC で外部 NIC 不要。Falcon Shores キャンセルで将来不透明。</p>
+      <p>チップ内に RoCE NIC を24ポート内蔵し、外部 NIC なしで通信可能。コスト効率に優れるが、後継 Falcon Shores キャンセルで将来が不透明。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">Compute</span>
+        <span class="flow-tech ft-blue">オンチップ RoCE</span>
+        <span class="flow-tech ft-purple">SynapseAI</span>
+      </div>
     </div>
     <div class="card card-accent-green">
       <span class="badge badge-green">ウェーハスケール</span>
       <h3>Cerebras WSE-3</h3>
       <div class="key-stat">125 PFLOPS</div>
       <div class="key-label">900,000 コア / 44GB SRAM</div>
-      <p>300mm ウェーハ全体が1チップ。OpenAI と100億ドル超の契約。</p>
+      <p>300mm ウェーハ全体が1つのチップ。通常のチップとはまったく異なる設計思想で、OpenAI と100億ドル超の推論契約を締結。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">ウェーハスケール</span>
+        <span class="flow-tech ft-blue">SwarmX</span>
+        <span class="flow-tech ft-purple">CSoft</span>
+      </div>
     </div>
     <div class="card card-accent-purple">
       <span class="badge badge-purple">NVIDIA 買収済</span>
       <h3>Groq LPU</h3>
       <div class="key-stat">276 tok/s</div>
       <div class="key-label">Llama 3.3 70B 推論速度</div>
-      <p>決定論的実行で超低レイテンシ推論。2025年12月に NVIDIA が200億ドルで買収。</p>
+      <p>「決定論的実行」により超低レイテンシの推論を実現。2025年12月に NVIDIA が200億ドルで買収し、推論技術の取り込みを狙う。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">LPU</span>
+        <span class="flow-tech ft-orange">NVIDIA 統合予定</span>
+      </div>
     </div>
     <div class="card card-accent-orange">
       <span class="badge badge-orange">3層メモリ</span>
       <h3>SambaNova RDU</h3>
       <div class="key-stat">1.5 TiB</div>
       <div class="key-label">SN40L 最大メモリ容量</div>
-      <p>SRAM + HBM + DDR の3層メモリで大規模モデルに対応。空冷可能。</p>
+      <p>SRAM + HBM + DDR の3層メモリ構造で、GPU では扱いきれない超大規模モデルをメモリに載せることが可能。空冷で運用できる点も特徴。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">RDU</span>
+        <span class="flow-tech ft-purple">SambaFlow</span>
+      </div>
     </div>
     <div class="card card-accent-cyan">
       <span class="badge badge-cyan">RISC-V / オープン</span>
       <h3>Tenstorrent</h3>
       <div class="key-stat">$32億</div>
       <div class="key-label">企業評価額</div>
-      <p>Jim Keller 率いる RISC-V ベース AI チップ。IP ライセンスモデルで差別化。</p>
+      <p>AMD Zen や Apple A シリーズを設計した Jim Keller が率いる RISC-V ベースの AI チップ。チップそのものを販売するだけでなく、IP ライセンスモデルでも展開。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">RISC-V Tensix</span>
+        <span class="flow-tech ft-blue">Ethernet Mesh</span>
+        <span class="flow-tech ft-purple">TT-Metalium</span>
+      </div>
     </div>
   </div>
+
+  <!-- Concept Grid -->
+  <h3 class="sub-title">このページを読むための基礎知識</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">AI データセンターの技術を理解するために押さえておくべき4つの概念を解説する。これらの用語は以降のセクションで頻繁に登場する。</p>
+
+  <div class="concept-grid">
+    <div class="concept">
+      <h4>Scale-up vs Scale-out</h4>
+      <div class="concept-sub">チップ間接続の2つの階層</div>
+      <p><strong>Scale-up</strong> は1台のサーバ内でチップ同士を高速に接続すること。<strong>Scale-out</strong> は複数のサーバをネットワークでつないで規模を拡大すること。Scale-up は高速だが規模に限界があり、Scale-out はスケールするがネットワーク遅延がボトルネックになる。</p>
+      <div class="concept-analogy">マンションに例えると、Scale-up は「同じフロア内の部屋の移動」（廊下を歩くだけ）、Scale-out は「別の建物への移動」（外に出て道を歩く必要がある）。</div>
+    </div>
+    <div class="concept">
+      <h4>ASIC vs GPU</h4>
+      <div class="concept-sub">専用設計 vs 汎用チップ</div>
+      <p><strong>GPU</strong> はグラフィックスから AI まで幅広い用途に対応する汎用チップ。<strong>ASIC</strong> は AI 推論やトレーニングなど特定の処理に特化した専用チップ。ASIC は特定用途で GPU を上回る効率を持つが、用途が限定される。</p>
+      <div class="concept-analogy">GPU は「万能包丁」で何でも切れるが、ASIC は「刺身包丁」のように特定の用途で圧倒的に切れ味が良い。</div>
+    </div>
+    <div class="concept">
+      <h4>プロプライエタリ vs オープン標準</h4>
+      <div class="concept-sub">ロックイン vs マルチベンダ</div>
+      <p><strong>プロプライエタリ</strong>（例: NVLink, ICI）は1社が規格を制御し、最高の性能を発揮するが他社製品との互換性がない。<strong>オープン標準</strong>（例: Ethernet, UALink）は複数ベンダが実装可能で選択の自由があるが、性能は専用設計に劣ることが多い。</p>
+      <div class="concept-analogy">プロプライエタリは「専用軌道の新幹線」（速いが、JR の線路しか走れない）。オープン標準は「標準軌の在来線」（どの会社の列車も走れるが、速度は新幹線に及ばない）。</div>
+    </div>
+    <div class="concept">
+      <h4>垂直統合 vs 水平分業</h4>
+      <div class="concept-sub">Google/AWS 型 vs AMD/Intel 型</div>
+      <p><strong>垂直統合</strong>（Google, AWS）はチップからソフトウェアまで自社で一貫して設計し、最適化を最大化する。<strong>水平分業</strong>（AMD, Intel）は標準規格のコンポーネントを組み合わせ、ユーザーに選択の自由を提供する。</p>
+      <div class="concept-analogy">垂直統合は「Apple の iPhone」（ハード・OS・サービスをすべて自社設計で、体験は統一されるが選択肢がない）。水平分業は「Android スマホ」（様々なメーカーの組み合わせが選べるが、最適化は Apple ほどではない）。</div>
+    </div>
+  </div>
+
+  <div class="bridge">各社の概要を見たところで、次はそれぞれがどのようにデータセンターを構成しているか — チップ間の接続方式、サーバ構成、スケーリング階層を具体的に見ていこう。</div>
 </section>
 
 <!-- ============================================================ -->
@@ -329,10 +568,16 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">02</span>主要プラットフォーム別データセンター構成</h2>
-  <p class="section-desc">Google TPU、AMD Instinct、AWS Trainium、Intel Gaudi の4プラットフォームについて、データセンター構成の詳細を比較する。</p>
+  <p class="section-desc">AI データセンターでは「チップ単体の性能」よりも「数千〜数万のチップをどう接続するか」が性能を決定する。同じチップでも接続方式が異なれば、全体の性能は大きく変わる。ここでは Google TPU、AMD Instinct、AWS Trainium、Intel Gaudi の4大プラットフォームについて、データセンター構成の詳細を比較する。</p>
+
+  <div class="explain">
+    <p class="explain-title">なぜ接続方式が重要なのか</p>
+    <p>AI のトレーニングでは、数千個のチップが同時に計算を行い、その結果を全チップで共有する必要がある（これを <strong>AllReduce</strong> と呼ぶ）。この「結果の共有」がボトルネックになるため、チップ間の接続速度と方式がデータセンター全体の性能を左右する。接続が遅いと、いくらチップ単体が高性能でも、待ち時間でトレーニング全体が遅くなる。</p>
+  </div>
 
   <!-- Google TPU -->
   <h3 class="sub-title">Google TPU — 完全垂直統合型</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ Google は独自チップを作るのか？</strong> Google は世界最大の AI モデル（Gemini）を自社で開発・運用しており、NVIDIA GPU に依存すると調達コスト・供給量の両面でリスクがある。独自チップを設計することで、自社の AI ワークロードに最適化されたインフラをコントロールでき、GCP の差別化にもつながる。</p>
 
   <div class="table-wrap">
     <table>
@@ -346,44 +591,82 @@
     </table>
   </div>
 
-  <div class="diagram">
-    <pre>
-  Google TPU データセンター階層
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <h4>TPU チップ間接続: ICI (Inter-Chip Interface)</h4>
+        <p>チップ同士を <strong>3D Torus</strong> トポロジで直接接続。Ironwood では <strong>9.6 Tbps/チップ</strong> の帯域幅を持つ。スイッチを介さない直接接続のため、レイテンシが極めて低い。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-blue">ICI 9.6 Tbps</span>
+          <span class="flow-tech ft-cyan">3D Torus</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <h4>TPU Pod: 最大 9,216 チップ</h4>
+        <p>ICI で接続された TPU チップの集合体。OCS（光回路スイッチ）を使い、MEMS ミラーで光パスを動的に切り替えることで、物理配線を変えずに接続トポロジを変更できる。従来 568台必要だったスイッチを <strong>48台に削減</strong>。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-blue">OCS 光回路スイッチ</span>
+          <span class="flow-tech ft-green">最大 9,216 チップ</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <h4>マルチスライス: Pod の集合</h4>
+        <p>複数の Pod を Jupiter ネットワーク（<strong>1.3 Pbps</strong>）で接続。Pod を超えた通信は ICI の直接接続ではなく、データセンターファブリックを経由する。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-blue">Jupiter 1.3 Pbps</span>
+          <span class="flow-tech ft-purple">Google 独自ファブリック</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div></div>
+      <div class="flow-content">
+        <h4>データセンタークラスタ</h4>
+        <p>Google 独自のネットワークインフラで複数サイトを接続。全レイヤーが Google 独自技術で構成されており、外部ベンダへの依存がない。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-orange">GCP 専用</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  [TPU チップ] ←ICI (9.6 Tbps)→ [TPU チップ] ... (3D Torus 内)
-       ↕
-  [TPU Pod: 256〜9,216 チップ]  ← OCS (光回路スイッチ) で動的接続
-       ↕
-  [マルチスライス: Pod × N]  ← Jupiter ネットワーク (1.3 Pbps)
-       ↕
-  [データセンタークラスタ]  ← Google 独自ファブリック
-    </pre>
-    <p class="diagram-label">Google TPU のスケーリング階層 — 全レイヤーが Google 独自技術</p>
+  <div class="analogy">
+    <div class="analogy-title">たとえ話で理解する ICI と OCS</div>
+    <p><strong>ICI（3D Torus）</strong>は、格子状に並んだ教室を廊下で直接つなぐ学校のようなもの。各教室は上下左右の教室と直接行き来でき、事務室（スイッチ）を経由する必要がない。</p>
+    <p><strong>OCS（光回路スイッチ）</strong>は、回転する鏡で光の道を切り替える信号機。配線を物理的に変えることなく、「今はこの教室とあの教室をつなぐ」「次はこの組み合わせ」と動的に接続先を変更できる。</p>
   </div>
 
   <div class="grid grid-2">
     <div class="card card-accent-blue">
-      <h3>インターコネクト: ICI + OCS</h3>
+      <h3>ソフトウェア: JAX + Pathways</h3>
       <ul>
-        <li><strong>ICI (Inter-Chip Interface)</strong>: チップ間直接接続、3D Torus トポロジ</li>
-        <li><strong>OCS (Optical Circuit Switch)</strong>: MEMS ミラーで光パスを動的に切替</li>
-        <li>スイッチ数を 568台 → <strong>48台に削減</strong>（OCS の効果）</li>
-        <li>NVIDIA NVSwitch に相当するが、完全に独自プロトコル</li>
+        <li><strong>JAX</strong>: Google 製の関数型 ML フレームワーク。PyTorch の代替として TPU に最適化</li>
+        <li><strong>XLA</strong>: コンパイラが Python コードを自動で TPU 向けに最適化</li>
+        <li><strong>GSPMD</strong>: 手動で並列化を設定しなくても、コンパイラが自動で複数 TPU に処理を分散</li>
+        <li><strong>Pathways</strong>: ジョブスケジューリングの分散ランタイム</li>
       </ul>
     </div>
     <div class="card card-accent-blue">
-      <h3>ソフトウェア: JAX + Pathways</h3>
+      <h3>制約と注意点</h3>
       <ul>
-        <li><strong>JAX</strong>: 関数型 ML フレームワーク（PyTorch の代替）</li>
-        <li><strong>XLA</strong>: コンパイラが自動で TPU コードに最適化</li>
-        <li><strong>GSPMD</strong>: 自動並列化（手動設定不要）</li>
-        <li><strong>Pathways</strong>: 分散ランタイム（ジョブスケジューリング）</li>
+        <li>GCP でのみ利用可能 — オンプレミスでは使えない</li>
+        <li>PyTorch のネイティブサポートは限定的（JAX が前提）</li>
+        <li>Google のエコシステムへの完全なロックイン</li>
+        <li>一方で、電力効率は全チップ中最高（29.4 GFLOPS/W）</li>
       </ul>
     </div>
   </div>
 
   <!-- AMD Instinct -->
   <h3 class="sub-title">AMD Instinct — オープンエコシステム型</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ AMD はオープン路線なのか？</strong> NVIDIA のように独自のインターコネクトとソフトウェアでエコシステムを囲い込む戦略は、後発の AMD には難しい。代わりに AMD は標準 Ethernet と ROCm（オープンソースの GPU プログラミング基盤）で「選択の自由」を提供し、NVIDIA へのロックインを嫌う顧客を取り込む戦略を採る。</p>
 
   <div class="table-wrap">
     <table>
@@ -397,44 +680,57 @@
     </table>
   </div>
 
-  <div class="diagram">
-    <pre>
-  AMD Instinct サーバ構成（Rail-Optimized）
+  <div class="scale-row">
+    <div class="scale-box scale-up">
+      <h3>Scale-up: xGMI Full Mesh</h3>
+      <p>1台のサーバ内で <strong>8基の GPU を xGMI（Infinity Fabric）</strong>でフルメッシュ接続。各 GPU 間は 128 GB/s のリンクで直結し、集約帯域は <strong>896 GB/s</strong>。UBB 2.0（Universal Baseboard）に OAM 規格で搭載。</p>
+      <ul>
+        <li>8 GPU フルメッシュ（全GPU が直接通信可能）</li>
+        <li>128 GB/s/リンク &times; 7本 = 896 GB/s 集約</li>
+        <li>NVIDIA NVLink に相当するが、帯域幅は劣る</li>
+      </ul>
+    </div>
+    <div class="scale-box scale-out">
+      <h3>Scale-out: Rail-Optimized Ethernet</h3>
+      <p>各 GPU に <strong>専用の NIC（400G）</strong>を 1:1 で配置し、GPU ごとに独立したネットワークレーン（Rail）で通信する構成。GPU が NIC を共有する従来方式と比べてボトルネックが解消される。</p>
+      <ul>
+        <li>GPU 0 → NIC 0 → Leaf Switch Rail 0</li>
+        <li>GPU 1 → NIC 1 → Leaf Switch Rail 1 ...</li>
+        <li>検証済み NIC: ConnectX-7、Broadcom Thor-2、AMD Pollara 400G</li>
+        <li>リファレンス設計: 128〜8,192 GPU クラスタ</li>
+      </ul>
+    </div>
+  </div>
 
-  [MI300X GPU 0] ←PCIe→ [NIC 0 (400G)] → Leaf Switch Rail 0
-  [MI300X GPU 1] ←PCIe→ [NIC 1 (400G)] → Leaf Switch Rail 1
-  ...                     ...
-  [MI300X GPU 7] ←PCIe→ [NIC 7 (400G)] → Leaf Switch Rail 7
-       ↕ xGMI Full Mesh (896 GB/s 集約)
-                                              ↕ Spine Switch
-  8 GPU + 8 NIC per Node (UBB 2.0 OAM)     [Fat-tree トポロジ]
-    </pre>
-    <p class="diagram-label">GPU ごとに専用 NIC を 1:1 配置する Rail-Optimized 構成</p>
+  <div class="analogy">
+    <div class="analogy-title">たとえ話で理解する Rail-Optimized</div>
+    <p><strong>Rail-Optimized</strong> は、8車線の高速道路で各車線にそれぞれ専用の料金所がある構成。従来方式は全車線の車が1つの料金所に合流するため渋滞が発生するが、Rail-Optimized では各車線が独立して流れるため渋滞が分散される。</p>
   </div>
 
   <div class="grid grid-2">
     <div class="card card-accent-red">
-      <h3>インターコネクト: xGMI + Ethernet</h3>
+      <h3>ソフトウェア: ROCm + RCCL</h3>
       <ul>
-        <li><strong>Infinity Fabric / xGMI</strong>: 8 GPU フルメッシュ（128 GB/s/リンク）</li>
-        <li>Scale-out: <strong>標準 Ethernet (RoCEv2)</strong></li>
-        <li>検証済み NIC: ConnectX-7、Broadcom Thor-2、<strong>AMD Pollara 400G</strong></li>
-        <li>リファレンス設計: 128〜8,192 GPU クラスタ</li>
+        <li><strong>ROCm 7.x</strong>: PyTorch 2.9、JAX 0.8.0 対応のオープンソース GPU SDK</li>
+        <li><strong>HIP</strong>: CUDA コードを AMD 向けに変換するツール（hipify-perl で自動変換）</li>
+        <li><strong>RCCL</strong>: NCCL 互換の集団通信ライブラリ（API は同じだが内部最適化が異なる）</li>
+        <li>推論は <strong>vLLM on ROCm</strong> が推奨構成</li>
       </ul>
     </div>
     <div class="card card-accent-red">
-      <h3>ソフトウェア: ROCm + RCCL</h3>
+      <h3>課題と制約</h3>
       <ul>
-        <li><strong>ROCm 7.x</strong>: PyTorch 2.9、JAX 0.8.0 対応</li>
-        <li><strong>HIP</strong>: CUDA コードの移植（cuda → hip 書き換え）</li>
-        <li><strong>RCCL</strong>: NCCL 互換の集団通信ライブラリ</li>
-        <li>vLLM on ROCm が推論の推奨構成</li>
+        <li>RCCL の最適化が NCCL に追いついておらず、AllReduce 性能はNVIDIA の約50%</li>
+        <li>ROCm のツール群（プロファイラ、デバッガ）は CUDA に比べ未成熟</li>
+        <li>FlashAttention の ROCm 対応は遅延することが多い</li>
+        <li>ただし MI300X の 192GB メモリは H100 (80GB) の 2.4倍で、大規模モデルの推論に強い</li>
       </ul>
     </div>
   </div>
 
   <!-- AWS Trainium -->
   <h3 class="sub-title">AWS Trainium — クラウドネイティブ型</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ AWS は自社チップを開発するのか？</strong> AWS は世界最大のクラウドプロバイダとして、NVIDIA GPU の調達コストと供給不足のリスクを最も強く感じている。自社チップを開発することで、NVIDIA への依存度を下げ、顧客により低コストの AI インフラを提供できる。Project Rainier（投資額110億ドル）は、この戦略の集大成。</p>
 
   <div class="table-wrap">
     <table>
@@ -447,56 +743,133 @@
     </table>
   </div>
 
-  <div class="diagram">
-    <pre>
-  AWS Trainium スケーリング階層
-
-  [Trainium チップ] ←NeuronLink→ [UltraServer 内チップ群]
-          ↕                         (Trn2: 64チップ / Trn3: 144チップ)
-  [UltraServer] ←EFA (3.2 Tbps)→ [UltraServer] ...
-          ↕
-  [EC2 UltraClusters 3.0]  ← 数十万チップ規模
-    </pre>
-    <p class="diagram-label">NeuronLink (Scale-up) + EFA (Scale-out) の2階層構成</p>
-  </div>
-
-  <div class="highlight-box">
-    <p><strong>Project Rainier</strong>: 約50万個の Trainium2 チップを使った世界最大の非 NVIDIA AI クラスタ。投資額 110億ドル、インディアナ州に建設。2025年10月稼働開始。Anthropic が Claude のトレーニング・推論に活用。</p>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <h4>チップ間接続: NeuronLink</h4>
+        <p>Trainium チップ同士を <strong>NeuronLink</strong> で直接接続する Scale-up 技術。NVLink に相当するが、AWS 独自のプロトコル。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-blue">NeuronLink</span>
+          <span class="flow-tech ft-green">Scale-up</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <h4>UltraServer: 64〜144 チップ</h4>
+        <p>NeuronLink で接続されたチップの集合体。Trn2 は 64チップ/サーバ、Trn3 は <strong>144チップ/サーバ</strong>。NeuronSwitch で Pod 内の全チップを接続。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-green">Trn3: 144 チップ</span>
+          <span class="flow-tech ft-blue">NeuronSwitch</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <h4>UltraClusters 3.0: 数十万チップ規模</h4>
+        <p>EFA（Elastic Fabric Adapter）で UltraServer 間を接続。<strong>3.2 Tbps</strong> の帯域幅で、独自の SRD プロトコル（Scalable Reliable Datagram）を使用する。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-blue">EFA 3.2 Tbps</span>
+          <span class="flow-tech ft-cyan">SRD プロトコル</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div></div>
+      <div class="flow-content">
+        <h4>Project Rainier: 世界最大の非 NVIDIA AI クラスタ</h4>
+        <p>約50万個の Trainium2 チップ、投資額 <strong>110億ドル</strong>。インディアナ州に建設。2025年10月稼働開始。Anthropic が Claude のトレーニング・推論に活用。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-orange">Anthropic / Claude</span>
+          <span class="flow-tech ft-green">50万チップ</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Intel Gaudi -->
   <h3 class="sub-title">Intel Gaudi — 標準 Ethernet 統合型</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ Gaudi は NIC を内蔵するのか？</strong> 通常の AI アクセラレータは外部に NIC（ネットワーク接続用チップ）を必要とし、その分コストと電力が増加する。Gaudi は NIC をチップ内に24ポート内蔵することで、外部 NIC のコストを削減し、標準 Ethernet でロックインなしに Scale-up を実現する。</p>
 
   <div class="table-wrap">
     <table>
       <thead><tr><th>世代</th><th>演算性能</th><th>HBM</th><th>内蔵 NIC</th><th>Scale-up 帯域</th></tr></thead>
       <tbody>
-        <tr><td class="td-label">Gaudi 2</td><td>432 TFLOPS (BF16)</td><td>96 GB HBM2E</td><td>24 × 100 GbE RoCEv2</td><td>—</td></tr>
-        <tr><td class="td-label">Gaudi 3</td><td><strong>1.8 PFLOPS</strong></td><td>128 GB HBM2E</td><td><strong>24 × 200 GbE RoCEv2</strong></td><td>67.2 Tbps (双方向)</td></tr>
+        <tr><td class="td-label">Gaudi 2</td><td>432 TFLOPS (BF16)</td><td>96 GB HBM2E</td><td>24 &times; 100 GbE RoCEv2</td><td>—</td></tr>
+        <tr><td class="td-label">Gaudi 3</td><td><strong>1.8 PFLOPS</strong></td><td>128 GB HBM2E</td><td><strong>24 &times; 200 GbE RoCEv2</strong></td><td>67.2 Tbps (双方向)</td></tr>
       </tbody>
     </table>
   </div>
 
-  <div class="diagram">
-    <pre>
-  Intel Gaudi 3 サーバ構成
+  <div class="scale-row">
+    <div class="scale-box scale-up">
+      <h3>Scale-up: オンチップ直接接続</h3>
+      <p>8基の Gaudi 3 OAM が基板上で <strong>スイッチ不要の All-to-All 直接接続</strong>。各カードから他の7枚へ 3 &times; 200GbE = 600 Gbps のリンクを持つ。24ポートのうち <strong>21ポートを Scale-up</strong> に使用し、67.2 Tbps の双方向帯域を実現。</p>
+    </div>
+    <div class="scale-box scale-out">
+      <h3>Scale-out: 標準 Ethernet</h3>
+      <p>残り <strong>3ポートを Scale-out</strong> に使用し、外部 6 &times; 800GbE OSFP で Leaf-Spine Fat-tree トポロジに接続。3:1 のオーバーサブスクリプション比で、最大 <strong>1,024 アクセラレータ</strong>まで拡張可能。</p>
+    </div>
+  </div>
 
-  8 × Gaudi 3 OAM が基板上で All-to-All 直接接続（スイッチ不要）
-  ┌──────────────────────────────────────────────────┐
-  │  各カードから他の7枚へ: 3 × 200GbE = 600 Gbps    │
-  │  Scale-up: 21 ポート使用 → 67.2 Tbps (双方向)    │
-  │  Scale-out: 残り 3 ポート → 外部 6 × 800GbE OSFP  │
-  └──────────────────────────────────────────────────┘
-        ↕ 標準 Ethernet (Leaf-Spine Fat-tree)
-  1,024 アクセラレータまでスケール（3:1 オーバーサブスクリプション）
-    </pre>
-    <p class="diagram-label">オンチップ NIC による外部スイッチ不要の Scale-up 構成</p>
+  <div class="explain">
+    <p class="explain-title">RoCE（ロッキー）とは</p>
+    <p><strong>RoCE</strong>（RDMA over Converged Ethernet）は、Ethernet ネットワーク上で CPU を介さずにメモリ間で直接データを転送する技術。通常のネットワーク通信では CPU がデータの送受信を管理するが、RoCE では NIC が直接メモリにアクセスするため、CPU のオーバーヘッドがなくなり、レイテンシが大幅に低下する。Gaudi はこの RoCE をチップ内に内蔵している。</p>
   </div>
 
   <div class="explain">
     <p class="explain-title">Gaudi の課題</p>
-    <p>Falcon Shores（Gaudi 後継）は 2025年1月にキャンセル。売上目標5億ドル未達。次世代 Jaguar Shores（2026年以降）でラックスケールシステムへの方向転換を図るが、Intel の AI アクセラレータ事業の将来は不透明。</p>
+    <p>Falcon Shores（Gaudi 後継の高性能チップ）は 2025年1月にキャンセルされた。売上目標5億ドル未達で事業計画を見直し。次世代 Jaguar Shores（2026年以降）でラックスケールシステムへの方向転換を図るが、Intel の AI アクセラレータ事業の将来は不透明。</p>
   </div>
+
+  <!-- Decision Tree -->
+  <h3 class="sub-title">プラットフォーム選定ガイド</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">上記4大プラットフォームのどれが自分のユースケースに合うか、以下のデシジョンツリーで判断できる。</p>
+
+  <div class="decision-tree">
+    <div class="dt-node dt-question">Q: 特定のクラウドベンダーにロックインしてもよいか？</div>
+    <div class="dt-node dt-answer dt-yes" style="margin-left:1.5rem;">
+      <span class="label">YES</span>
+      <span>クラウドベンダーの垂直統合による最適化を享受</span>
+    </div>
+    <div class="dt-node dt-question" style="margin-left:3rem;">Q: GCP を使用しているか？</div>
+    <div class="dt-node dt-answer dt-yes" style="margin-left:4.5rem;">
+      <span class="label">YES</span>
+      <span><strong>Google TPU</strong> — 最高の電力効率（29.4 GFLOPS/W）、JAX エコシステム</span>
+    </div>
+    <div class="dt-node dt-answer dt-no" style="margin-left:4.5rem;">
+      <span class="label">NO</span>
+      <span><strong>AWS Trainium</strong> — 大規模実績（Project Rainier）、NVIDIA 比30-50%コスト削減</span>
+    </div>
+
+    <div class="dt-node dt-answer dt-no" style="margin-left:1.5rem;">
+      <span class="label">NO</span>
+      <span>ベンダロックインを避け、オンプレミスまたはマルチクラウドで運用</span>
+    </div>
+    <div class="dt-node dt-question" style="margin-left:3rem;">Q: 既存の CUDA コードベースがあるか？</div>
+    <div class="dt-node dt-answer dt-yes" style="margin-left:4.5rem;">
+      <span class="label">YES</span>
+      <span><strong>AMD Instinct</strong> — ROCm + HIP で CUDA コードを移植可能、標準 Ethernet</span>
+    </div>
+    <div class="dt-node dt-answer dt-no" style="margin-left:4.5rem;">
+      <span class="label">NO</span>
+      <span>用途に応じて推論 ASIC または新興プラットフォームを検討</span>
+    </div>
+    <div class="dt-node dt-question" style="margin-left:6rem;">Q: 推論に特化したワークロードか？</div>
+    <div class="dt-node dt-answer dt-yes" style="margin-left:7.5rem;">
+      <span class="label">YES</span>
+      <span><strong>Cerebras / SambaNova</strong> — 推論特化の専用アーキテクチャ</span>
+    </div>
+    <div class="dt-node dt-answer dt-no" style="margin-left:7.5rem;">
+      <span class="label">NO</span>
+      <span><strong>Intel Gaudi / Tenstorrent</strong> — コスト重視、標準規格ベース</span>
+    </div>
+  </div>
+
+  <div class="bridge">大手4社のデータセンター構成を見てきたが、AI 半導体市場にはまったく異なるアプローチで参入している新興企業もある。次のセクションでは、GPU という概念そのものを再定義しようとしている企業群を紹介する。</div>
 </section>
 
 <!-- ============================================================ -->
@@ -504,7 +877,7 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">03</span>新興 AI アクセラレータ</h2>
-  <p class="section-desc">従来の GPU アーキテクチャとは異なるアプローチで AI 半導体市場に参入した企業群。</p>
+  <p class="section-desc">前のセクションで紹介した4社は、いずれも従来の「チップ + メモリ + ネットワーク」という GPU に近い設計を採用している。しかし、AI の急速な進化は「GPU の形にこだわる必要はないのでは？」という問いを生んだ。ここでは、ウェーハ全体を1チップにする Cerebras、待ち時間ゼロの推論を実現する Groq、3層メモリで超大規模モデルに対応する SambaNova、RISC-V で AI チップの民主化を目指す Tenstorrent を紹介する。</p>
 
   <div class="grid grid-2">
     <div class="card card-accent-green">
@@ -523,10 +896,10 @@
       <span class="badge badge-purple">NVIDIA 買収済</span>
       <h3>Groq LPU</h3>
       <ul>
-        <li><strong>決定論的実行モデル</strong>: プログラマブルアセンブリライン</li>
+        <li><strong>決定論的実行モデル</strong>: 全演算のタイミングがコンパイル時に確定</li>
         <li>Llama 3.3 70B: <strong>276 tokens/s</strong>（全プロバイダ中最速）</li>
         <li>Speculative Decoding 適用時: <strong>1,665 tokens/s</strong></li>
-        <li>GroqRack: 8+1 GroqNode 構成、ラック内レイテンシ 1.6μs</li>
+        <li>GroqRack: 8+1 GroqNode 構成、ラック内レイテンシ 1.6&mu;s</li>
         <li>2025年12月: NVIDIA が <strong>200億ドル</strong>で IP ライセンス + acqui-hire</li>
         <li>LPU の NVIDIA 推論製品ラインへの統合が予想される</li>
       </ul>
@@ -548,7 +921,7 @@
       <h3>Tenstorrent</h3>
       <ul>
         <li><strong>Jim Keller</strong>（AMD Zen、Apple A シリーズ設計者）が率いる</li>
-        <li>Wormhole (72 Tensix コア) → <strong>Blackhole</strong> (120 Tensix コア)</li>
+        <li>Wormhole (72 Tensix コア) &rarr; <strong>Blackhole</strong> (120 Tensix コア)</li>
         <li><strong>Ethernet 直接接続</strong>を内蔵（外部スイッチ不要の Scale-up）</li>
         <li>TT-Metalium / TT-NN / TT-Forge のソフトウェアスタック</li>
         <li>評価額 <strong>32億ドル</strong>、8億ドルの資金調達</li>
@@ -556,6 +929,15 @@
       </ul>
     </div>
   </div>
+
+  <div class="analogy">
+    <div class="analogy-title">たとえ話で理解する新興アクセラレータの設計思想</div>
+    <p><strong>Cerebras（Weight Streaming）</strong>は、百科事典を1巻ずつ棚から取り出して読む方式。従来の GPU は「全巻を机に広げる」（HBM にすべて載せる）が、Cerebras は巨大な机（44GB SRAM）に必要な1巻だけを載せ、読み終わったら次の巻に差し替える。</p>
+    <p><strong>Groq（決定論的実行）</strong>は、工場の組立ライン。各ステップの所要時間がコンパイル時に完全に確定しており、「前の工程が終わるのを待つ」という無駄がゼロ。通常の GPU は「混雑するレストラン」で、注文の順番も調理時間も予測不能。</p>
+    <p><strong>SambaNova（3層メモリ）</strong>は、3段の引き出し。一番上（SRAM）は手が届きやすいが小さい。真ん中（HBM）はそこそこのサイズ。一番下（DDR）は巨大だが取り出すのに時間がかかる。使用頻度に応じてデータを自動で最適な引き出しに配置する。</p>
+  </div>
+
+  <div class="bridge">ここまでで各社の独自技術を見てきた。では、これらの非 NVIDIA チップは NVIDIA のネットワーク技術（NIC、スイッチ、インターコネクト）と組み合わせることができるのか？ この互換性こそが、実際のデータセンター構築における最大の検討事項の一つだ。</div>
 </section>
 
 <!-- ============================================================ -->
@@ -563,7 +945,12 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">04</span>NVIDIA 技術との互換性マトリクス</h2>
-  <p class="section-desc">NVIDIA の GPU 以外の技術（NIC、スイッチ、インターコネクト、通信ライブラリ）を他社 AI 半導体と組み合わせた場合の実現可能性。</p>
+  <p class="section-desc">AI データセンターの構築では「どのチップを使うか」だけでなく、「どのネットワーク機器と組み合わせるか」が重要な検討事項となる。NVIDIA は GPU だけでなく、NIC（ConnectX）、スイッチ（Spectrum-X, Quantum）、インターコネクト（NVLink）、通信ライブラリ（NCCL）など、データセンターインフラ全体を提供している。ここでは、NVIDIA の GPU 以外の技術を他社 AI 半導体と組み合わせた場合に何が可能で何が不可能かを整理する。</p>
+
+  <div class="explain">
+    <p class="explain-title">なぜ互換性が問題になるのか</p>
+    <p>NVIDIA のネットワーク技術は標準規格（PCIe、Ethernet、InfiniBand）に準拠しているため、物理的には他社チップと接続できる場合が多い。しかし、<strong>性能を最大限引き出すにはソフトウェア（NCCL、GPUDirect）との垂直統合が必要</strong>であり、これが NVIDIA GPU に限定されている。つまり「つながる」と「最高性能で動く」は別問題。</p>
+  </div>
 
   <div class="table-wrap">
     <table>
@@ -579,7 +966,7 @@
           <td class="td-no">不可（独自インフラ）</td>
         </tr>
         <tr>
-          <td class="td-label">BlueField DPU（インフラ）</td>
+          <td class="td-label">BlueField DPU</td>
           <td class="td-ok">可能</td>
           <td class="td-ok">可能</td>
           <td class="td-partial">限定的</td>
@@ -617,8 +1004,23 @@
     </table>
   </div>
 
+  <div class="explain">
+    <p class="explain-title">表の見方</p>
+    <p><span class="td-ok" style="font-size:0.85rem;">可能</span> = 実績あり、または公式サポート。<span class="td-partial" style="font-size:0.85rem;">限定的</span> = 物理的に接続可能だが、性能面での制約や最適化不足がある。<span class="td-no" style="font-size:0.85rem;">不可</span> = 技術的に非対応、または使用する意味がない。<span class="td-na" style="font-size:0.85rem;">不要</span> = そのプラットフォームでは該当技術が必要ない。</p>
+  </div>
+
+  <div class="analogy">
+    <div class="analogy-title">たとえ話で理解する NVLink Fusion</div>
+    <p><strong>NVLink Fusion</strong> は、他社の電車を NVIDIA の線路（NVLink）に乗り入れさせる仕組み。ただし条件があり、NVIDIA の駅（CPU または GPU）を経由する必要がある。AWS Trainium4 が最初の大規模な「相互乗り入れ」事例で、NVIDIA の高速線路を使いつつ自社の車両（Trainium チップ）を走らせる。</p>
+  </div>
+
   <h3 class="sub-title">AllReduce 性能比較（実測データ）</h3>
-  <p style="font-size:0.85rem; color:#555; margin-bottom:1rem;">マルチノード AllReduce、メッセージサイズ 16MiB〜256MiB での相対性能（Semi Analysis 実測）</p>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:0.5rem;">マルチノード AllReduce、メッセージサイズ 16MiB〜256MiB での相対性能（Semi Analysis 実測）。</p>
+
+  <div class="explain" style="margin-bottom:1rem;">
+    <p class="explain-title">AllReduce とは</p>
+    <p>分散 AI トレーニングでは、各チップが計算した「勾配」（モデルの修正量）を全チップで集約・平均し、結果を全チップに配布する必要がある。この操作を <strong>AllReduce</strong> と呼ぶ。AllReduce が遅いとチップは計算を終えても結果の共有待ちで止まるため、トレーニング全体のスピードが落ちる。以下のグラフは、各構成でこの AllReduce がどれだけ速いかを比較したもの。</p>
+  </div>
 
   <div class="bar-group">
     <div class="bar-row">
@@ -645,8 +1047,10 @@
 
   <div class="explain">
     <p class="explain-title">性能ギャップの原因</p>
-    <p>MI300X + RoCEv2 が InfiniBand Non-SHARP の約半分にとどまる主因は <strong>RCCL のネットワーク最適化不足</strong>。ハードウェア（NIC）が同じ ConnectX-7 でも、ソフトウェアスタック（NCCL vs RCCL）の差が性能を決定する。Spectrum-X が IB に近い性能を達成できるのは NCCL との垂直統合が要因。</p>
+    <p>MI300X + RoCEv2 が InfiniBand Non-SHARP の約半分にとどまる主因は <strong>RCCL のネットワーク最適化不足</strong>。興味深いことに、NIC ハードウェアが同じ ConnectX-7 でも、ソフトウェアスタック（NCCL vs RCCL）の差が性能を決定する。つまり、チップの性能だけでなく通信ソフトウェアの品質が決定的に重要。Spectrum-X が IB に近い性能を達成できるのは NCCL との垂直統合による最適化の恩恵。</p>
   </div>
+
+  <div class="bridge">互換性マトリクスで分かるように、各社のインターコネクト戦略は大きく異なる。次のセクションでは、チップ間・サーバ間の接続方式を横断的に比較し、オープン標準 vs プロプライエタリの構図を整理する。</div>
 </section>
 
 <!-- ============================================================ -->
@@ -654,7 +1058,7 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">05</span>インターコネクト戦略の比較</h2>
-  <p class="section-desc">各社の Scale-up / Scale-out インターコネクト方式と、オープン標準 vs プロプライエタリの構図。</p>
+  <p class="section-desc">AI データセンターの性能は、チップ単体の計算能力よりも「チップ間の接続方式」で決まることが多い。数千個のチップが協調して1つのモデルをトレーニングする際、接続が遅ければチップは計算結果の共有待ちで止まってしまう。ここでは各社の Scale-up（サーバ内）と Scale-out（サーバ間）のインターコネクト戦略を比較する。</p>
 
   <div class="table-wrap">
     <table>
@@ -706,35 +1110,86 @@
     </table>
   </div>
 
-  <h3 class="sub-title">NVLink vs UALink — 標準化の競争</h3>
+  <h3 class="sub-title">NVLink vs UALink — インターコネクト標準化の競争</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">AI データセンターのインターコネクトは、NVIDIA の NVLink（プロプライエタリ）と、AMD/Intel/Google らが推進する UALink（オープン標準）の2つの陣営に分かれつつある。この対立は、AI データセンターの将来の勢力図を決定する重要な要素だ。</p>
+
+  <p style="font-size:0.82rem; color:#787774; margin-bottom:0.8rem; font-weight:600;">NVLink の進化</p>
+  <div class="nvlink-evo">
+    <div class="nvlink-gen">
+      <div class="gen-name">NVLink 4</div>
+      <div class="gen-bw">900 GB/s</div>
+      <div class="gen-arch">Hopper 世代</div>
+    </div>
+    <div class="nvlink-arrow">&rarr;</div>
+    <div class="nvlink-gen current">
+      <div class="gen-name">NVLink 5</div>
+      <div class="gen-bw">1.8 TB/s</div>
+      <div class="gen-arch">Blackwell 世代</div>
+    </div>
+    <div class="nvlink-arrow">&rarr;</div>
+    <div class="nvlink-gen next">
+      <div class="gen-name">NVLink 6</div>
+      <div class="gen-bw">3.6 TB/s</div>
+      <div class="gen-arch">Rubin 世代</div>
+    </div>
+    <div class="nvlink-arrow">&rarr;</div>
+    <div class="nvlink-gen" style="background:#fadec9;">
+      <div class="gen-name">NVLink Fusion</div>
+      <div class="gen-bw" style="font-size:1rem;">他社チップ対応</div>
+      <div class="gen-arch">サードパーティ開放</div>
+    </div>
+  </div>
+
+  <p style="font-size:0.82rem; color:#787774; margin-bottom:0.8rem; font-weight:600;">UALink の登場</p>
+  <div class="nvlink-evo">
+    <div class="nvlink-gen" style="background:#d3e5ef;">
+      <div class="gen-name">UALink 1.0</div>
+      <div class="gen-bw" style="color:var(--blue);">200 GB/s</div>
+      <div class="gen-arch">NVLink 6 の 1/18</div>
+    </div>
+    <div class="nvlink-arrow" style="color:var(--blue);">&rarr;</div>
+    <div class="nvlink-gen" style="background:#d3e5ef;">
+      <div class="gen-name">UALink 2.0+</div>
+      <div class="gen-bw" style="color:var(--blue);">帯域幅向上予定</div>
+      <div class="gen-arch">AMD MI400 で採用予定</div>
+    </div>
+    <div class="nvlink-arrow" style="color:var(--blue);">&rarr;</div>
+    <div class="nvlink-gen" style="background:#d3e5ef;">
+      <div class="gen-name">UALoE</div>
+      <div class="gen-bw" style="color:var(--blue); font-size:1rem;">Ethernet 統合</div>
+      <div class="gen-arch">AMD Vulcano 800GbE</div>
+    </div>
+  </div>
 
   <div class="grid grid-2">
     <div class="card card-accent-green">
-      <h3>NVLink 6 (NVIDIA)</h3>
+      <h3>NVLink 6 の強み</h3>
       <ul>
-        <li>帯域幅: <strong>3,600 GB/s</strong></li>
-        <li>プロプライエタリ（NVIDIA 制御）</li>
-        <li><strong>NVLink Fusion</strong>: サードパーティへの限定的開放</li>
-        <li>条件: NVIDIA の CPU/GPU との組み合わせが必須</li>
+        <li>帯域幅: <strong>3,600 GB/s</strong>（圧倒的な速度）</li>
+        <li>NVIDIA の NVSwitch で 72 GPU を non-blocking 接続</li>
+        <li><strong>NVLink Fusion</strong> でサードパーティに限定的開放</li>
         <li>パートナー: MediaTek, Marvell, AWS (Trn4), Fujitsu, Qualcomm</li>
+        <li>条件: NVIDIA の CPU/GPU との組み合わせが必須（エコシステムロックイン）</li>
       </ul>
     </div>
     <div class="card card-accent-blue">
-      <h3>UALink 1.0 (オープン標準)</h3>
+      <h3>UALink 1.0 の意義</h3>
       <ul>
         <li>帯域幅: <strong>200 GB/s</strong> (x4 リンク) — NVLink 6 の 1/18</li>
-        <li>シグナリング: 200 GT/s (Ethernet L1 ベース)</li>
+        <li>シグナリング: 200 GT/s（Ethernet L1 ベース）</li>
         <li>AMD, Intel, Google, Meta, Microsoft が参加</li>
-        <li><strong>UALoE</strong>: UALink over Ethernet でトンネリング</li>
-        <li>AMD MI400 シリーズで採用予定</li>
+        <li><strong>UALoE</strong>: UALink over Ethernet でトンネリング可能</li>
+        <li>帯域幅は大幅に劣るが、<strong>ベンダロックインがない</strong></li>
       </ul>
     </div>
   </div>
 
   <div class="explain">
     <p class="explain-title">帯域幅の差は圧倒的だが、オープン性に価値がある</p>
-    <p>NVLink 6 は UALink 1.0 の <strong>18倍の帯域幅</strong>を持つが、NVIDIA エコシステムへのロックインを伴う。UALink はオープン標準として複数ベンダが実装可能であり、2.0 以降の帯域幅向上が期待される。AMD は Vulcano 800GbE NIC（2026年下期）で UALoE を実装予定。</p>
+    <p>NVLink 6 は UALink 1.0 の <strong>18倍の帯域幅</strong>を持つ。数字だけ見れば NVLink の圧勝だが、これは NVIDIA エコシステムへの完全なロックインを意味する。UALink はオープン標準として複数ベンダが実装でき、2.0 以降の帯域幅向上が期待される。歴史的にも、Ethernet が当初は専用プロトコル（Token Ring、FDDI）に性能で劣りながらも、オープン性により市場を制覇した前例がある。UALink が同じ道を辿るかは、2026〜2028年の市場動向で明らかになる。</p>
   </div>
+
+  <div class="bridge">ハードウェアの接続方式を比較してきたが、実際のプラットフォーム選定では <strong>ソフトウェアの成熟度</strong> がより重要な決定要因となることが多い。CUDA エコシステムからの移行コストが、技術選定の最大の障壁だ。</div>
 </section>
 
 <!-- ============================================================ -->
@@ -742,7 +1197,12 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">06</span>ソフトウェアエコシステム比較</h2>
-  <p class="section-desc">CUDA の圧倒的優位を各社がどう打破しようとしているか。フレームワーク対応と移行の現実。</p>
+  <p class="section-desc">AI チップのハードウェア性能が拮抗しつつある中、勝敗を分けるのはソフトウェアエコシステムの充実度だ。NVIDIA の CUDA は15年以上の蓄積があり、PyTorch、TensorFlow、主要な AI フレームワークのほぼすべてが CUDA を前提に開発されている。各社がこの「CUDA の壁」をどう乗り越えようとしているかを比較する。</p>
+
+  <div class="explain">
+    <p class="explain-title">CUDA の壁とは</p>
+    <p>世界中の AI 研究者・エンジニアの大半が CUDA でコードを書いている。NVIDIA 以外のチップに移行するには、既存コードの書き換えが必要になる場合が多く、これが巨大な移行コストとなる。ソフトウェア資産の蓄積は、ハードウェアの性能差よりも強力なロックイン要因。</p>
+  </div>
 
   <div class="table-wrap">
     <table>
@@ -808,34 +1268,99 @@
     </table>
   </div>
 
+  <h3 class="sub-title">CUDA からの移行パス</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">既存の CUDA コードを各プラットフォームに移行する際の具体的な手順と難易度を可視化する。移行コストは「コードの書き換え量」と「エコシステムの違い」の2つの要素で決まる。</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot active"></div><div class="flow-line"></div></div>
+      <div class="flow-content">
+        <h4>CUDA コード（出発点）</h4>
+        <p>PyTorch + CUDA で記述された既存の AI トレーニング/推論コード。世界の AI コードの大半がこの形式。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-green">PyTorch</span>
+          <span class="flow-tech ft-purple">CUDA</span>
+          <span class="flow-tech ft-purple">cuDNN</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div><div class="flow-line"></div></div>
+      <div class="flow-content" style="border-left:3px solid var(--red);">
+        <h4>AMD ROCm への移行 — 難易度: 中</h4>
+        <p><strong>hipify-perl</strong> ツールで CUDA API コールを HIP API に自動変換。大半のコードは機械的に変換可能だが、カスタムカーネルや NVIDIA 固有の最適化（cuBLAS、Triton カスタムカーネル等）は手動修正が必要。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-orange">hipify-perl（自動変換）</span>
+          <span class="flow-tech ft-purple">ROCm / HIP</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div><div class="flow-line"></div></div>
+      <div class="flow-content" style="border-left:3px solid var(--blue);">
+        <h4>Google TPU (JAX) への移行 — 難易度: 高</h4>
+        <p>PyTorch から <strong>JAX への書き直し</strong>が必要。フレームワークの設計思想が根本的に異なる（命令型 vs 関数型）。XLA コンパイラが自動最適化するため、チューニングは楽だが、初期の移植コストが大きい。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-orange">フレームワーク書き直し</span>
+          <span class="flow-tech ft-purple">JAX / XLA</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div><div class="flow-line"></div></div>
+      <div class="flow-content" style="border-left:3px solid var(--orange);">
+        <h4>AWS Trainium への移行 — 難易度: 中</h4>
+        <p><strong>torch.neuron</strong> で PyTorch モデルをコンパイル。標準的な PyTorch コードはそのまま動作するが、カスタムオペレーションは Neuron SDK 向けに調整が必要。vLLM、HuggingFace との統合が充実。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-orange">torch.neuron（コンパイル）</span>
+          <span class="flow-tech ft-purple">Neuron SDK</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-indicator"><div class="flow-dot"></div></div>
+      <div class="flow-content" style="border-left:3px solid var(--cyan);">
+        <h4>Intel Gaudi への移行 — 難易度: 中</h4>
+        <p><strong>Optimum-Habana</strong> ライブラリで HuggingFace モデルをそのまま実行可能。40,000 以上の事前対応モデルがある。ただし、カスタムモデルの最適化には SynapseAI SDK の知識が必要。</p>
+        <div class="flow-techs">
+          <span class="flow-tech ft-orange">Optimum-Habana</span>
+          <span class="flow-tech ft-purple">SynapseAI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <h3 class="sub-title">集団通信ライブラリの群雄割拠</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">分散 AI トレーニングでは AllReduce 等の集団通信が性能のボトルネックになる。NVIDIA の NCCL が事実上の標準だが、各社が独自のライブラリを開発しており、新興の代替手段も登場している。</p>
 
   <div class="grid grid-3">
     <div class="card card-accent-green">
       <h3>NCCL (NVIDIA)</h3>
-      <p>業界標準。CUDA 専用。SHARP + NVLink と垂直統合。</p>
+      <p>業界標準の集団通信ライブラリ。CUDA 専用。SHARP（InfiniBand スイッチ上で集約処理を実行する技術）+ NVLink と垂直統合されており、NVIDIA 環境では圧倒的な性能。</p>
     </div>
     <div class="card card-accent-red">
       <h3>RCCL (AMD)</h3>
-      <p>NCCL fork、API 互換。SHARP 非対応。NCCL 比で性能劣位。</p>
+      <p>NCCL のフォーク（派生版）で API 互換。ただし SHARP のようなネットワーク側の最適化がなく、NCCL 比で性能が劣る。AMD が重点的に改善中。</p>
     </div>
     <div class="card card-accent-blue">
       <h3>MSCCL++ (Microsoft)</h3>
-      <p>NCCL 比 <strong>最大 2.8倍</strong>高速。RCCL 比 <strong>最大 3.8倍</strong>。Azure 最適化。</p>
+      <p>Microsoft が Azure 向けに開発。NCCL 比 <strong>最大 2.8倍</strong>、RCCL 比 <strong>最大 3.8倍</strong>の高速化を達成。Azure の大規模クラスタで実績。</p>
     </div>
     <div class="card card-accent-purple">
       <h3>UCCL (UC Berkeley)</h3>
-      <p>NCCL/RCCL のドロップイン代替。<strong>マルチベンダ NIC</strong> 対応（ConnectX, Broadcom, EFA）。</p>
+      <p>NCCL/RCCL のドロップイン代替（コード変更なしで差し替え可能）。<strong>マルチベンダ NIC</strong> に対応し、ConnectX、Broadcom、EFA のいずれでも動作。</p>
     </div>
     <div class="card card-accent-orange">
       <h3>HetCCL (研究)</h3>
-      <p><strong>AMD + NVIDIA 混在</strong>トレーニング対応。同種比 <strong>98%</strong> スループット達成。</p>
+      <p>学術研究発の革新的ライブラリ。<strong>AMD + NVIDIA の GPU を混在</strong>させたトレーニングに対応し、同種 GPU のみの構成と比べて <strong>98%</strong> のスループットを達成。</p>
     </div>
     <div class="card card-accent-cyan">
       <h3>OneCCL (Intel)</h3>
-      <p>Intel oneAPI エコシステム。Gaudi / Xeon 向け最適化。</p>
+      <p>Intel oneAPI エコシステムの一部。Gaudi および Xeon 向けに最適化された集団通信ライブラリ。標準的な MPI インターフェースを提供。</p>
     </div>
   </div>
+
+  <div class="bridge">ソフトウェアの成熟度に加えて、データセンター構築の意思決定で最も重要なのがコストと電力効率だ。特に 2025年以降、電力供給がデータセンター拡張のボトルネックとなっており、GFLOPS/W（ワットあたりの演算性能）の比較は戦略的意味を持つ。</div>
 </section>
 
 <!-- ============================================================ -->
@@ -843,55 +1368,123 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">07</span>コスト・電力効率比較</h2>
-  <p class="section-desc">データセンター構築における TCO（Total Cost of Ownership）と電力効率の観点から各プラットフォームを比較する。</p>
+  <p class="section-desc">AI データセンターの構築では、チップの性能だけでなく TCO（Total Cost of Ownership: 総所有コスト）と電力効率が重要な意思決定要因となる。特に2025年以降、世界各地でデータセンター向けの電力供給が逼迫しており、「同じ電力でどれだけ多くの AI 処理ができるか」が戦略的な差別化要因になっている。</p>
 
   <div class="table-wrap">
     <table>
       <thead><tr><th>チップ</th><th>TDP</th><th>FP8 性能</th><th>GFLOPS/W</th><th>冷却方式</th></tr></thead>
       <tbody>
         <tr><td class="td-label">Google Ironwood</td><td><strong>157W</strong></td><td>4,614 TFLOPS</td><td><strong>29.4</strong></td><td>液冷</td></tr>
-        <tr><td class="td-label">NVIDIA B200</td><td>1,000-1,200W</td><td>4,500 TFLOPS</td><td>3.75-4.5</td><td>液冷</td></tr>
         <tr><td class="td-label">AMD MI350X</td><td>1,000W</td><td>~10,100 TFLOPS</td><td><strong>~10.1</strong></td><td>空冷/液冷</td></tr>
+        <tr><td class="td-label">NVIDIA B200</td><td>1,000-1,200W</td><td>4,500 TFLOPS</td><td>3.75-4.5</td><td>液冷</td></tr>
         <tr><td class="td-label">AMD MI300X</td><td>750W</td><td>2,615 TFLOPS</td><td>3.49</td><td>空冷/液冷</td></tr>
-        <tr><td class="td-label">AWS Trainium3</td><td>—</td><td>2,520 TFLOPS</td><td>—</td><td>—</td></tr>
-        <tr><td class="td-label">Intel Gaudi 3</td><td>900W</td><td>1,800 TFLOPS</td><td>2.0</td><td>空冷</td></tr>
         <tr><td class="td-label">NVIDIA H100</td><td>700W</td><td>1,979 TFLOPS</td><td>2.83</td><td>空冷/液冷</td></tr>
+        <tr><td class="td-label">Intel Gaudi 3</td><td>900W</td><td>1,800 TFLOPS</td><td>2.0</td><td>空冷</td></tr>
+        <tr><td class="td-label">AWS Trainium3</td><td>—</td><td>2,520 TFLOPS</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
 
+  <h3 class="sub-title">電力効率の比較（GFLOPS/W）</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">同じ消費電力でどれだけの演算ができるかを棒グラフで比較。Google Ironwood の電力効率は他を圧倒しており、157W という低消費電力で 4,614 TFLOPS を達成している。これは AI 専用 ASIC ならではの設計最適化の成果。</p>
+
+  <div class="bar-group">
+    <div class="bar-row">
+      <span class="bar-label">Ironwood (TPU v7)</span>
+      <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--blue);"></div></div>
+      <span class="bar-value">29.4</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">AMD MI350X</span>
+      <div class="bar-track"><div class="bar-fill" style="width:34%; background:var(--red);"></div></div>
+      <span class="bar-value">~10.1</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">NVIDIA B200</span>
+      <div class="bar-track"><div class="bar-fill" style="width:15%; background:var(--nvidia-green);"></div></div>
+      <span class="bar-value">3.75-4.5</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">AMD MI300X</span>
+      <div class="bar-track"><div class="bar-fill" style="width:12%; background:var(--red);"></div></div>
+      <span class="bar-value">3.49</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">NVIDIA H100</span>
+      <div class="bar-track"><div class="bar-fill" style="width:10%; background:var(--nvidia-green);"></div></div>
+      <span class="bar-value">2.83</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Intel Gaudi 3</span>
+      <div class="bar-track"><div class="bar-fill" style="width:7%; background:var(--cyan);"></div></div>
+      <span class="bar-value">2.0</span>
+    </div>
+  </div>
+
+  <div class="explain">
+    <p class="explain-title">なぜ Google Ironwood の電力効率が突出しているのか</p>
+    <p>Ironwood は <strong>AI トレーニング/推論のみに特化した ASIC</strong> であり、GPU のようなグラフィックス処理や汎用計算の回路を持たない。不要な回路を排除し、AI に必要な演算ユニットだけに電力を集中できるため、GFLOPS/W が圧倒的に高い。ただし、GCP でしか使えないという制約がある。</p>
+  </div>
+
   <h3 class="sub-title">実デプロイメント事例</h3>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">実際に非 NVIDIA チップを大規模に導入している企業の事例。これらの事例は、NVIDIA 以外の選択肢が「実験段階」ではなく「本番環境」で使われていることを示す。</p>
 
   <div class="grid grid-2">
     <div class="card card-accent-blue">
       <h3>Anthropic — Google Cloud TPU</h3>
-      <p>最大 <strong>100万チップ</strong>へのアクセス。Claude の次世代モデルのトレーニング・サービングに使用。</p>
+      <p>最大 <strong>100万チップ</strong>へのアクセス契約。Claude の次世代モデルのトレーニングとサービングに使用。Google との戦略的パートナーシップにより、最新 TPU を優先的に確保。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">100万チップ</span>
+        <span class="flow-tech ft-orange">Claude トレーニング</span>
+      </div>
     </div>
     <div class="card card-accent-blue">
       <h3>Apple — Google Cloud TPU</h3>
-      <p>Apple Foundation Model (AFM) を <strong>TPU v5p (2,048チップ)</strong> でトレーニング。NVIDIA GPU ではなく TPU を選択。</p>
+      <p>Apple Foundation Model (AFM) を <strong>TPU v5p（2,048チップ）</strong>でトレーニング。NVIDIA GPU ではなく TPU を選択した理由は、JAX/XLA のコンパイラ最適化による開発効率の高さ。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">TPU v5p 2,048チップ</span>
+        <span class="flow-tech ft-purple">JAX / XLA</span>
+      </div>
     </div>
     <div class="card card-accent-blue">
       <h3>Midjourney — TPU 移行</h3>
-      <p>推論コスト: <strong>月 $210万 → $70万未満</strong>（65% 削減）。年間 $1,680万の節約。同等出力量を維持。</p>
+      <p>推論コスト: <strong>月 $210万 &rarr; $70万未満</strong>（65% 削減）。年間 $1,680万の節約を達成しながら、同等の画像出力量を維持。推論ワークロードにおける TPU のコスト優位性を実証。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-orange">65% コスト削減</span>
+        <span class="flow-tech ft-green">年間 $1,680万節約</span>
+      </div>
     </div>
     <div class="card card-accent-orange">
       <h3>Anthropic — AWS Project Rainier</h3>
-      <p><strong>50万個 Trainium2</strong> チップ。投資額 110億ドル。GPU 代替比 <strong>30-50% コスト削減</strong>。</p>
+      <p><strong>50万個 Trainium2</strong> チップを使った世界最大の非 NVIDIA クラスタ。投資額 110億ドル。GPU 代替比 <strong>30-50% コスト削減</strong>を見込む。Claude の大規模トレーニング基盤。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">50万チップ</span>
+        <span class="flow-tech ft-orange">$110億投資</span>
+      </div>
     </div>
     <div class="card card-accent-red">
       <h3>Meta — AMD MI300X</h3>
-      <p>MI300X を特定ワークロードの<strong>全ライブトラフィック</strong>にデプロイ。コスト効率を重視。</p>
+      <p>MI300X を特定ワークロードの<strong>全ライブトラフィック</strong>にデプロイ。192GB の大容量 HBM メモリが推論ワークロードで有利に働き、コスト効率で NVIDIA を上回るケースがある。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">192GB HBM3</span>
+        <span class="flow-tech ft-orange">本番トラフィック</span>
+      </div>
     </div>
     <div class="card card-accent-red">
       <h3>El Capitan — AMD MI300A</h3>
-      <p><strong>43,808基の MI300A</strong> で TOP500 第1位。HPL 1.809 Exaflop/s。HPC 領域での実力を証明。</p>
+      <p><strong>43,808基の MI300A</strong> で TOP500 スーパーコンピュータランキング第1位を獲得。HPL 1.809 Exaflop/s。HPC（ハイパフォーマンスコンピューティング）領域での AMD の実力を証明。</p>
+      <div class="flow-techs">
+        <span class="flow-tech ft-green">TOP500 1位</span>
+        <span class="flow-tech ft-green">1.809 EFLOPS</span>
+      </div>
     </div>
   </div>
 
   <div class="highlight-box">
-    <p><strong>推論市場の変化</strong>: 2028年までに NVIDIA の推論シェアが 80% → 20-30% に低下するとの予測がある。ASIC（TPU, Trainium, カスタムチップ）が推論ワークロードの 70-75% を占める見通し。トレーニングでは NVIDIA が 90%+ のシェアを維持。</p>
+    <p><strong>推論市場の大変化</strong>: 2028年までに NVIDIA の推論シェアが 80% から 20-30% に低下するとの予測がある。推論ワークロードはトレーニングと異なり、チップの汎用性よりもコスト効率と電力効率が重視されるため、ASIC（TPU, Trainium, カスタムチップ）が推論ワークロードの 70-75% を占める見通し。一方、トレーニングでは NVIDIA が 90%+ のシェアを維持すると予想される。</p>
   </div>
+
+  <div class="bridge">コスト・電力効率と実際の導入事例を踏まえた上で、AI データセンター市場が今後どう変化していくかを展望する。</div>
 </section>
 
 <!-- ============================================================ -->
@@ -899,33 +1492,44 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">08</span>今後の展望</h2>
-  <p class="section-desc">AI データセンター市場の構造変化と、各社の戦略的方向性。</p>
+  <p class="section-desc">AI データセンター市場は急速に変化しており、2026〜2028年にかけて大きな構造変化が予想される。NVIDIA の圧倒的な優位は続くのか、それとも対抗勢力が勢力図を塗り替えるのか。3つの大きなトレンドから今後の方向性を読み解く。</p>
 
   <div class="grid grid-3">
     <div class="card card-accent-green">
-      <h3>NVLink Fusion の影響</h3>
-      <p>NVIDIA がインターコネクトを開放することで、<strong>カスタム ASIC 市場を NVIDIA エコシステムに取り込む</strong>戦略。AWS Trainium4 が最初の大規模事例。競合チップですら NVIDIA のインフラに乗る時代に。</p>
+      <h3>NVLink Fusion の戦略的意義</h3>
+      <p>NVIDIA がインターコネクトをサードパーティに開放することで、<strong>カスタム ASIC 市場を NVIDIA エコシステムに取り込む</strong>戦略。AWS Trainium4 が最初の大規模事例。</p>
+      <p style="margin-top:0.5rem;">これは一見 NVIDIA の譲歩に見えるが、実質的には「競合チップですら NVIDIA のインフラに乗る」という構図を作り、NVLink のデファクトスタンダード化を狙うもの。NVIDIA は GPU を売らなくても、インフラ層で収益を得られる。</p>
     </div>
     <div class="card card-accent-blue">
-      <h3>UALink の挑戦</h3>
-      <p>AMD/Intel/Google/Meta が推進するオープン標準。現時点では <strong>NVLink の 1/18 の帯域幅</strong>だが、エコシステムの広がりと 2.0 以降の進化が鍵。Ethernet ベースの統一インフラへの道筋。</p>
+      <h3>UALink とオープン標準の挑戦</h3>
+      <p>AMD/Intel/Google/Meta が推進するオープン標準。現時点では <strong>NVLink の 1/18 の帯域幅</strong>だが、歴史的に見ればオープン標準が最終的に市場を制覇した例は多い（Ethernet vs Token Ring、USB vs 各社独自端子）。</p>
+      <p style="margin-top:0.5rem;">鍵は UALink 2.0 以降の帯域幅向上スピード。NVLink との差が縮まれば、マルチベンダ対応のメリットが大きくなり、大規模クラウドプロバイダの採用が加速する可能性がある。</p>
     </div>
     <div class="card card-accent-purple">
       <h3>推論 ASIC の台頭</h3>
-      <p>Cerebras + OpenAI、AWS Trainium の急速な成長、Groq の NVIDIA 統合。推論市場では<strong>汎用 GPU → 専用 ASIC</strong> へのシフトが加速。トレーニングは NVIDIA GPU が当面支配的。</p>
+      <p>Cerebras + OpenAI（100億ドル+の推論契約）、AWS Trainium の急速な成長、Groq の NVIDIA 統合。推論市場では<strong>汎用 GPU から専用 ASIC へのシフト</strong>が加速している。</p>
+      <p style="margin-top:0.5rem;">推論はトレーニングと異なり、モデルが確定した後の「繰り返し処理」であるため、汎用性よりもコスト効率・電力効率・レイテンシが重視される。専用設計の ASIC がこれらの指標で GPU を上回るのは当然であり、この流れは不可逆的。</p>
     </div>
   </div>
 
   <div class="explain">
     <p class="explain-title">NVIDIA のエコシステムロックインの構造</p>
-    <p>NVIDIA のデータセンター技術は、ハードウェアレベルでは多くが標準規格（PCIe、Ethernet、InfiniBand）に準拠しており他社製品と接続可能。しかし、<strong>ソフトウェアレイヤ（NCCL、CUDA、GPUDirect）での最適化が NVIDIA GPU に限定</strong>されていることで、実質的なエコシステムロックインを形成している。物理的な接続は可能でも、性能の最大化には NVIDIA GPU が必要という構造が、NVIDIA の競争優位の核心である。</p>
+    <p>NVIDIA のデータセンター技術は、ハードウェアレベルでは多くが標準規格（PCIe、Ethernet、InfiniBand）に準拠しており他社製品と接続可能。しかし、<strong>ソフトウェアレイヤ（NCCL、CUDA、GPUDirect）での最適化が NVIDIA GPU に限定</strong>されていることで、実質的なエコシステムロックインを形成している。</p>
+    <p>つまり「物理的につながる」と「最高性能で動く」は別の問題であり、性能の最大化には NVIDIA GPU が必要という構造が NVIDIA の競争優位の核心。これを崩すには、ソフトウェアスタックの代替（ROCm、JAX/XLA、Neuron SDK）の成熟と、オープンな集団通信ライブラリ（UCCL、HetCCL）の普及が不可欠。</p>
+  </div>
+
+  <div class="analogy">
+    <div class="analogy-title">まとめ: AI データセンターの今後を3行で</div>
+    <p><strong>トレーニング</strong>: NVIDIA GPU が当面支配的。CUDA + NVLink + NCCL の垂直統合を崩すのは困難で、2028年時点でも 90%+ のシェアが予想される。</p>
+    <p><strong>推論</strong>: ASIC の急速な台頭。コスト効率と電力効率が重視される推論ワークロードでは、TPU・Trainium・カスタムチップが 70-75% のシェアを獲得する可能性。</p>
+    <p><strong>インフラ</strong>: NVLink Fusion vs UALink の標準化競争が市場構造を決定する。NVIDIA の「開放しつつ囲い込む」戦略と、AMD/Intel/Google の「オープン標準で対抗」する戦略のせめぎ合いが続く。</p>
   </div>
 </section>
 
 </main>
 
 <footer>
-  <p>© 2026 NVIDIA Technology Research — 調査日: 2026-02-28</p>
+  <p>&copy; 2026 NVIDIA Technology Research &mdash; 調査日: 2026-02-28</p>
   <p style="margin-top:0.3rem;">ソース: <a href="index.html">NVIDIA 技術概要</a> ｜ <a href="ai-datacenter-relations.html">NVIDIA AI データセンター技術の関連性マップ</a></p>
 </footer>
 
