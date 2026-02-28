@@ -391,7 +391,7 @@
 <body>
 
 <nav class="topnav">
-  <a href="index.html">&larr; 技術概要トップへ戻る</a>
+  <a href="index.html">&larr; NVIDIA 技術調査トップへ戻る</a>
 </nav>
 
 <header class="hero">
@@ -435,6 +435,15 @@
 <section class="section">
   <h2 class="section-title"><span class="section-num">01</span>AI 半導体エコシステムの全体像</h2>
   <p class="section-desc">AI の急成長に伴い、NVIDIA GPU 以外にも多数の AI 半導体が登場している。各社のアプローチは大きく異なり、Google のように独自チップ + 独自インフラで完全に垂直統合する企業もあれば、AMD のように標準規格で NVIDIA の代替を目指す企業もある。ここでは8つの主要プレイヤーの全体像を概観する。</p>
+
+  <div class="explain">
+    <p class="explain-title">まず理解すべき前提: なぜ NVIDIA が圧倒的なのか</p>
+    <p>このページで紹介する各社の技術を理解するには、まず「なぜ NVIDIA がデータセンター AI 市場の 90% 以上を支配しているのか」を知る必要がある。NVIDIA の強さは3つの層の垂直統合にある:</p>
+    <p><strong>1. ソフトウェア（CUDA）</strong>: 2006年の登場から <strong>20年以上</strong>の蓄積。世界中の AI 研究者・エンジニアの大半が CUDA でコードを書いており、PyTorch・TensorFlow など主要フレームワークはすべて CUDA を前提に最適化されている。</p>
+    <p><strong>2. インターコネクト（NVLink）</strong>: 現行 NVLink 5 は <strong>1.8 TB/s</strong>、次世代 NVLink 6 は <strong>3.6 TB/s</strong> の帯域幅を持ち、PCIe Gen5 の <strong>14〜25 倍</strong>。72基の GPU を1つのスーパーチップのように接続する NVL72 は、他社に真似できない規模。</p>
+    <p><strong>3. 通信ライブラリ（NCCL + SHARP）</strong>: GPU 間の集団通信を最適化する NCCL は、NVLink・InfiniBand との垂直統合により、AMD の RCCL と比べて <strong>約2倍の性能</strong>を発揮。SHARP（スイッチ上での集約処理）によりさらに <strong>2〜5倍</strong>の高速化を実現。</p>
+    <p>以下で紹介する各社は、この3層の壁に対してそれぞれ異なる戦略で挑んでいる。</p>
+  </div>
 
   <div class="explain">
     <p class="explain-title">ASIC とは</p>
@@ -577,16 +586,25 @@
 <!-- ============================================================ -->
 <section class="section">
   <h2 class="section-title"><span class="section-num">02</span>主要プラットフォーム別データセンター構成</h2>
-  <p class="section-desc">AI データセンターでは「チップ単体の性能」よりも「数千〜数万のチップをどう接続するか」が性能を決定する。同じチップでも接続方式が異なれば、全体の性能は大きく変わる。ここでは Google TPU、AMD Instinct、AWS Trainium、Intel Gaudi の4大プラットフォームについて、データセンター構成の詳細を比較する。</p>
+  <p class="section-desc">AI データセンターでは「チップ単体の性能」よりも「数千〜数万のチップをどう接続するか」が性能を決定する。同じチップでも接続方式が異なれば、全体の性能は大きく変わる。ここでは Google TPU、AMD Instinct、AWS Trainium、Intel Gaudi の4大プラットフォームについて、データセンター構成の詳細を比較する。各プラットフォームの構成を理解する際は、NVIDIA の GB200 NVL72（72基の GPU を NVLink 5 で接続し、1ラック 1.1 EFLOPS を実現）を比較基準として念頭に置くと分かりやすい。</p>
 
   <div class="explain">
     <p class="explain-title">なぜ接続方式が重要なのか</p>
     <p>AI のトレーニングでは、数千個のチップが同時に計算を行い、その結果を全チップで共有する必要がある（これを <strong>AllReduce</strong> と呼ぶ）。この「結果の共有」がボトルネックになるため、チップ間の接続速度と方式がデータセンター全体の性能を左右する。接続が遅いと、いくらチップ単体が高性能でも、待ち時間でトレーニング全体が遅くなる。</p>
   </div>
 
+  <div class="explain">
+    <p class="explain-title">NVIDIA の比較基準: GB200 NVL72</p>
+    <p>以下の各プラットフォームは、NVIDIA の最新構成である <strong>GB200 NVL72</strong> と比較すると位置づけが明確になる。GB200 NVL72 は1ラックに 72基の B200 GPU を搭載し、NVLink 5（<strong>1.8 TB/s/GPU</strong>）で全 GPU を non-blocking 接続する。ラック全体の集約 NVLink 帯域は <strong>130 TB/s</strong>、演算性能は <strong>~1.1 EFLOPS</strong>（FP4）、消費電力は <strong>~120 kW</strong>。この「72基を1つのスーパーチップとして扱える」構成が、NVIDIA の最大の差別化要因。</p>
+  </div>
+
   <!-- Google TPU -->
   <h3 class="sub-title">Google TPU — 完全垂直統合型</h3>
   <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ Google は独自チップを作るのか？</strong> Google は世界最大の AI モデル（Gemini）を自社で開発・運用しており、NVIDIA GPU に依存すると調達コスト・供給量の両面でリスクがある。独自チップを設計することで、自社の AI ワークロードに最適化されたインフラをコントロールでき、GCP の差別化にもつながる。</p>
+
+  <div class="highlight-box" style="margin-bottom:1rem;">
+    <p><strong>NVIDIA との比較ポイント:</strong> Google TPU は NVIDIA とは異なり、ICI で最大 9,216 チップを直接接続する。NVIDIA の NVL72 が72基を限度とする（Scale-out は Ethernet/InfiniBand に切り替え）のに対し、TPU はチップ間直接接続のまま大規模にスケールできる点が最大の差別化。一方、チップ単体の FP8 性能は Ironwood 4,614 TFLOPS vs B200 4,500 TFLOPS で拮抗しているが、電力効率は Ironwood（29.4 GFLOPS/W）が B200（3.75〜4.5 GFLOPS/W）を大幅に上回る。</p>
+  </div>
 
   <div class="table-wrap">
     <table>
@@ -677,6 +695,10 @@
   <h3 class="sub-title">AMD Instinct — オープンエコシステム型</h3>
   <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ AMD はオープン路線なのか？</strong> NVIDIA のように独自のインターコネクトとソフトウェアでエコシステムを囲い込む戦略は、後発の AMD には難しい。代わりに AMD は標準 Ethernet と ROCm（オープンソースの GPU プログラミング基盤）で「選択の自由」を提供し、NVIDIA へのロックインを嫌う顧客を取り込む戦略を採る。</p>
 
+  <div class="highlight-box" style="margin-bottom:1rem;">
+    <p><strong>NVIDIA との比較ポイント:</strong> AMD の Scale-up 帯域は xGMI フルメッシュで <strong>896 GB/s</strong>（集約）だが、NVIDIA NVLink 5 は <strong>1,800 GB/s/GPU</strong> で約2倍。ただし MI300X は HBM 192GB（H100 の 2.4 倍）を搭載し、大規模モデルの推論ではメモリ容量の差が NVIDIA に対する明確な優位となる。FP8 性能は MI350X が <strong>~10,100 TFLOPS</strong> で B200（4,500 TFLOPS）を大幅に上回るが、AllReduce の実効性能では RCCL が NCCL の約50%にとどまり、分散トレーニングでのギャップが課題。</p>
+  </div>
+
   <div class="table-wrap">
     <table>
       <thead><tr><th>モデル</th><th>FP8 性能</th><th>HBM</th><th>メモリ帯域</th><th>TDP</th><th>冷却</th></tr></thead>
@@ -741,6 +763,10 @@
   <h3 class="sub-title">AWS Trainium — クラウドネイティブ型</h3>
   <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ AWS は自社チップを開発するのか？</strong> AWS は世界最大のクラウドプロバイダとして、NVIDIA GPU の調達コストと供給不足のリスクを最も強く感じている。自社チップを開発することで、NVIDIA への依存度を下げ、顧客により低コストの AI インフラを提供できる。Project Rainier（投資額110億ドル）は、この戦略の集大成。</p>
 
+  <div class="highlight-box" style="margin-bottom:1rem;">
+    <p><strong>NVIDIA との比較ポイント:</strong> AWS の戦略で特筆すべきは、次世代 Trainium4 が <strong>NVLink Fusion を採用</strong>する点。これは NVIDIA のインターコネクト技術を自社チップに組み込むもので、「NVIDIA と競争しつつ、NVIDIA のインフラは活用する」という現実的な戦略。NVIDIA GPU 比で <strong>30〜50% のコスト削減</strong>を提供しながら、NVLink の高速接続も手に入れる。Project Rainier（50万チップ）は NVIDIA の大規模クラスタ（xAI Colossus 555K GPU）に匹敵する規模。</p>
+  </div>
+
   <div class="table-wrap">
     <table>
       <thead><tr><th>世代</th><th>FP8 性能</th><th>HBM</th><th>メモリ帯域</th><th>プロセス</th><th>特記</th></tr></thead>
@@ -802,6 +828,10 @@
   <!-- Intel Gaudi -->
   <h3 class="sub-title">Intel Gaudi — 標準 Ethernet 統合型</h3>
   <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;"><strong>なぜ Gaudi は NIC を内蔵するのか？</strong> 通常の AI アクセラレータは外部に NIC（ネットワーク接続用チップ）を必要とし、その分コストと電力が増加する。Gaudi は NIC をチップ内に24ポート内蔵することで、外部 NIC のコストを削減し、標準 Ethernet でロックインなしに Scale-up を実現する。</p>
+
+  <div class="highlight-box" style="margin-bottom:1rem;">
+    <p><strong>NVIDIA との比較ポイント:</strong> Gaudi 3 の設計思想は NVIDIA と真逆。NVIDIA は外部の高性能 NIC（ConnectX-8: 800Gbps）と専用スイッチ（Spectrum-X / Quantum）を組み合わせるが、Gaudi は NIC をチップに内蔵し <strong>外部 NIC の購入が不要</strong>。この設計により初期コストが抑えられるが、Scale-up 帯域は 67.2 Tbps（双方向）で NVLink 5 のラック全体 130 TB/s には及ばない。また、NVIDIA の GB200 NVL72 が 72基を接続できるのに対し、Gaudi 3 は <strong>8基のサーバ内直接接続が限度</strong>（Scale-out は標準 Ethernet）。</p>
+  </div>
 
   <div class="table-wrap">
     <table>
@@ -888,6 +918,12 @@
   <h2 class="section-title"><span class="section-num">03</span>新興 AI アクセラレータ</h2>
   <p class="section-desc">前のセクションで紹介した4社は、いずれも従来の「チップ + メモリ + ネットワーク」という GPU に近い設計を採用している。しかし、AI の急速な進化は「GPU の形にこだわる必要はないのでは？」という問いを生んだ。ここでは、ウェーハ全体を1チップにする Cerebras、待ち時間ゼロの推論を実現する Groq、3層メモリで超大規模モデルに対応する SambaNova、RISC-V で AI チップの民主化を目指す Tenstorrent を紹介する。</p>
 
+  <div class="explain">
+    <p class="explain-title">なぜ GPU ではない選択肢が生まれるのか — GPU の根本的制約</p>
+    <p>NVIDIA GPU は汎用性が強みだが、それが制約にもなる。GPU のトランジスタの多くは <strong>グラフィックス処理や汎用計算</strong>に使われており、AI 推論だけに集中できない。例えば NVIDIA B200（1,200W）と Google Ironwood（157W）を比べると、FP8 性能はほぼ同等（4,500 vs 4,614 TFLOPS）なのに消費電力は <strong>7.6倍</strong>の差がある。これは Ironwood が AI 以外の回路をすべて排除しているため。</p>
+    <p>また、GPU は <strong>HBM にすべてのモデルパラメータを載せる</strong>設計が前提であり、HBM 容量がモデルサイズの上限を決める。Cerebras は SRAM + 外部メモリの Weight Streaming で、SambaNova は3層メモリで、この制約を回避する。GPU とはまったく異なる設計だからこそ、特定の用途で GPU を上回れる可能性がある。</p>
+  </div>
+
   <div class="grid grid-2">
     <div class="card card-accent-green">
       <span class="badge badge-green">ウェーハスケール</span>
@@ -959,6 +995,7 @@
   <div class="explain">
     <p class="explain-title">なぜ互換性が問題になるのか</p>
     <p>NVIDIA のネットワーク技術は標準規格（PCIe、Ethernet、InfiniBand）に準拠しているため、物理的には他社チップと接続できる場合が多い。しかし、<strong>性能を最大限引き出すにはソフトウェア（NCCL、GPUDirect）との垂直統合が必要</strong>であり、これが NVIDIA GPU に限定されている。つまり「つながる」と「最高性能で動く」は別問題。</p>
+    <p>この制約は偶然ではなく、NVIDIA の <strong>意図的な垂直統合戦略</strong>の結果。ConnectX NIC は標準 Ethernet/InfiniBand に対応しているため他社チップでも使えるが、<strong>GPUDirect RDMA</strong>（GPU メモリへの直接転送で 74% のスループット向上、CPU 負荷 43% 削減）は NVIDIA GPU 専用。<strong>SHARP</strong>（スイッチ上の集約処理で AllReduce を 2〜5倍高速化）も Quantum InfiniBand + NCCL の組み合わせでしか動作しない。ハードウェアはオープンに見えるが、性能差を生むソフトウェア層が NVIDIA GPU にロックされている構造。</p>
   </div>
 
   <div class="table-wrap">
@@ -1122,6 +1159,11 @@
   <h3 class="sub-title">NVLink vs UALink — インターコネクト標準化の競争</h3>
   <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">AI データセンターのインターコネクトは、NVIDIA の NVLink（プロプライエタリ）と、AMD/Intel/Google らが推進する UALink（オープン標準）の2つの陣営に分かれつつある。この対立は、AI データセンターの将来の勢力図を決定する重要な要素だ。</p>
 
+  <div class="explain">
+    <p class="explain-title">NVIDIA のインターコネクト進化戦略</p>
+    <p>NVIDIA は NVLink の帯域幅を世代ごとに <strong>2倍</strong>ずつ拡大し続けている（NVLink 4: 900 GB/s → NVLink 5: 1.8 TB/s → NVLink 6: 3.6 TB/s）。この進化速度が他社の追随を極めて困難にしている。UALink 1.0 が 200 GB/s でようやく登場する頃に、NVLink は既に 3.6 TB/s に到達する。さらに NVIDIA は <strong>NVLink Fusion</strong> で「他社チップにも NVLink を使わせる」戦略を取り、NVLink のデファクトスタンダード化を狙う。競合がオープン標準で対抗しようとしている間に、自社の技術をプラットフォーム化してしまう戦略。</p>
+  </div>
+
   <p style="font-size:0.82rem; color:#787774; margin-bottom:0.8rem; font-weight:600;">NVLink の進化</p>
   <div class="nvlink-evo">
     <div class="nvlink-gen">
@@ -1209,8 +1251,9 @@
   <p class="section-desc">AI チップのハードウェア性能が拮抗しつつある中、勝敗を分けるのはソフトウェアエコシステムの充実度だ。NVIDIA の CUDA は15年以上の蓄積があり、PyTorch、TensorFlow、主要な AI フレームワークのほぼすべてが CUDA を前提に開発されている。各社がこの「CUDA の壁」をどう乗り越えようとしているかを比較する。</p>
 
   <div class="explain">
-    <p class="explain-title">CUDA の壁とは</p>
+    <p class="explain-title">CUDA の壁とは — 垂直統合の蓄積効果</p>
     <p>世界中の AI 研究者・エンジニアの大半が CUDA でコードを書いている。NVIDIA 以外のチップに移行するには、既存コードの書き換えが必要になる場合が多く、これが巨大な移行コストとなる。ソフトウェア資産の蓄積は、ハードウェアの性能差よりも強力なロックイン要因。</p>
+    <p>重要なのは、CUDA のロックインは <strong>ソフトウェア単体の問題ではない</strong>こと。CUDA は cuDNN（深層学習ライブラリ）、TensorRT（推論最適化）、NCCL（集団通信）、GPUDirect（メモリ直接転送）と密接に連携しており、これら全体が NVLink・InfiniBand・ConnectX というハードウェアと垂直統合されている。つまり「CUDA を置き換える」とは、<strong>20年かけて構築された垂直統合スタック全体</strong>の代替を意味する。AMD の ROCm + HIP は CUDA API の互換レイヤーを提供するが、cuDNN → MIOpen、NCCL → RCCL のそれぞれで最適化の深さに差がある。</p>
   </div>
 
   <div class="table-wrap">
@@ -1379,6 +1422,12 @@
   <h2 class="section-title"><span class="section-num">07</span>コスト・電力効率比較</h2>
   <p class="section-desc">AI データセンターの構築では、チップの性能だけでなく TCO（Total Cost of Ownership: 総所有コスト）と電力効率が重要な意思決定要因となる。特に2025年以降、世界各地でデータセンター向けの電力供給が逼迫しており、「同じ電力でどれだけ多くの AI 処理ができるか」が戦略的な差別化要因になっている。</p>
 
+  <div class="explain">
+    <p class="explain-title">NVIDIA のコスト構造と代替チップの価格優位性</p>
+    <p>NVIDIA の AI データセンター製品は高い価格設定で知られる。GB200 NVL72 ラック（72基の GPU + NVLink + Grace CPU）は1ラックあたり数百万ドル規模。また NVIDIA の <strong>ラック消費電力は 120 kW（Blackwell）</strong>から次世代 Vera Rubin では <strong>190〜220 kW</strong> に増加する見込みで、電力インフラのコストも無視できない。</p>
+    <p>一方、AWS Trainium は NVIDIA GPU 比で <strong>30〜50% のコスト削減</strong>を掲げ、Google TPU は Midjourney の事例で <strong>推論コスト 65% 削減</strong>を実証している。NVIDIA の強みは絶対性能だが、コスト効率で勝負する領域（推論、特定のトレーニングジョブ）では代替チップに明確な優位性がある。</p>
+  </div>
+
   <div class="table-wrap">
     <table>
       <thead><tr><th>チップ</th><th>TDP</th><th>FP8 性能</th><th>GFLOPS/W</th><th>冷却方式</th></tr></thead>
@@ -1436,7 +1485,7 @@
   </div>
 
   <h3 class="sub-title">実デプロイメント事例</h3>
-  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">実際に非 NVIDIA チップを大規模に導入している企業の事例。これらの事例は、NVIDIA 以外の選択肢が「実験段階」ではなく「本番環境」で使われていることを示す。</p>
+  <p style="font-size:0.88rem; color:#555; margin-bottom:1rem;">実際に非 NVIDIA チップを大規模に導入している企業の事例。これらの事例は、NVIDIA 以外の選択肢が「実験段階」ではなく「本番環境」で使われていることを示す。参考として、NVIDIA 側の大規模デプロイメントは xAI Colossus（555K GPU）、Stargate（$500B 投資）、Microsoft Azure/OpenAI（4,608 GPU の GB300 NVL72）、CoreWeave（250K+ GPU）などがある。</p>
 
   <div class="grid grid-2">
     <div class="card card-accent-blue">
@@ -1539,7 +1588,7 @@
 
 <footer>
   <p>&copy; 2026 NVIDIA Technology Research &mdash; 調査日: 2026-02-28</p>
-  <p style="margin-top:0.3rem;">ソース: <a href="index.html">NVIDIA 技術概要</a> ｜ <a href="ai-datacenter-relations.html">NVIDIA AI データセンター技術の関連性マップ</a></p>
+  <p style="margin-top:0.3rem;">ソース: <a href="index.html">NVIDIA 技術調査</a> ｜ <a href="ai-datacenter-relations.html">NVIDIA AI データセンター技術の関連性マップ</a></p>
 </footer>
 
 </body>

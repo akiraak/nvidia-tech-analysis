@@ -17,3 +17,11 @@
   - `research/cooling-power-memory.md` — 冷却・電力インフラとメモリ階層
   - `research/moe-resilience-deployments.md` — MoE・耐障害性・デプロイメント事例
   - `site/ai-datacenter-relations.html` にセクション 11-14 を追加
+- [x] NVIDIA 以外の AI データセンター構成ページに NVIDIA の調査情報を統合
+  - セクション01: 「なぜ NVIDIA が圧倒的なのか」の背景説明を追加
+  - セクション02: 各プラットフォーム（Google TPU / AMD / AWS / Intel）に NVIDIA との比較ポイントを追加
+  - セクション03: 「GPU の根本的制約」の説明を追加（なぜ ASIC が GPU を上回れるか）
+  - セクション04: NVIDIA の垂直統合戦略が互換性を制限する理由の解説を追加
+  - セクション05: NVIDIA のインターコネクト進化戦略のコンテキストを追加
+  - セクション06: CUDA の壁を「垂直統合の蓄積効果」として再構成
+  - セクション07: NVIDIA のコスト構造と代替チップの価格優位性の比較を追加
