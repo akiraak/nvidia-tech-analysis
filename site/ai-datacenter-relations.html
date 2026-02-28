@@ -8,21 +8,20 @@
     :root {
       --nvidia-green: #76b900;
       --nvidia-green-dark: #5a8f00;
-      --nvidia-black: #1a1a2e;
-      --nvidia-dark: #16213e;
-      --nvidia-accent: #e94560;
-      --bg: #0d1117;
-      --bg-card: #161b22;
-      --bg-card-hover: #1c2333;
-      --border: #30363d;
-      --text: #e6edf3;
-      --text-muted: #8b949e;
-      --text-heading: #f0f6fc;
-      --blue: #58a6ff;
-      --purple: #bc8cff;
-      --orange: #e3963e;
-      --red: #e94560;
-      --cyan: #56d4dd;
+      --bg: #fff;
+      --bg-card: #f7f6f3;
+      --bg-hover: #efeeeb;
+      --bg-alt: #f7f6f3;
+      --border: #e9e9e7;
+      --border-light: #f0efed;
+      --text: #37352f;
+      --text-muted: #555;
+      --text-heading: #1a1a1a;
+      --blue: #2f7dc0;
+      --purple: #9065c0;
+      --orange: #c08040;
+      --red: #c04040;
+      --cyan: #2a8a8a;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -34,83 +33,92 @@
 
     /* Navigation */
     .topnav {
-      background: var(--bg-card);
+      background: var(--bg);
       border-bottom: 1px solid var(--border);
       padding: 0.6rem 2rem;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
     }
     .topnav a {
-      color: var(--text-muted);
+      color: #787774;
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color 0.15s;
     }
     .topnav a:hover { color: var(--nvidia-green); }
 
     /* Hero */
     .hero {
-      background: linear-gradient(135deg, var(--nvidia-black) 0%, #0e1a2b 50%, #0a2a1a 100%);
-      border-bottom: 3px solid var(--nvidia-green);
-      padding: 3.5rem 2rem;
-      text-align: center;
+      background: var(--bg);
+      border-bottom: none;
+      padding: 3.5rem 2rem 1.5rem;
+      text-align: left;
+      max-width: 1100px;
+      margin: 0 auto;
     }
     .hero h1 {
-      font-size: 2.4rem;
-      color: var(--text-heading);
+      font-size: 2.2rem;
+      color: #1a1a1a;
       margin-bottom: 0.5rem;
+      font-weight: 700;
       letter-spacing: -0.02em;
     }
     .hero h1 span { color: var(--nvidia-green); }
     .hero .subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
+      font-size: 0.92rem;
+      color: #787774;
       max-width: 720px;
-      margin: 0.6rem auto 0;
+      margin: 0.5rem 0 0;
     }
 
     /* Container */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 
     /* Section */
     .section { padding: 3rem 0; }
     .section + .section { border-top: 1px solid var(--border); }
     .section-title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       color: var(--text-heading);
       margin-bottom: 0.3rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding-bottom: 0.4rem;
+      border-bottom: 3px solid var(--nvidia-green);
+      display: inline-block;
     }
     .section-num {
       color: var(--nvidia-green);
-      font-weight: 800;
+      font-weight: 700;
       margin-right: 0.4rem;
     }
     .section-desc {
-      color: var(--text-muted);
+      color: #787774;
       margin-bottom: 1.8rem;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
 
     /* Grid */
-    .grid { display: grid; gap: 1.2rem; }
+    .grid { display: grid; gap: 0.8rem; }
     .grid-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
     .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
     /* Card */
     .card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.4rem;
-      transition: border-color 0.2s, background 0.2s;
+      border: none;
+      border-radius: 4px;
+      padding: 1.3rem;
+      transition: background 0.15s;
     }
-    .card:hover { border-color: var(--nvidia-green); background: var(--bg-card-hover); }
+    .card:hover { background: var(--bg-hover); }
     .card h3 {
-      font-size: 1.05rem;
-      color: var(--text-heading);
+      font-size: 1.02rem;
+      color: #1a1a1a;
       margin-bottom: 0.5rem;
+      font-weight: 600;
     }
     .card p, .card li {
       font-size: 0.88rem;
-      color: var(--text-muted);
+      color: #555;
     }
     .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
     .card li { margin-bottom: 0.2rem; }
@@ -124,8 +132,8 @@
     /* Diagram box */
     .diagram {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: none;
+      border-radius: 4px;
       padding: 1.5rem;
       overflow-x: auto;
     }
@@ -138,8 +146,8 @@
       margin: 0;
     }
     .diagram-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 0.75rem;
+      color: #787774;
       text-align: center;
       margin-top: 0.6rem;
       font-style: italic;
@@ -149,51 +157,52 @@
     .pillars {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0;
+      gap: 4px;
       margin-bottom: 1.5rem;
     }
     .pillar {
       text-align: center;
       padding: 1.2rem 0.8rem;
-      border: 1px solid var(--border);
+      border: none;
+      border-radius: 4px;
       position: relative;
     }
-    .pillar:first-child { border-radius: 10px 0 0 10px; }
-    .pillar:last-child { border-radius: 0 10px 10px 0; }
     .pillar h4 {
       font-size: 0.85rem;
       margin-bottom: 0.6rem;
+      font-weight: 600;
     }
     .pillar .items {
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: #555;
       line-height: 1.5;
     }
-    .pillar-compute { background: rgba(118,185,0,0.08); border-color: rgba(118,185,0,0.25); }
-    .pillar-compute h4 { color: var(--nvidia-green); }
-    .pillar-interconnect { background: rgba(86,212,221,0.08); border-color: rgba(86,212,221,0.25); }
-    .pillar-interconnect h4 { color: var(--cyan); }
-    .pillar-network { background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.25); }
-    .pillar-network h4 { color: var(--blue); }
-    .pillar-software { background: rgba(188,140,255,0.08); border-color: rgba(188,140,255,0.25); }
-    .pillar-software h4 { color: var(--purple); }
+    .pillar-compute { background: #dbeddb; }
+    .pillar-compute h4 { color: #1a1a1a; }
+    .pillar-interconnect { background: #d3e5ef; }
+    .pillar-interconnect h4 { color: #1a1a1a; }
+    .pillar-network { background: #d3e5ef; }
+    .pillar-network h4 { color: #1a1a1a; }
+    .pillar-software { background: #e8deee; }
+    .pillar-software h4 { color: #1a1a1a; }
 
     /* Scale comparison */
     .scale-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      gap: 0.8rem;
       margin-bottom: 1.5rem;
     }
     .scale-box {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.4rem;
+      border: none;
+      border-radius: 4px;
+      padding: 1.3rem;
     }
     .scale-box h3 {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       margin-bottom: 0.8rem;
+      font-weight: 600;
     }
     .scale-up h3 { color: var(--cyan); }
     .scale-out h3 { color: var(--blue); }
@@ -207,22 +216,23 @@
       min-width: 600px;
     }
     th {
-      background: rgba(118,185,0,0.1);
-      color: var(--nvidia-green);
-      padding: 0.7rem 0.8rem;
+      background: transparent;
+      color: #787774;
+      padding: 0.5rem 0.8rem;
       text-align: left;
-      border-bottom: 2px solid rgba(118,185,0,0.3);
-      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      font-size: 0.78rem;
       white-space: nowrap;
     }
     td {
-      padding: 0.6rem 0.8rem;
-      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid var(--border-light);
       color: var(--text);
       vertical-align: top;
     }
-    tr:hover td { background: var(--bg-card-hover); }
-    .td-label { font-weight: 600; color: var(--text-heading); white-space: nowrap; }
+    tr:hover td { background: var(--bg-card); }
+    .td-label { font-weight: 600; color: #1a1a1a; white-space: nowrap; }
 
     /* Flow steps */
     .flow {
@@ -241,8 +251,8 @@
       align-items: center;
     }
     .flow-dot {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       border: 2px solid var(--nvidia-green);
       background: var(--bg);
@@ -251,132 +261,131 @@
     }
     .flow-dot.active { background: var(--nvidia-green); }
     .flow-line {
-      width: 2px;
+      width: 1px;
       flex: 1;
       background: var(--border);
     }
     .flow-content {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      border: none;
+      border-radius: 4px;
       padding: 1rem 1.2rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
     }
     .flow-content h4 {
-      font-size: 0.95rem;
-      color: var(--text-heading);
+      font-size: 0.92rem;
+      color: #1a1a1a;
       margin-bottom: 0.3rem;
+      font-weight: 600;
     }
     .flow-content p {
       font-size: 0.84rem;
-      color: var(--text-muted);
+      color: #555;
       margin-bottom: 0.3rem;
     }
     .flow-techs {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
+      gap: 0.3rem;
       margin-top: 0.5rem;
     }
     .flow-tech {
       display: inline-block;
-      padding: 0.1rem 0.5rem;
-      border-radius: 4px;
+      padding: 0.1rem 0.45rem;
+      border-radius: 3px;
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 500;
     }
-    .ft-green { background: rgba(118,185,0,0.15); color: var(--nvidia-green); }
-    .ft-blue { background: rgba(88,166,255,0.15); color: var(--blue); }
-    .ft-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
-    .ft-cyan { background: rgba(86,212,221,0.15); color: var(--cyan); }
-    .ft-orange { background: rgba(227,150,62,0.15); color: var(--orange); }
+    .ft-green { background: #dbeddb; color: #1a1a1a; }
+    .ft-blue { background: #d3e5ef; color: #1a1a1a; }
+    .ft-purple { background: #e8deee; color: #1a1a1a; }
+    .ft-cyan { background: #d3e5ef; color: #1a1a1a; }
+    .ft-orange { background: #fadec9; color: #1a1a1a; }
 
     /* NVLink evolution */
     .nvlink-evo {
       display: flex;
       align-items: stretch;
-      gap: 0;
+      gap: 4px;
       margin-bottom: 1.5rem;
     }
     .nvlink-gen {
       flex: 1;
       text-align: center;
       padding: 1rem 0.5rem;
-      border: 1px solid var(--border);
+      border: none;
+      border-radius: 4px;
+      background: var(--bg-card);
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
-    .nvlink-gen:first-child { border-radius: 10px 0 0 10px; }
-    .nvlink-gen:last-child { border-radius: 0 10px 10px 0; }
-    .nvlink-gen .gen-name { font-size: 0.75rem; color: var(--text-muted); }
-    .nvlink-gen .gen-bw { font-size: 1.4rem; font-weight: 800; color: var(--text-heading); }
-    .nvlink-gen .gen-arch { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+    .nvlink-gen .gen-name { font-size: 0.72rem; color: #787774; }
+    .nvlink-gen .gen-bw { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; }
+    .nvlink-gen .gen-arch { font-size: 0.72rem; color: #787774; margin-top: 0.2rem; }
     .nvlink-gen .gen-arrow { font-size: 1.2rem; color: var(--nvidia-green); }
     .nvlink-arrow {
       display: flex;
       align-items: center;
-      padding: 0 0.3rem;
-      font-size: 1.3rem;
+      padding: 0 0.2rem;
+      font-size: 1.2rem;
       color: var(--nvidia-green);
     }
     .nvlink-gen.current {
-      background: rgba(118,185,0,0.08);
-      border-color: rgba(118,185,0,0.4);
+      background: #dbeddb;
     }
     .nvlink-gen.next {
-      background: rgba(233,69,96,0.06);
-      border-color: rgba(233,69,96,0.3);
+      background: #ffe2dd;
     }
     .nvlink-gen.next .gen-bw { color: var(--red); }
 
     /* NCCL decision tree */
     .decision-tree {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: none;
+      border-radius: 4px;
       padding: 1.5rem;
     }
     .dt-node {
       padding: 0.6rem 1rem;
-      border-radius: 8px;
+      border-radius: 3px;
       margin-bottom: 0.5rem;
       font-size: 0.85rem;
     }
     .dt-question {
-      background: rgba(88,166,255,0.1);
-      border: 1px solid rgba(88,166,255,0.25);
-      color: var(--blue);
+      background: #d3e5ef;
+      border: none;
+      color: #1a1a1a;
       font-weight: 600;
     }
     .dt-answer {
       margin-left: 1.5rem;
-      background: rgba(118,185,0,0.08);
-      border: 1px solid rgba(118,185,0,0.2);
+      background: #dbeddb;
+      border: none;
       color: var(--text);
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
     .dt-answer .label {
-      font-weight: 700;
-      font-size: 0.75rem;
+      font-weight: 600;
+      font-size: 0.72rem;
       padding: 0.1rem 0.4rem;
       border-radius: 3px;
     }
-    .dt-yes .label { background: rgba(118,185,0,0.2); color: var(--nvidia-green); }
-    .dt-no .label { background: rgba(233,69,96,0.15); color: var(--red); }
+    .dt-yes .label { background: rgba(118,185,0,0.2); color: #1a1a1a; }
+    .dt-no .label { background: #ffe2dd; color: #1a1a1a; }
 
     /* Generation compare */
     .gen-timeline {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
+      gap: 0.8rem;
     }
     .gen-card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: none;
+      border-radius: 4px;
       padding: 1.3rem;
     }
     .gen-card h3 {
@@ -384,31 +393,32 @@
       margin-bottom: 0.8rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border);
+      font-weight: 600;
     }
-    .gen-card.gen-hopper h3 { color: var(--blue); border-color: rgba(88,166,255,0.3); }
-    .gen-card.gen-blackwell h3 { color: var(--nvidia-green); border-color: rgba(118,185,0,0.3); }
-    .gen-card.gen-rubin h3 { color: var(--red); border-color: rgba(233,69,96,0.3); }
+    .gen-card.gen-hopper h3 { color: var(--blue); }
+    .gen-card.gen-blackwell h3 { color: var(--nvidia-green); }
+    .gen-card.gen-rubin h3 { color: var(--red); }
     .gen-item {
       display: flex;
       justify-content: space-between;
       padding: 0.3rem 0;
       font-size: 0.82rem;
-      border-bottom: 1px solid rgba(48,54,61,0.5);
+      border-bottom: 1px solid var(--border-light);
     }
     .gen-item:last-child { border-bottom: none; }
-    .gen-item .gi-label { color: var(--text-muted); }
-    .gen-item .gi-value { color: var(--text-heading); font-weight: 600; text-align: right; }
+    .gen-item .gi-label { color: #787774; }
+    .gen-item .gi-value { color: #1a1a1a; font-weight: 600; text-align: right; }
 
     /* DPU before/after */
     .dpu-compare {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
+      gap: 0.8rem;
     }
     .dpu-box {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: none;
+      border-radius: 4px;
       padding: 1.3rem;
     }
     .dpu-box h4 {
@@ -416,9 +426,10 @@
       margin-bottom: 0.8rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border);
+      font-weight: 600;
     }
-    .dpu-without h4 { color: var(--red); border-color: rgba(233,69,96,0.3); }
-    .dpu-with h4 { color: var(--nvidia-green); border-color: rgba(118,185,0,0.3); }
+    .dpu-without h4 { color: var(--red); }
+    .dpu-with h4 { color: var(--nvidia-green); }
     .dpu-row {
       display: flex;
       align-items: center;
@@ -427,15 +438,15 @@
       font-size: 0.84rem;
     }
     .dpu-chip {
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
+      padding: 0.1rem 0.45rem;
+      border-radius: 3px;
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 500;
       white-space: nowrap;
     }
-    .chip-cpu { background: rgba(227,150,62,0.15); color: var(--orange); }
-    .chip-dpu { background: rgba(118,185,0,0.15); color: var(--nvidia-green); }
-    .chip-free { background: rgba(86,212,221,0.1); color: var(--cyan); }
+    .chip-cpu { background: #fadec9; color: #1a1a1a; }
+    .chip-dpu { background: #dbeddb; color: #1a1a1a; }
+    .chip-free { background: #d3e5ef; color: #1a1a1a; }
 
     /* Bar chart simple */
     .bar-group { margin-bottom: 1.5rem; }
@@ -446,39 +457,36 @@
       gap: 0.8rem;
       margin-bottom: 0.5rem;
     }
-    .bar-label { font-size: 0.8rem; color: var(--text-muted); text-align: right; }
+    .bar-label { font-size: 0.8rem; color: #787774; text-align: right; }
     .bar-track {
-      height: 22px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 4px;
+      height: 20px;
+      background: var(--bg-card);
+      border-radius: 3px;
       overflow: hidden;
     }
     .bar-fill {
       height: 100%;
-      border-radius: 4px;
+      border-radius: 3px;
       transition: width 0.6s ease;
     }
-    .bar-value { font-size: 0.8rem; color: var(--text-heading); font-weight: 600; }
+    .bar-value { font-size: 0.8rem; color: #1a1a1a; font-weight: 600; }
 
     /* Ethernet vs IB */
     .vs-table th:first-child { width: 120px; }
 
     /* Analogy box */
     .analogy {
-      background: rgba(118,185,0,0.06);
-      border: 1px solid rgba(118,185,0,0.2);
-      border-left: 4px solid var(--nvidia-green);
-      border-radius: 0 8px 8px 0;
+      background: #dbeddb;
+      border: none;
+      border-radius: 4px;
       padding: 1rem 1.3rem;
       margin: 1rem 0;
       font-size: 0.88rem;
     }
     .analogy-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--nvidia-green);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #1a1a1a;
       margin-bottom: 0.4rem;
     }
     .analogy p { color: var(--text); margin-bottom: 0.3rem; }
@@ -486,20 +494,17 @@
 
     /* Explain box */
     .explain {
-      background: rgba(88,166,255,0.06);
-      border: 1px solid rgba(88,166,255,0.2);
-      border-left: 4px solid var(--blue);
-      border-radius: 0 8px 8px 0;
+      background: #d3e5ef;
+      border: none;
+      border-radius: 4px;
       padding: 1rem 1.3rem;
       margin: 1rem 0;
       font-size: 0.88rem;
     }
     .explain-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--blue);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #1a1a1a;
       margin-bottom: 0.4rem;
     }
     .explain p { color: var(--text); margin-bottom: 0.3rem; }
@@ -509,37 +514,39 @@
     .concept-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.2rem;
+      gap: 0.8rem;
       margin: 1.5rem 0;
     }
     .concept {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: none;
+      border-radius: 4px;
       padding: 1.3rem;
-      transition: border-color 0.2s;
+      transition: background 0.15s;
     }
-    .concept:hover { border-color: var(--nvidia-green); }
+    .concept:hover { background: var(--bg-hover); }
     .concept h4 {
       font-size: 0.95rem;
-      color: var(--text-heading);
+      color: #1a1a1a;
       margin-bottom: 0.2rem;
+      font-weight: 600;
     }
     .concept .concept-sub {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--nvidia-green);
       margin-bottom: 0.6rem;
+      font-weight: 500;
     }
     .concept p {
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: #555;
       margin-bottom: 0.4rem;
     }
     .concept .concept-analogy {
       font-size: 0.82rem;
       color: var(--text);
-      background: rgba(118,185,0,0.06);
-      border-radius: 6px;
+      background: #dbeddb;
+      border-radius: 4px;
       padding: 0.5rem 0.8rem;
       margin-top: 0.6rem;
     }
@@ -547,22 +554,20 @@
       content: '';
       font-size: 0.7rem;
       display: block;
-      color: var(--nvidia-green);
-      font-weight: 700;
+      color: #1a1a1a;
+      font-weight: 600;
       margin-bottom: 0.2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
     /* Number highlight */
     .num-highlight {
       display: inline-block;
-      background: rgba(118,185,0,0.12);
-      border: 1px solid rgba(118,185,0,0.2);
-      border-radius: 6px;
-      padding: 0.1rem 0.5rem;
-      font-weight: 700;
-      color: var(--nvidia-green);
+      background: #dbeddb;
+      border: none;
+      border-radius: 3px;
+      padding: 0.1rem 0.4rem;
+      font-weight: 600;
+      color: #1a1a1a;
       font-size: 0.88rem;
     }
 
@@ -571,7 +576,7 @@
       border-top: 1px solid var(--border);
       padding: 2rem;
       text-align: center;
-      color: var(--text-muted);
+      color: #787774;
       font-size: 0.82rem;
     }
     footer a { color: var(--nvidia-green); text-decoration: none; }
@@ -580,10 +585,6 @@
     /* Responsive */
     @media (max-width: 900px) {
       .pillars { grid-template-columns: repeat(2, 1fr); }
-      .pillar:first-child { border-radius: 10px 0 0 0; }
-      .pillar:nth-child(2) { border-radius: 0 10px 0 0; }
-      .pillar:nth-child(3) { border-radius: 0 0 0 10px; }
-      .pillar:last-child { border-radius: 0 0 10px 0; }
       .gen-timeline { grid-template-columns: 1fr; }
       .scale-row { grid-template-columns: 1fr; }
       .dpu-compare { grid-template-columns: 1fr; }
@@ -593,8 +594,6 @@
       .container { padding: 0 1rem; }
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
       .nvlink-evo { flex-direction: column; }
-      .nvlink-gen:first-child { border-radius: 10px 10px 0 0; }
-      .nvlink-gen:last-child { border-radius: 0 0 10px 10px; }
       .nvlink-arrow { justify-content: center; transform: rotate(90deg); }
       .bar-row { grid-template-columns: 80px 1fr 60px; }
     }
@@ -671,7 +670,7 @@
     </div>
 
     <!-- Key concepts -->
-    <h3 style="color:var(--text-heading); font-size:1.15rem; margin-bottom:0.8rem;">キーコンセプト解説</h3>
+    <h3 style="color:var(--text-heading); font-size:1.1rem; margin-bottom:0.8rem; font-weight:600;">キーコンセプト解説</h3>
     <p class="section-desc">このページで頻出する技術用語を、例え話を交えて解説する。</p>
 
     <div class="concept-grid">
@@ -831,7 +830,7 @@
     </div>
 
     <!-- Parallelism mapping -->
-    <h3 style="color:var(--text-heading); font-size:1.05rem; margin-bottom:0.8rem;">並列化戦略と通信ドメインの対応</h3>
+    <h3 style="color:var(--text-heading); font-size:1.02rem; margin-bottom:0.8rem; font-weight:600;">並列化戦略と通信ドメインの対応</h3>
     <div class="table-wrap">
       <table>
         <thead>
@@ -1095,7 +1094,7 @@
     </div>
 
     <!-- Bar chart: evolution -->
-    <h3 style="color:var(--text-heading); font-size:1rem; margin-bottom:1rem;">NVLink 帯域幅の世代推移</h3>
+    <h3 style="color:var(--text-heading); font-size:1rem; margin-bottom:1rem; font-weight:600;">NVLink 帯域幅の世代推移</h3>
     <div class="nvlink-evo">
       <div class="nvlink-gen">
         <div class="gen-name">NVLink 4</div>
@@ -1150,7 +1149,7 @@
     </div>
 
     <!-- Bottleneck bar -->
-    <h3 style="color:var(--text-heading); font-size:1rem; margin: 1.5rem 0 1rem;">世代別の帯域幅比較（相対値）</h3>
+    <h3 style="color:var(--text-heading); font-size:1rem; margin: 1.5rem 0 1rem; font-weight:600;">世代別の帯域幅比較（相対値）</h3>
     <div class="bar-group">
       <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.8rem;">GPU 演算 (PFLOPS)</p>
       <div class="bar-row">
@@ -1302,7 +1301,7 @@
       </div>
     </div>
 
-    <h3 style="color:var(--text-heading); font-size:1rem; margin: 1.5rem 0 0.8rem;">BlueField 世代の進化</h3>
+    <h3 style="color:var(--text-heading); font-size:1rem; margin: 1.5rem 0 0.8rem; font-weight:600;">BlueField 世代の進化</h3>
     <div class="table-wrap">
       <table>
         <thead>

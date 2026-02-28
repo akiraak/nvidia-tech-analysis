@@ -8,17 +8,14 @@
     :root {
       --nvidia-green: #76b900;
       --nvidia-green-dark: #5a8f00;
-      --nvidia-black: #1a1a2e;
-      --nvidia-dark: #16213e;
-      --nvidia-mid: #0f3460;
-      --nvidia-accent: #e94560;
-      --bg: #0d1117;
-      --bg-card: #161b22;
-      --bg-card-hover: #1c2333;
-      --border: #30363d;
-      --text: #e6edf3;
-      --text-muted: #8b949e;
-      --text-heading: #f0f6fc;
+      --bg: #fff;
+      --bg-card: #f7f6f3;
+      --bg-hover: #efeeeb;
+      --border: #e9e9e7;
+      --border-light: #f0efed;
+      --text: #37352f;
+      --text-muted: #555;
+      --text-heading: #1a1a1a;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,64 +29,73 @@
 
     /* Hero */
     .hero {
-      background: linear-gradient(135deg, var(--nvidia-black) 0%, var(--nvidia-dark) 50%, #0a2a1a 100%);
-      border-bottom: 3px solid var(--nvidia-green);
-      padding: 4rem 2rem;
-      text-align: center;
+      background: var(--bg);
+      border-bottom: none;
+      padding: 4rem 2rem 2rem;
+      text-align: left;
+      max-width: 1100px;
+      margin: 0 auto;
     }
     .hero h1 {
-      font-size: 2.8rem;
-      color: var(--text-heading);
+      font-size: 2.6rem;
+      color: #1a1a1a;
       margin-bottom: 0.5rem;
+      font-weight: 700;
       letter-spacing: -0.02em;
     }
     .hero h1 span { color: var(--nvidia-green); }
     .hero p {
-      font-size: 1.15rem;
-      color: var(--text-muted);
+      font-size: 1rem;
+      color: #787774;
       max-width: 700px;
-      margin: 0.8rem auto 0;
+      margin: 0.5rem 0 0;
     }
     .hero .date {
       display: inline-block;
-      margin-top: 1.5rem;
-      padding: 0.3rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      margin-top: 1.2rem;
+      padding: 0.2rem 0.6rem;
+      background: var(--bg-card);
+      border: none;
+      border-radius: 3px;
+      font-size: 0.78rem;
+      color: #787774;
     }
 
     /* Container */
     .container {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 2rem;
     }
 
     /* Section */
     .section {
-      padding: 3.5rem 0;
+      padding: 3rem 0;
     }
     .section + .section {
       border-top: 1px solid var(--border);
     }
     .section-title {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: var(--text-heading);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding-bottom: 0.4rem;
+      border-bottom: 3px solid var(--nvidia-green);
+      display: inline-block;
     }
     .section-title .icon { margin-right: 0.5rem; }
     .section-desc {
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-      font-size: 0.95rem;
+      color: #787774;
+      margin-bottom: 1.8rem;
+      font-size: 0.9rem;
     }
 
     /* Grid */
     .grid {
       display: grid;
-      gap: 1.2rem;
+      gap: 0.8rem;
     }
     .grid-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
     .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
@@ -97,73 +103,75 @@
     /* Card */
     .card {
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, background 0.2s;
+      border: none;
+      border-radius: 4px;
+      padding: 1.3rem;
+      transition: background 0.15s;
     }
     .card:hover {
-      border-color: var(--nvidia-green);
-      background: var(--bg-card-hover);
+      background: var(--bg-hover);
     }
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.6rem;
     }
     .card h3 {
-      font-size: 1.15rem;
-      color: var(--text-heading);
+      font-size: 1.05rem;
+      color: #1a1a1a;
+      font-weight: 600;
     }
     .card h3 small {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       font-weight: normal;
       margin-top: 2px;
     }
     .card p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 0.8rem;
+      font-size: 0.88rem;
+      color: #555;
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
     }
     .badge {
       display: inline-block;
-      padding: 0.15rem 0.6rem;
-      border-radius: 12px;
-      font-size: 0.72rem;
-      font-weight: 600;
+      padding: 0.1rem 0.45rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 500;
       white-space: nowrap;
       flex-shrink: 0;
       margin-left: 0.5rem;
     }
-    .badge-green { background: rgba(118,185,0,0.15); color: var(--nvidia-green); border: 1px solid rgba(118,185,0,0.3); }
-    .badge-blue  { background: rgba(56,139,253,0.15); color: #58a6ff; border: 1px solid rgba(56,139,253,0.3); }
-    .badge-purple { background: rgba(188,140,255,0.15); color: #bc8cff; border: 1px solid rgba(188,140,255,0.3); }
-    .badge-orange { background: rgba(227,150,62,0.15); color: #e3963e; border: 1px solid rgba(227,150,62,0.3); }
-    .badge-red { background: rgba(233,69,96,0.15); color: var(--nvidia-accent); border: 1px solid rgba(233,69,96,0.3); }
+    .badge-green { background: #dbeddb; color: #1a1a1a; }
+    .badge-blue  { background: #d3e5ef; color: #1a1a1a; }
+    .badge-purple { background: #e8deee; color: #1a1a1a; }
+    .badge-orange { background: #fadec9; color: #1a1a1a; }
+    .badge-red { background: #ffe2dd; color: #1a1a1a; }
 
     /* Specs */
     .specs {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.4rem;
       margin-top: 0.5rem;
     }
     .spec {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      padding: 0.2rem 0.6rem;
-      background: rgba(118,185,0,0.08);
-      border: 1px solid rgba(118,185,0,0.15);
-      border-radius: 6px;
-      font-size: 0.78rem;
-      color: var(--nvidia-green);
+      padding: 0.15rem 0.5rem;
+      background: #dbeddb;
+      border: none;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      color: #1a1a1a;
+      font-weight: 500;
     }
+    .spec::after { display: none; }
     .spec-label {
-      color: var(--text-muted);
+      color: #787774;
       font-size: 0.72rem;
     }
 
@@ -174,28 +182,29 @@
     .roadmap table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       min-width: 800px;
     }
     .roadmap th {
-      background: rgba(118,185,0,0.1);
-      color: var(--nvidia-green);
-      padding: 0.8rem 1rem;
+      background: transparent;
+      color: #787774;
+      padding: 0.5rem 0.8rem;
       text-align: left;
-      border-bottom: 2px solid var(--nvidia-green);
-      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      font-size: 0.78rem;
       white-space: nowrap;
     }
     .roadmap td {
-      padding: 0.7rem 1rem;
-      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--border-light);
       color: var(--text);
       vertical-align: top;
     }
-    .roadmap tr:hover td { background: var(--bg-card-hover); }
+    .roadmap tr:hover td { background: var(--bg-card); }
     .roadmap .gen-label {
       font-weight: 600;
-      color: var(--text-heading);
+      color: #1a1a1a;
       white-space: nowrap;
     }
 
@@ -206,24 +215,25 @@
       justify-content: center;
       gap: 1rem;
       flex-wrap: wrap;
-      padding: 2rem 1rem;
+      padding: 1.8rem 1rem;
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      margin-bottom: 2rem;
+      border: none;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
     }
     .iv-node {
       text-align: center;
-      padding: 1rem 1.5rem;
-      border: 2px solid var(--nvidia-green);
-      border-radius: 10px;
-      background: rgba(118,185,0,0.05);
+      padding: 0.8rem 1.3rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--bg);
       min-width: 130px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
-    .iv-node .label { font-size: 0.75rem; color: var(--text-muted); }
-    .iv-node .value { font-size: 1.1rem; font-weight: 700; color: var(--text-heading); }
+    .iv-node .label { font-size: 0.72rem; color: #787774; }
+    .iv-node .value { font-size: 1.15rem; font-weight: 700; color: #1a1a1a; }
     .iv-arrow {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       color: var(--nvidia-green);
     }
 
@@ -231,50 +241,49 @@
     .sw-stack {
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 2px;
     }
     .sw-layer {
-      padding: 1rem 1.5rem;
-      border: 1px solid var(--border);
+      padding: 0.9rem 1.3rem;
+      border: none;
+      border-radius: 4px;
       text-align: center;
     }
-    .sw-layer:first-child { border-radius: 10px 10px 0 0; }
-    .sw-layer:last-child { border-radius: 0 0 10px 10px; }
-    .sw-layer h4 { font-size: 0.95rem; color: var(--text-heading); }
-    .sw-layer p { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
-    .sw-layer.l1 { background: rgba(118,185,0,0.12); border-color: rgba(118,185,0,0.3); }
-    .sw-layer.l2 { background: rgba(56,139,253,0.1); border-color: rgba(56,139,253,0.25); }
-    .sw-layer.l3 { background: rgba(188,140,255,0.1); border-color: rgba(188,140,255,0.25); }
-    .sw-layer.l4 { background: rgba(227,150,62,0.08); border-color: rgba(227,150,62,0.2); }
+    .sw-layer h4 { font-size: 0.9rem; color: #1a1a1a; font-weight: 600; }
+    .sw-layer p { font-size: 0.8rem; color: #555; margin-top: 0.2rem; }
+    .sw-layer.l1 { background: #dbeddb; }
+    .sw-layer.l2 { background: #d3e5ef; }
+    .sw-layer.l3 { background: #e8deee; }
+    .sw-layer.l4 { background: #fadec9; }
 
     /* Key numbers */
     .key-numbers {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.6rem;
       margin-bottom: 2rem;
     }
     .kn {
       text-align: center;
-      padding: 1.5rem 1rem;
+      padding: 1.3rem 0.8rem;
       background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: none;
+      border-radius: 4px;
     }
     .kn .number {
       font-size: 2rem;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--nvidia-green);
       line-height: 1.2;
     }
     .kn .unit {
-      font-size: 0.9rem;
-      color: var(--text-muted);
+      font-size: 0.82rem;
+      color: #555;
     }
     .kn .desc {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 0.4rem;
+      font-size: 0.75rem;
+      color: #787774;
+      margin-top: 0.3rem;
     }
 
     /* Footer */
@@ -282,7 +291,7 @@
       border-top: 1px solid var(--border);
       padding: 2rem;
       text-align: center;
-      color: var(--text-muted);
+      color: #787774;
       font-size: 0.82rem;
     }
     footer a { color: var(--nvidia-green); text-decoration: none; }
@@ -290,9 +299,10 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      .hero { padding: 2.5rem 1.5rem 1.5rem; }
       .hero h1 { font-size: 1.8rem; }
-      .hero p { font-size: 1rem; }
-      .section-title { font-size: 1.4rem; }
+      .hero p { font-size: 0.95rem; }
+      .section-title { font-size: 1.3rem; }
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
       .container { padding: 0 1rem; }
       .iv-arrow { transform: rotate(90deg); }
@@ -306,10 +316,25 @@
   <h1><span>NVIDIA</span> 技術概要</h1>
   <p>GPU、ネットワーキング、インターコネクト、ソフトウェアプラットフォームを網羅した NVIDIA データセンター技術の全体像</p>
   <div class="date">調査日: 2026-02-27</div>
-  <div style="margin-top:1.2rem;">
-    <a href="ai-datacenter-relations.html" style="color:var(--nvidia-green); text-decoration:none; border:1px solid rgba(118,185,0,0.4); padding:0.4rem 1.2rem; border-radius:20px; font-size:0.9rem; transition:background 0.2s;"
-       onmouseover="this.style.background='rgba(118,185,0,0.1)'" onmouseout="this.style.background='transparent'">
+  <div style="margin-top:1.2rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+    <a href="ai-datacenter-relations.html" style="display:inline-block; color:#1a1a1a; text-decoration:none; background:#dbeddb; padding:0.25rem 0.7rem; border-radius:3px; font-size:0.85rem;"
+       onmouseover="this.style.background='#c8e0c8'" onmouseout="this.style.background='#dbeddb'">
       AI データセンター技術の関連性マップ &rarr;
+    </a>
+  </div>
+  <div style="margin-top:0.6rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+    <span style="font-size:0.72rem; color:#787774; margin-right:0.2rem;">デザイン:</span>
+    <a href="design-samples.html" style="display:inline-block; color:#787774; text-decoration:none; background:#f7f6f3; padding:0.2rem 0.6rem; border-radius:3px; font-size:0.78rem;"
+       onmouseover="this.style.background='#efeeeb'" onmouseout="this.style.background='#f7f6f3'">
+      10 デザイン比較
+    </a>
+    <a href="design-samples-02.html" style="display:inline-block; color:#787774; text-decoration:none; background:#f7f6f3; padding:0.2rem 0.6rem; border-radius:3px; font-size:0.78rem;"
+       onmouseover="this.style.background='#efeeeb'" onmouseout="this.style.background='#f7f6f3'">
+      Light Clean 派生
+    </a>
+    <a href="design-samples-readability.html" style="display:inline-block; color:#787774; text-decoration:none; background:#f7f6f3; padding:0.2rem 0.6rem; border-radius:3px; font-size:0.78rem;"
+       onmouseover="this.style.background='#efeeeb'" onmouseout="this.style.background='#f7f6f3'">
+      可読性改善案
     </a>
   </div>
 </header>
@@ -451,7 +476,7 @@
     <h2 class="section-title">ネットワーキング</h2>
     <p class="section-desc">NIC / SuperNIC、DPU、Ethernet / InfiniBand スイッチの製品ライン</p>
 
-    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.2rem;">NIC / SuperNIC</h3>
+    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">NIC / SuperNIC</h3>
     <div class="grid grid-3" style="margin-bottom: 2rem;">
       <div class="card">
         <div class="card-header">
@@ -488,7 +513,7 @@
       </div>
     </div>
 
-    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.2rem;">DPU (Data Processing Unit)</h3>
+    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">DPU (Data Processing Unit)</h3>
     <div class="grid grid-3" style="margin-bottom: 2rem;">
       <div class="card">
         <div class="card-header">
@@ -524,7 +549,7 @@
       </div>
     </div>
 
-    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.2rem;">スイッチ</h3>
+    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">スイッチ</h3>
     <div class="grid grid-2">
       <div class="card">
         <div class="card-header">
@@ -630,7 +655,7 @@
 
     <div class="grid grid-2" style="margin-bottom: 2rem;">
       <div>
-        <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem;">ソフトウェアスタック構造</h3>
+        <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.05rem; font-weight: 600;">ソフトウェアスタック構造</h3>
         <div class="sw-stack">
           <div class="sw-layer l1">
             <h4>AI フレームワーク / アプリケーション</h4>
@@ -780,7 +805,7 @@
             <td>Quantum-2<br>Spectrum-4</td>
             <td>NVLink 5<br>(1.8 TB/s)</td>
           </tr>
-          <tr style="background: rgba(118,185,0,0.05);">
+          <tr style="background: #dbeddb;">
             <td class="gen-label" style="color: var(--nvidia-green);">2026-</td>
             <td>Rubin<br>Rubin CPX</td>
             <td>Vera<br>(88 Olympus)</td>

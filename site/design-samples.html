@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB デザインサンプル - NVIDIA Tech</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-heading: #f0f6fc;
+      --green: #76b900;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* Top nav */
+    .topnav {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 2rem;
+      font-size: 0.85rem;
+    }
+    .topnav a { color: var(--text-muted); text-decoration: none; }
+    .topnav a:hover { color: var(--green); }
+
+    /* Header */
+    .page-header {
+      text-align: center;
+      padding: 3rem 2rem 1rem;
+    }
+    .page-header h1 {
+      font-size: 2.2rem;
+      color: var(--text-heading);
+    }
+    .page-header h1 span { color: var(--green); }
+    .page-header p {
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    /* Samples grid */
+    .samples {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(580px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Each sample wrapper */
+    .sample {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .sample-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+    }
+    .sample-label h3 {
+      font-size: 0.95rem;
+      color: var(--text-heading);
+    }
+    .sample-label .num {
+      color: var(--green);
+      font-weight: 800;
+      margin-right: 0.5rem;
+    }
+    .sample-label .tag {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    /* Preview area */
+    .preview {
+      padding: 0;
+      overflow: hidden;
+      height: 480px;
+    }
+    .preview-inner {
+      transform-origin: top left;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ===================== */
+    /* DESIGN 1: Dark Tech   */
+    /* ===================== */
+    .d1 { background: #0d1117; color: #e6edf3; font-family: -apple-system, sans-serif; }
+    .d1 .d-hero { background: linear-gradient(135deg, #1a1a2e, #16213e, #0a2a1a); border-bottom: 3px solid #76b900; padding: 2rem; text-align: center; }
+    .d1 .d-hero h2 { font-size: 1.6rem; color: #f0f6fc; }
+    .d1 .d-hero h2 b { color: #76b900; }
+    .d1 .d-hero p { color: #8b949e; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d1 .d-body { padding: 1.5rem; }
+    .d1 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d1 .d-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1rem; }
+    .d1 .d-card h4 { color: #f0f6fc; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d1 .d-card p { color: #8b949e; font-size: 0.75rem; }
+    .d1 .d-badge { display: inline-block; background: rgba(118,185,0,0.15); color: #76b900; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d1 .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d1 .d-table th { background: rgba(118,185,0,0.1); color: #76b900; padding: 0.5rem; text-align: left; border-bottom: 2px solid rgba(118,185,0,0.3); }
+    .d1 .d-table td { padding: 0.5rem; border-bottom: 1px solid #30363d; }
+
+    /* ===================== */
+    /* DESIGN 2: Light Clean */
+    /* ===================== */
+    .d2 { background: #ffffff; color: #1a1a1a; font-family: 'Segoe UI', sans-serif; }
+    .d2 .d-hero { background: #f8f9fa; border-bottom: 2px solid #76b900; padding: 2rem; text-align: center; }
+    .d2 .d-hero h2 { font-size: 1.6rem; color: #111; }
+    .d2 .d-hero h2 b { color: #76b900; }
+    .d2 .d-hero p { color: #666; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2 .d-body { padding: 1.5rem; }
+    .d2 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2 .d-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .d2 .d-card h4 { color: #222; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d2 .d-card p { color: #666; font-size: 0.75rem; }
+    .d2 .d-badge { display: inline-block; background: #76b900; color: #fff; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d2 .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2 .d-table th { background: #f1f8e9; color: #558b2f; padding: 0.5rem; text-align: left; border-bottom: 2px solid #aed581; }
+    .d2 .d-table td { padding: 0.5rem; border-bottom: 1px solid #eee; color: #333; }
+
+    /* ======================== */
+    /* DESIGN 3: Neon Gradient  */
+    /* ======================== */
+    .d3 { background: #0a0a1a; color: #e0e0ff; font-family: 'Segoe UI', sans-serif; }
+    .d3 .d-hero { background: linear-gradient(135deg, #1a0030, #000a30, #001a20); padding: 2rem; text-align: center; border-bottom: 2px solid; border-image: linear-gradient(90deg, #00f0ff, #76b900, #ff00aa) 1; }
+    .d3 .d-hero h2 { font-size: 1.6rem; background: linear-gradient(90deg, #00f0ff, #76b900); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .d3 .d-hero p { color: #8888aa; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d3 .d-body { padding: 1.5rem; }
+    .d3 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d3 .d-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(0,240,255,0.15); border-radius: 10px; padding: 1rem; backdrop-filter: blur(4px); }
+    .d3 .d-card:hover { border-color: rgba(0,240,255,0.4); box-shadow: 0 0 20px rgba(0,240,255,0.1); }
+    .d3 .d-card h4 { color: #00f0ff; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d3 .d-card p { color: #8888bb; font-size: 0.75rem; }
+    .d3 .d-badge { display: inline-block; background: rgba(118,185,0,0.2); color: #76b900; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; border: 1px solid rgba(118,185,0,0.3); }
+    .d3 .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d3 .d-table th { background: rgba(0,240,255,0.08); color: #00f0ff; padding: 0.5rem; text-align: left; border-bottom: 1px solid rgba(0,240,255,0.2); }
+    .d3 .d-table td { padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+    /* ========================= */
+    /* DESIGN 4: Terminal/Hacker */
+    /* ========================= */
+    .d4 { background: #0c0c0c; color: #00ff41; font-family: 'Cascadia Code', 'Fira Code', 'Courier New', monospace; }
+    .d4 .d-hero { background: #0c0c0c; border-bottom: 1px solid #00ff41; padding: 1.5rem 2rem; }
+    .d4 .d-hero h2 { font-size: 1.2rem; color: #00ff41; }
+    .d4 .d-hero h2::before { content: '$ '; opacity: 0.5; }
+    .d4 .d-hero p { color: #00aa2a; font-size: 0.8rem; margin-top: 0.3rem; }
+    .d4 .d-hero p::before { content: '// '; opacity: 0.4; }
+    .d4 .d-body { padding: 1.5rem; }
+    .d4 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d4 .d-card { background: rgba(0,255,65,0.03); border: 1px solid rgba(0,255,65,0.15); border-radius: 2px; padding: 1rem; }
+    .d4 .d-card h4 { color: #00ff41; font-size: 0.8rem; margin-bottom: 0.3rem; }
+    .d4 .d-card h4::before { content: '> '; opacity: 0.5; }
+    .d4 .d-card p { color: #00aa2a; font-size: 0.7rem; }
+    .d4 .d-badge { display: inline-block; background: transparent; color: #00ff41; padding: 0.1rem 0.4rem; border: 1px solid #00ff41; font-size: 0.6rem; font-weight: 600; margin-top: 0.4rem; }
+    .d4 .d-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin-top: 1rem; }
+    .d4 .d-table th { background: rgba(0,255,65,0.08); color: #00ff41; padding: 0.5rem; text-align: left; border-bottom: 1px solid rgba(0,255,65,0.3); }
+    .d4 .d-table td { padding: 0.5rem; border-bottom: 1px solid rgba(0,255,65,0.08); }
+
+    /* ========================= */
+    /* DESIGN 5: Corporate Blue */
+    /* ========================= */
+    .d5 { background: #f0f4f8; color: #2d3748; font-family: 'Segoe UI', sans-serif; }
+    .d5 .d-hero { background: linear-gradient(135deg, #1a365d, #2b6cb0); padding: 2rem; text-align: center; }
+    .d5 .d-hero h2 { font-size: 1.5rem; color: #fff; }
+    .d5 .d-hero p { color: rgba(255,255,255,0.75); font-size: 0.85rem; margin-top: 0.3rem; }
+    .d5 .d-body { padding: 1.5rem; }
+    .d5 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d5 .d-card { background: #fff; border: none; border-radius: 8px; padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-left: 3px solid #2b6cb0; }
+    .d5 .d-card h4 { color: #1a365d; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d5 .d-card p { color: #718096; font-size: 0.75rem; }
+    .d5 .d-badge { display: inline-block; background: #ebf8ff; color: #2b6cb0; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d5 .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d5 .d-table th { background: #ebf8ff; color: #2b6cb0; padding: 0.5rem; text-align: left; border-bottom: 2px solid #bee3f8; }
+    .d5 .d-table td { padding: 0.5rem; border-bottom: 1px solid #e2e8f0; }
+
+    /* =========================== */
+    /* DESIGN 6: Glassmorphism     */
+    /* =========================== */
+    .d6 { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); color: #e0e0f0; font-family: -apple-system, sans-serif; min-height: 100%; }
+    .d6 .d-hero { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 2rem; text-align: center; }
+    .d6 .d-hero h2 { font-size: 1.6rem; color: #fff; }
+    .d6 .d-hero h2 b { color: #76b900; }
+    .d6 .d-hero p { color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 0.3rem; }
+    .d6 .d-body { padding: 1.5rem; }
+    .d6 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d6 .d-card { background: rgba(255,255,255,0.07); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 1rem; }
+    .d6 .d-card h4 { color: #fff; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d6 .d-card p { color: rgba(255,255,255,0.55); font-size: 0.75rem; }
+    .d6 .d-badge { display: inline-block; background: rgba(118,185,0,0.2); color: #76b900; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d6 .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d6 .d-table th { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); padding: 0.5rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .d6 .d-table td { padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+    /* ======================== */
+    /* DESIGN 7: Warm Earth     */
+    /* ======================== */
+    .d7 { background: #1c1410; color: #e8d5c4; font-family: Georgia, 'Times New Roman', serif; }
+    .d7 .d-hero { background: linear-gradient(135deg, #2d1f14, #3d2b1f); border-bottom: 3px solid #c89b3c; padding: 2rem; text-align: center; }
+    .d7 .d-hero h2 { font-size: 1.6rem; color: #f5e6d3; letter-spacing: 0.02em; }
+    .d7 .d-hero h2 b { color: #c89b3c; }
+    .d7 .d-hero p { color: #a08060; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d7 .d-body { padding: 1.5rem; }
+    .d7 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d7 .d-card { background: rgba(200,155,60,0.06); border: 1px solid rgba(200,155,60,0.15); border-radius: 6px; padding: 1rem; }
+    .d7 .d-card h4 { color: #c89b3c; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d7 .d-card p { color: #a08060; font-size: 0.75rem; }
+    .d7 .d-badge { display: inline-block; background: rgba(200,155,60,0.15); color: #c89b3c; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; border: 1px solid rgba(200,155,60,0.25); }
+    .d7 .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d7 .d-table th { background: rgba(200,155,60,0.1); color: #c89b3c; padding: 0.5rem; text-align: left; border-bottom: 2px solid rgba(200,155,60,0.3); }
+    .d7 .d-table td { padding: 0.5rem; border-bottom: 1px solid rgba(200,155,60,0.08); }
+
+    /* ========================== */
+    /* DESIGN 8: Brutalist        */
+    /* ========================== */
+    .d8 { background: #f5f5f0; color: #111; font-family: 'Courier New', monospace; }
+    .d8 .d-hero { background: #111; padding: 2rem; text-align: left; }
+    .d8 .d-hero h2 { font-size: 2rem; color: #f5f5f0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 900; line-height: 1.1; }
+    .d8 .d-hero p { color: #999; font-size: 0.85rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .d8 .d-body { padding: 1.5rem; }
+    .d8 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d8 .d-card { background: #fff; border: 3px solid #111; border-radius: 0; padding: 1rem; }
+    .d8 .d-card h4 { color: #111; font-size: 0.85rem; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .d8 .d-card p { color: #555; font-size: 0.72rem; }
+    .d8 .d-badge { display: inline-block; background: #111; color: #f5f5f0; padding: 0.15rem 0.5rem; font-size: 0.6rem; font-weight: 700; margin-top: 0.4rem; text-transform: uppercase; }
+    .d8 .d-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 1rem; }
+    .d8 .d-table th { background: #111; color: #f5f5f0; padding: 0.5rem; text-align: left; text-transform: uppercase; letter-spacing: 0.05em; }
+    .d8 .d-table td { padding: 0.5rem; border: 1px solid #111; }
+
+    /* ============================ */
+    /* DESIGN 9: Soft Pastel        */
+    /* ============================ */
+    .d9 { background: #faf5ff; color: #44337a; font-family: -apple-system, sans-serif; }
+    .d9 .d-hero { background: linear-gradient(135deg, #e9d8fd, #c4f1f9, #c6f6d5); padding: 2rem; text-align: center; }
+    .d9 .d-hero h2 { font-size: 1.5rem; color: #44337a; font-weight: 700; }
+    .d9 .d-hero p { color: #6b46c1; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d9 .d-body { padding: 1.5rem; }
+    .d9 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d9 .d-card { background: #fff; border: 1px solid #e9d8fd; border-radius: 16px; padding: 1rem; }
+    .d9 .d-card h4 { color: #553c9a; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d9 .d-card p { color: #805ad5; font-size: 0.75rem; opacity: 0.7; }
+    .d9 .d-badge { display: inline-block; background: #e9d8fd; color: #6b46c1; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d9 .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d9 .d-table th { background: #faf5ff; color: #6b46c1; padding: 0.5rem; text-align: left; border-bottom: 2px solid #e9d8fd; }
+    .d9 .d-table td { padding: 0.5rem; border-bottom: 1px solid #f3e8ff; color: #44337a; }
+
+    /* ============================== */
+    /* DESIGN 10: Blueprint Technical */
+    /* ============================== */
+    .d10 { background: #0a1628; color: #a0c4e8; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+    .d10 .d-hero { background: #0a1628; border-bottom: 1px solid rgba(100,180,255,0.2); padding: 2rem; text-align: center; background-image: radial-gradient(circle, rgba(100,180,255,0.06) 1px, transparent 1px); background-size: 20px 20px; }
+    .d10 .d-hero h2 { font-size: 1.4rem; color: #e0f0ff; letter-spacing: 0.05em; }
+    .d10 .d-hero h2 b { color: #4da6ff; }
+    .d10 .d-hero p { color: #5a8ab5; font-size: 0.8rem; margin-top: 0.3rem; }
+    .d10 .d-body { padding: 1.5rem; background-image: radial-gradient(circle, rgba(100,180,255,0.04) 1px, transparent 1px); background-size: 20px 20px; }
+    .d10 .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d10 .d-card { background: rgba(100,180,255,0.04); border: 1px solid rgba(100,180,255,0.15); border-radius: 2px; padding: 1rem; }
+    .d10 .d-card h4 { color: #4da6ff; font-size: 0.8rem; margin-bottom: 0.3rem; }
+    .d10 .d-card p { color: #5a8ab5; font-size: 0.7rem; }
+    .d10 .d-badge { display: inline-block; background: transparent; color: #4da6ff; padding: 0.1rem 0.4rem; border: 1px solid rgba(77,166,255,0.3); font-size: 0.6rem; font-weight: 600; margin-top: 0.4rem; border-radius: 2px; }
+    .d10 .d-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin-top: 1rem; }
+    .d10 .d-table th { background: rgba(100,180,255,0.08); color: #4da6ff; padding: 0.5rem; text-align: left; border-bottom: 1px solid rgba(100,180,255,0.2); }
+    .d10 .d-table td { padding: 0.5rem; border-bottom: 1px solid rgba(100,180,255,0.06); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .samples { grid-template-columns: 1fr; padding: 0 1rem; }
+      .preview { height: 420px; }
+      .page-header h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html">&larr; 技術概要トップへ戻る</a>
+</nav>
+
+<div class="page-header">
+  <h1>WEB <span>デザインサンプル</span></h1>
+  <p>NVIDIA 技術ドキュメントサイトに適用可能な 10 種類のデザインバリエーション</p>
+</div>
+
+<div class="samples">
+
+  <!-- ===== 1. Dark Tech ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">01</span>Dark Tech</h3>
+      <span class="tag" style="background:rgba(118,185,0,0.15); color:#76b900;">現在のデザイン</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d1">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>ダークテーマにグリーンアクセント。現在のサイトデザイン。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card">
+              <h4>Rubin GPU</h4>
+              <p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p>
+              <span class="d-badge">2026 H2</span>
+            </div>
+            <div class="d-card">
+              <h4>NVLink 6</h4>
+              <p>GPU 間 3.6 TB/s の超高速インターコネクト。</p>
+              <span class="d-badge">3.6 TB/s</span>
+            </div>
+            <div class="d-card">
+              <h4>Spectrum-X Photonics</h4>
+              <p>CPO 採用の次世代 Ethernet。400 Tb/s。</p>
+              <span class="d-badge">CPO</span>
+            </div>
+            <div class="d-card">
+              <h4>BlueField-4 DPU</h4>
+              <p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p>
+              <span class="d-badge">DPU</span>
+            </div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 2. Light Clean ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02</span>Light Clean</h3>
+      <span class="tag" style="background:#e8f5e9; color:#2e7d32;">ライト</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>清潔感のあるライトテーマ。読みやすさ重視。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 3. Neon Gradient ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">03</span>Neon Gradient</h3>
+      <span class="tag" style="background:rgba(0,240,255,0.15); color:#00f0ff;">ダーク</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d3">
+        <div class="d-hero">
+          <h2>NVIDIA AI データセンター技術</h2>
+          <p>サイバーパンク風のネオングラデーション。未来的な印象。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 4. Terminal ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">04</span>Terminal / Hacker</h3>
+      <span class="tag" style="background:rgba(0,255,65,0.15); color:#00ff41;">ダーク</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d4">
+        <div class="d-hero">
+          <h2>nvidia_ai_datacenter --overview</h2>
+          <p>ターミナル風。エンジニア・開発者向けの硬派なデザイン。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>rubin_gpu</h4><p>next-gen arch. 50 PFLOPS, HBM4 288GB.</p><span class="d-badge">2026-H2</span></div>
+            <div class="d-card"><h4>nvlink_6</h4><p>gpu-to-gpu 3.6 TB/s interconnect.</p><span class="d-badge">3.6TB/s</span></div>
+            <div class="d-card"><h4>spectrum_x_photonics</h4><p>co-packaged optics ethernet. 400 Tb/s.</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>bluefield_4</h4><p>grace cpu integrated dpu. 800 Gb/s.</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>gen</th><th>gpu</th><th>nvlink</th><th>nic</th></tr>
+            <tr><td>hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 5. Corporate Blue ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">05</span>Corporate Blue</h3>
+      <span class="tag" style="background:#ebf8ff; color:#2b6cb0;">ライト</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d5">
+        <div class="d-hero">
+          <h2>NVIDIA AI データセンター技術</h2>
+          <p>企業向けプレゼンテーションに適したブルー基調デザイン。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 6. Glassmorphism ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">06</span>Glassmorphism</h3>
+      <span class="tag" style="background:rgba(188,140,255,0.15); color:#bc8cff;">ダーク</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d6">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>すりガラス風の透過エフェクト。モダンな印象。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 7. Warm Earth ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">07</span>Warm Earth</h3>
+      <span class="tag" style="background:rgba(200,155,60,0.15); color:#c89b3c;">ダーク</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d7">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>温かみのあるアースカラー。落ち着いた雰囲気のセリフ体。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 8. Brutalist ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">08</span>Brutalist</h3>
+      <span class="tag" style="background:#eee; color:#111;">ライト</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d8">
+        <div class="d-hero">
+          <h2>NVIDIA AI<br>DATACENTER</h2>
+          <p>Raw design. No decoration.</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>GEN</th><th>GPU</th><th>NVLINK</th><th>NIC</th></tr>
+            <tr><td>HOPPER</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>BLACKWELL</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>RUBIN</td><td>RUBIN</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 9. Soft Pastel ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">09</span>Soft Pastel</h3>
+      <span class="tag" style="background:#e9d8fd; color:#6b46c1;">ライト</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d9">
+        <div class="d-hero">
+          <h2>NVIDIA AI データセンター技術</h2>
+          <p>パステルカラーの柔らかいグラデーション。親しみやすい印象。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 10. Blueprint ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">10</span>Blueprint / Technical</h3>
+      <span class="tag" style="background:rgba(77,166,255,0.15); color:#4da6ff;">ダーク</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d10">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI DATACENTER TECH</h2>
+          <p>設計図・ブループリント風。ドットグリッドの背景。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>next-gen arch. 50 PFLOPS, HBM4 288GB.</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>gpu-to-gpu 3.6 TB/s interconnect.</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>co-packaged optics ethernet. 400 Tb/s.</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>grace cpu integrated dpu. 800 Gb/s.</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>GEN</th><th>GPU</th><th>NVLINK</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>WEB デザインサンプル &mdash; <a href="index.html">技術概要トップへ</a> | <a href="ai-datacenter-relations.html">技術関連性マップ</a></p>
+</footer>
+
+</body>
+</html>

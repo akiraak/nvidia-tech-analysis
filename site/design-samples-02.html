@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Light Clean バリエーション - NVIDIA Tech</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-heading: #f0f6fc;
+      --green: #76b900;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* Top nav */
+    .topnav {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 2rem;
+      font-size: 0.85rem;
+    }
+    .topnav a { color: var(--text-muted); text-decoration: none; margin-right: 1.5rem; }
+    .topnav a:hover { color: var(--green); }
+
+    /* Header */
+    .page-header {
+      text-align: center;
+      padding: 3rem 2rem 1rem;
+    }
+    .page-header h1 {
+      font-size: 2.2rem;
+      color: var(--text-heading);
+    }
+    .page-header h1 span { color: var(--green); }
+    .page-header p {
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+    .page-header .base-note {
+      display: inline-block;
+      margin-top: 0.8rem;
+      padding: 0.3rem 1rem;
+      background: rgba(118,185,0,0.1);
+      border: 1px solid rgba(118,185,0,0.25);
+      border-radius: 20px;
+      color: var(--green);
+      font-size: 0.82rem;
+    }
+
+    /* Samples grid */
+    .samples {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(580px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Each sample wrapper */
+    .sample {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .sample-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+    }
+    .sample-label h3 {
+      font-size: 0.95rem;
+      color: var(--text-heading);
+    }
+    .sample-label .num {
+      color: var(--green);
+      font-weight: 800;
+      margin-right: 0.5rem;
+    }
+    .sample-label .tag {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 10px;
+      font-weight: 600;
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .sample-label .feature {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+      font-weight: 400;
+    }
+
+    /* Preview area */
+    .preview {
+      padding: 0;
+      overflow: hidden;
+      height: 480px;
+    }
+    .preview-inner {
+      transform-origin: top left;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ======================================= */
+    /* 02-A: Ultra Minimal                     */
+    /* 白背景 + 極限までシンプル。影なし、細線。 */
+    /* ======================================= */
+    .d2a { background: #fff; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .d2a .d-hero { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 2rem; text-align: center; }
+    .d2a .d-hero h2 { font-size: 1.5rem; color: #111; font-weight: 600; }
+    .d2a .d-hero h2 b { color: #76b900; }
+    .d2a .d-hero p { color: #999; font-size: 0.82rem; margin-top: 0.3rem; }
+    .d2a .d-body { padding: 1.5rem; }
+    .d2a .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2a .d-card { background: #fff; border: 1px solid #eee; border-radius: 6px; padding: 1rem; }
+    .d2a .d-card h4 { color: #222; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 600; }
+    .d2a .d-card p { color: #888; font-size: 0.75rem; }
+    .d2a .d-badge { display: inline-block; background: #f5f5f5; color: #76b900; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d2a .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2a .d-table th { background: #fafafa; color: #666; padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e5e5; font-weight: 600; }
+    .d2a .d-table td { padding: 0.5rem; border-bottom: 1px solid #f0f0f0; color: #444; }
+
+    /* ======================================== */
+    /* 02-B: Green Accent Bar                   */
+    /* カード上部にグリーンバー。アクセント強め。 */
+    /* ======================================== */
+    .d2b { background: #fafafa; color: #1a1a1a; font-family: 'Segoe UI', sans-serif; }
+    .d2b .d-hero { background: #fff; border-bottom: 3px solid #76b900; padding: 2rem; text-align: center; }
+    .d2b .d-hero h2 { font-size: 1.6rem; color: #111; }
+    .d2b .d-hero h2 b { color: #76b900; }
+    .d2b .d-hero p { color: #666; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2b .d-body { padding: 1.5rem; }
+    .d2b .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2b .d-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 8px; padding: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .d2b .d-card::before { content: ''; display: block; height: 3px; background: #76b900; }
+    .d2b .d-card h4 { color: #222; font-size: 0.85rem; margin-bottom: 0.3rem; padding: 1rem 1rem 0; }
+    .d2b .d-card p { color: #666; font-size: 0.75rem; padding: 0 1rem; }
+    .d2b .d-badge { display: inline-block; background: #76b900; color: #fff; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.65rem; font-weight: 600; margin: 0.4rem 0 0.8rem 1rem; }
+    .d2b .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2b .d-table th { background: #76b900; color: #fff; padding: 0.5rem; text-align: left; }
+    .d2b .d-table td { padding: 0.5rem; border-bottom: 1px solid #eee; color: #333; }
+
+    /* ============================================= */
+    /* 02-C: Warm Light                              */
+    /* クリーム色の暖かみ。オフホワイト + グリーン。   */
+    /* ============================================= */
+    .d2c { background: #faf8f5; color: #2d2a26; font-family: 'Segoe UI', sans-serif; }
+    .d2c .d-hero { background: #f5f2ed; border-bottom: 2px solid #8eac50; padding: 2rem; text-align: center; }
+    .d2c .d-hero h2 { font-size: 1.5rem; color: #2d2a26; }
+    .d2c .d-hero h2 b { color: #6d8f2e; }
+    .d2c .d-hero p { color: #8a8580; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2c .d-body { padding: 1.5rem; }
+    .d2c .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2c .d-card { background: #fff; border: 1px solid #e8e4de; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .d2c .d-card h4 { color: #2d2a26; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d2c .d-card p { color: #8a8580; font-size: 0.75rem; }
+    .d2c .d-badge { display: inline-block; background: #eef5df; color: #6d8f2e; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d2c .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2c .d-table th { background: #f5f2ed; color: #6d8f2e; padding: 0.5rem; text-align: left; border-bottom: 2px solid #d4cfc7; }
+    .d2c .d-table td { padding: 0.5rem; border-bottom: 1px solid #eee8e0; color: #4a4540; }
+
+    /* ===================================================== */
+    /* 02-D: Green Gradient Hero                              */
+    /* ヒーローにグリーングラデーション。本文は清潔なホワイト。 */
+    /* ===================================================== */
+    .d2d { background: #fff; color: #1a1a1a; font-family: 'Segoe UI', sans-serif; }
+    .d2d .d-hero { background: linear-gradient(135deg, #76b900, #4a8500, #2d6b00); padding: 2rem; text-align: center; }
+    .d2d .d-hero h2 { font-size: 1.6rem; color: #fff; }
+    .d2d .d-hero h2 b { color: #d4ff70; }
+    .d2d .d-hero p { color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2d .d-body { padding: 1.5rem; }
+    .d2d .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2d .d-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+    .d2d .d-card h4 { color: #2d6b00; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d2d .d-card p { color: #666; font-size: 0.75rem; }
+    .d2d .d-badge { display: inline-block; background: #e8f5c8; color: #2d6b00; padding: 0.1rem 0.5rem; border-radius: 12px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d2d .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2d .d-table th { background: #f1f8e9; color: #2d6b00; padding: 0.5rem; text-align: left; border-bottom: 2px solid #a5d651; }
+    .d2d .d-table td { padding: 0.5rem; border-bottom: 1px solid #eee; color: #333; }
+
+    /* =============================================== */
+    /* 02-E: Left Border Cards                         */
+    /* カード左にカラーボーダー。情報の分類が視覚的に。  */
+    /* =============================================== */
+    .d2e { background: #f4f6f8; color: #1a1a1a; font-family: 'Segoe UI', sans-serif; }
+    .d2e .d-hero { background: #fff; border-bottom: 2px solid #76b900; padding: 2rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .d2e .d-hero h2 { font-size: 1.5rem; color: #111; }
+    .d2e .d-hero h2 b { color: #76b900; }
+    .d2e .d-hero p { color: #777; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2e .d-body { padding: 1.5rem; }
+    .d2e .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2e .d-card { background: #fff; border: 1px solid #e5e7ea; border-radius: 8px; padding: 1rem; border-left: 4px solid #76b900; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .d2e .d-card:nth-child(2) { border-left-color: #4caf50; }
+    .d2e .d-card:nth-child(3) { border-left-color: #2196f3; }
+    .d2e .d-card:nth-child(4) { border-left-color: #ff9800; }
+    .d2e .d-card h4 { color: #222; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .d2e .d-card p { color: #666; font-size: 0.75rem; }
+    .d2e .d-badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d2e .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2e .d-table th { background: #f8f9fa; color: #555; padding: 0.5rem; text-align: left; border-bottom: 2px solid #e0e0e0; font-weight: 700; }
+    .d2e .d-table td { padding: 0.5rem; border-bottom: 1px solid #f0f0f0; color: #333; }
+
+    /* ================================================= */
+    /* 02-F: Elevated Cards                               */
+    /* フローティングカード。大きめ影、角丸、空間的デザイン。 */
+    /* ================================================= */
+    .d2f { background: #f0f2f5; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .d2f .d-hero { background: #fff; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .d2f .d-hero h2 { font-size: 1.6rem; color: #111; letter-spacing: -0.01em; }
+    .d2f .d-hero h2 b { color: #76b900; }
+    .d2f .d-hero p { color: #888; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2f .d-body { padding: 1.5rem; }
+    .d2f .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .d2f .d-card { background: #fff; border: none; border-radius: 14px; padding: 1.2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .d2f .d-card h4 { color: #111; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 700; }
+    .d2f .d-card p { color: #777; font-size: 0.75rem; }
+    .d2f .d-badge { display: inline-block; background: linear-gradient(135deg, #76b900, #5a9e00); color: #fff; padding: 0.15rem 0.6rem; border-radius: 14px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d2f .d-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.75rem; margin-top: 1rem; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .d2f .d-table th { background: #fafafa; color: #555; padding: 0.6rem; text-align: left; border-bottom: 1px solid #eee; }
+    .d2f .d-table td { padding: 0.6rem; border-bottom: 1px solid #f5f5f5; color: #444; }
+
+    /* ============================================ */
+    /* 02-G: Magazine Style                         */
+    /* 雑誌風レイアウト。セリフ見出し + 上品なライン。 */
+    /* ============================================ */
+    .d2g { background: #fff; color: #222; font-family: 'Segoe UI', sans-serif; }
+    .d2g .d-hero { background: #fff; padding: 2rem; text-align: center; border-bottom: 1px solid #ddd; }
+    .d2g .d-hero h2 { font-size: 1.7rem; color: #111; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: 0.03em; }
+    .d2g .d-hero h2 b { color: #76b900; font-weight: 700; }
+    .d2g .d-hero p { color: #999; font-size: 0.8rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .d2g .d-body { padding: 1.5rem; }
+    .d2g .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2g .d-card { background: #fff; border-bottom: 2px solid #e0e0e0; border-radius: 0; padding: 1rem 0.5rem; }
+    .d2g .d-card h4 { color: #111; font-size: 0.9rem; margin-bottom: 0.3rem; font-family: Georgia, serif; font-weight: 400; }
+    .d2g .d-card p { color: #777; font-size: 0.75rem; }
+    .d2g .d-badge { display: inline-block; background: transparent; color: #76b900; padding: 0.1rem 0; font-size: 0.65rem; font-weight: 700; margin-top: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .d2g .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2g .d-table th { background: transparent; color: #76b900; padding: 0.5rem; text-align: left; border-bottom: 2px solid #111; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.7rem; }
+    .d2g .d-table td { padding: 0.5rem; border-bottom: 1px solid #eee; color: #444; }
+
+    /* ========================================================= */
+    /* 02-H: Stripe-Inspired                                      */
+    /* Stripe 風のクリーンデザイン。パープル〜ブルーのグラデ混在。 */
+    /* ========================================================= */
+    .d2h { background: #f6f9fc; color: #32325d; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .d2h .d-hero { background: linear-gradient(135deg, #f6f9fc, #e8f5e9); padding: 2rem; text-align: center; border-bottom: 1px solid #e3e8ee; }
+    .d2h .d-hero h2 { font-size: 1.5rem; color: #32325d; font-weight: 700; }
+    .d2h .d-hero h2 b { color: #76b900; }
+    .d2h .d-hero p { color: #8898aa; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2h .d-body { padding: 1.5rem; }
+    .d2h .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2h .d-card { background: #fff; border: 1px solid #e3e8ee; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px rgba(50,50,93,0.06), 0 1px 2px rgba(0,0,0,0.04); }
+    .d2h .d-card h4 { color: #32325d; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 600; }
+    .d2h .d-card p { color: #8898aa; font-size: 0.75rem; }
+    .d2h .d-badge { display: inline-block; background: #e8f5e9; color: #558b2f; padding: 0.1rem 0.5rem; border-radius: 20px; font-size: 0.65rem; font-weight: 600; margin-top: 0.4rem; }
+    .d2h .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2h .d-table th { background: #f6f9fc; color: #8898aa; padding: 0.5rem; text-align: left; border-bottom: 1px solid #e3e8ee; text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+    .d2h .d-table td { padding: 0.5rem; border-bottom: 1px solid #f0f3f7; color: #32325d; }
+
+    /* =============================================== */
+    /* 02-I: Notion-Style                              */
+    /* Notion 風。広い余白、モノトーン + ワンポイント。  */
+    /* =============================================== */
+    .d2i { background: #fff; color: #37352f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .d2i .d-hero { background: #fff; padding: 2.5rem 2rem 1.5rem; text-align: left; }
+    .d2i .d-hero h2 { font-size: 1.8rem; color: #37352f; font-weight: 700; letter-spacing: -0.02em; }
+    .d2i .d-hero h2 b { color: #76b900; }
+    .d2i .d-hero p { color: #999; font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2i .d-body { padding: 0 2rem 1.5rem; }
+    .d2i .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .d2i .d-card { background: #f7f6f3; border: none; border-radius: 4px; padding: 1rem; }
+    .d2i .d-card h4 { color: #37352f; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 600; }
+    .d2i .d-card p { color: #787774; font-size: 0.75rem; }
+    .d2i .d-badge { display: inline-block; background: #dbeddb; color: #37352f; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.65rem; font-weight: 500; margin-top: 0.4rem; }
+    .d2i .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2i .d-table th { background: transparent; color: #999; padding: 0.4rem 0.5rem; text-align: left; border-bottom: 1px solid #e9e9e7; font-weight: 500; font-size: 0.7rem; }
+    .d2i .d-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #f0efed; color: #37352f; }
+
+    /* ============================================== */
+    /* 02-J: Material Light                            */
+    /* Material Design 風。リップル的な影 + ラウンド。  */
+    /* ============================================== */
+    .d2j { background: #fafafa; color: #212121; font-family: Roboto, 'Segoe UI', sans-serif; }
+    .d2j .d-hero { background: #76b900; padding: 2rem; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.12); }
+    .d2j .d-hero h2 { font-size: 1.5rem; color: #fff; font-weight: 500; }
+    .d2j .d-hero p { color: rgba(255,255,255,0.85); font-size: 0.85rem; margin-top: 0.3rem; }
+    .d2j .d-body { padding: 1.5rem; }
+    .d2j .d-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .d2j .d-card { background: #fff; border: none; border-radius: 8px; padding: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08); }
+    .d2j .d-card h4 { color: #212121; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 500; }
+    .d2j .d-card p { color: #757575; font-size: 0.75rem; }
+    .d2j .d-badge { display: inline-block; background: #c8e6c9; color: #2e7d32; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 500; margin-top: 0.4rem; }
+    .d2j .d-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    .d2j .d-table th { background: #f5f5f5; color: #757575; padding: 0.5rem; text-align: left; border-bottom: 1px solid #e0e0e0; font-weight: 500; }
+    .d2j .d-table td { padding: 0.5rem; border-bottom: 1px solid #eeeeee; color: #424242; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--green); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      .samples { grid-template-columns: 1fr; padding: 0 1rem; }
+      .preview { height: 420px; }
+      .page-header h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html">&larr; 技術概要トップへ戻る</a>
+  <a href="design-samples.html">10 種デザイン一覧</a>
+</nav>
+
+<div class="page-header">
+  <h1>Light Clean <span>バリエーション</span></h1>
+  <p>Design 02（Light Clean）をベースにした 10 種類のバリエーション</p>
+  <div class="base-note">Base: #ffffff + #76b900 + Clean Cards</div>
+</div>
+
+<div class="samples">
+
+  <!-- ===== 02-A: Ultra Minimal ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-A</span>Ultra Minimal<span class="feature">影なし・極細ボーダー</span></h3>
+      <span class="tag">ミニマル</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2a">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>装飾を極限まで削ぎ落としたミニマルスタイル。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-B: Green Accent Bar ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-B</span>Green Accent Bar<span class="feature">カード上部バー</span></h3>
+      <span class="tag">アクセント</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2b">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>カード上部のグリーンバーで情報ブロックを強調。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-C: Warm Light ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-C</span>Warm Light<span class="feature">クリーム系暖色</span></h3>
+      <span class="tag">ウォーム</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2c">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>オフホワイトの温かみあるライトテーマ。柔らかい印象。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-D: Green Gradient Hero ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-D</span>Green Gradient Hero<span class="feature">ヒーロー全面グリーン</span></h3>
+      <span class="tag">グラデーション</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2d">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>NVIDIA グリーンのグラデーションヒーロー。ホワイトボディ。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-E: Left Border Cards ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-E</span>Left Border Cards<span class="feature">カラー左ボーダー</span></h3>
+      <span class="tag">カテゴリ分け</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2e">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>カード左にカテゴリ別カラーボーダー。視覚的に整理。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-F: Elevated Cards ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-F</span>Elevated Cards<span class="feature">フローティングシャドウ</span></h3>
+      <span class="tag">立体的</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2f">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>大きめシャドウのフローティングカード。立体的で空間的。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-G: Magazine Style ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-G</span>Magazine Style<span class="feature">セリフ見出し・雑誌風</span></h3>
+      <span class="tag">エレガント</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2g">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>Technology Overview &mdash; Architecture &amp; Infrastructure</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-H: Stripe-Inspired ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-H</span>Stripe-Inspired<span class="feature">クール＋クリーン</span></h3>
+      <span class="tag">SaaS 風</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2h">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>Stripe 風のクリーンで洗練されたデザイン。信頼感。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-I: Notion-Style ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-I</span>Notion-Style<span class="feature">広い余白・左寄せ</span></h3>
+      <span class="tag">ドキュメント</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2i">
+        <div class="d-hero">
+          <h2><b>NVIDIA</b> AI データセンター技術</h2>
+          <p>Notion 風。ドキュメントツールのような自然な読みやすさ。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 02-J: Material Light ===== -->
+  <div class="sample">
+    <div class="sample-label">
+      <h3><span class="num">02-J</span>Material Light<span class="feature">Material Design 風</span></h3>
+      <span class="tag">マテリアル</span>
+    </div>
+    <div class="preview">
+      <div class="preview-inner d2j">
+        <div class="d-hero">
+          <h2>NVIDIA AI データセンター技術</h2>
+          <p>Material Design ライトテーマ。グリーンのソリッドヒーロー。</p>
+        </div>
+        <div class="d-body">
+          <div class="d-cards">
+            <div class="d-card"><h4>Rubin GPU</h4><p>次世代アーキテクチャ。50 PFLOPS、HBM4 288GB 搭載。</p><span class="d-badge">2026 H2</span></div>
+            <div class="d-card"><h4>NVLink 6</h4><p>GPU 間 3.6 TB/s の超高速インターコネクト。</p><span class="d-badge">3.6 TB/s</span></div>
+            <div class="d-card"><h4>Spectrum-X Photonics</h4><p>CPO 採用の次世代 Ethernet。400 Tb/s。</p><span class="d-badge">CPO</span></div>
+            <div class="d-card"><h4>BlueField-4 DPU</h4><p>Grace CPU 統合の次世代 DPU。800 Gb/s。</p><span class="d-badge">DPU</span></div>
+          </div>
+          <table class="d-table">
+            <tr><th>世代</th><th>GPU</th><th>NVLink</th><th>NIC</th></tr>
+            <tr><td>Hopper</td><td>H100/H200</td><td>900 GB/s</td><td>400G</td></tr>
+            <tr><td>Blackwell</td><td>B200/B300</td><td>1.8 TB/s</td><td>800G</td></tr>
+            <tr><td>Rubin</td><td>Rubin</td><td>3.6 TB/s</td><td>1.6T</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Light Clean バリエーション &mdash; <a href="design-samples.html">10 種デザイン一覧</a> | <a href="index.html">技術概要トップへ</a> | <a href="ai-datacenter-relations.html">技術関連性マップ</a></p>
+</footer>
+
+</body>
+</html>
