@@ -3,849 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NVIDIA 技術概要 - 主要技術・製品・プラットフォーム</title>
+  <title>NVIDIA 技術調査</title>
   <style>
     :root {
       --nvidia-green: #76b900;
-      --nvidia-green-dark: #5a8f00;
       --bg: #fff;
       --bg-card: #f7f6f3;
       --bg-hover: #efeeeb;
       --border: #e9e9e7;
-      --border-light: #f0efed;
       --text: #37352f;
-      --text-muted: #555;
-      --text-heading: #1a1a1a;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
-    }
-
-    /* Hero */
-    .hero {
-      background: var(--bg);
-      border-bottom: none;
-      padding: 4rem 2rem 2rem;
-      text-align: left;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .hero h1 {
-      font-size: 2.6rem;
-      color: #1a1a1a;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-    .hero h1 span { color: var(--nvidia-green); }
-    .hero p {
-      font-size: 1rem;
-      color: #787774;
-      max-width: 700px;
-      margin: 0.5rem 0 0;
-    }
-    .hero .date {
-      display: inline-block;
-      margin-top: 1.2rem;
-      padding: 0.2rem 0.6rem;
-      background: var(--bg-card);
-      border: none;
-      border-radius: 3px;
-      font-size: 0.78rem;
-      color: #787774;
-    }
-
-    /* Container */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    /* Section */
-    .section {
-      padding: 3rem 0;
-    }
-    .section + .section {
-      border-top: 1px solid var(--border);
-    }
-    .section-title {
-      font-size: 1.6rem;
-      color: var(--text-heading);
-      margin-bottom: 0.3rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      padding-bottom: 0.4rem;
-      border-bottom: 3px solid var(--nvidia-green);
-      display: inline-block;
-    }
-    .section-title .icon { margin-right: 0.5rem; }
-    .section-desc {
-      color: #787774;
-      margin-bottom: 1.8rem;
-      font-size: 0.9rem;
-    }
-
-    /* Grid */
-    .grid {
-      display: grid;
-      gap: 0.8rem;
-    }
-    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-
-    /* Card */
-    .card {
-      background: var(--bg-card);
-      border: none;
-      border-radius: 4px;
-      padding: 1.3rem;
-      transition: background 0.15s;
-    }
-    .card:hover {
-      background: var(--bg-hover);
-    }
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.6rem;
-    }
-    .card h3 {
-      font-size: 1.05rem;
-      color: #1a1a1a;
-      font-weight: 600;
-    }
-    .card h3 small {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: normal;
-      margin-top: 2px;
-    }
-    .card p {
-      font-size: 0.88rem;
-      color: #555;
-      margin-bottom: 0.6rem;
-      line-height: 1.5;
-    }
-    .badge {
-      display: inline-block;
-      padding: 0.1rem 0.45rem;
-      border-radius: 3px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-left: 0.5rem;
-    }
-    .badge-green { background: #dbeddb; color: #1a1a1a; }
-    .badge-blue  { background: #d3e5ef; color: #1a1a1a; }
-    .badge-purple { background: #e8deee; color: #1a1a1a; }
-    .badge-orange { background: #fadec9; color: #1a1a1a; }
-    .badge-red { background: #ffe2dd; color: #1a1a1a; }
-
-    /* Specs */
-    .specs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-    }
-    .spec {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.15rem 0.5rem;
-      background: #dbeddb;
-      border: none;
-      border-radius: 3px;
-      font-size: 0.75rem;
-      color: #1a1a1a;
-      font-weight: 500;
-    }
-    .spec::after { display: none; }
-    .spec-label {
-      color: #787774;
-      font-size: 0.72rem;
-    }
-
-    /* Roadmap */
-    .roadmap {
-      overflow-x: auto;
-    }
-    .roadmap table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.84rem;
-      min-width: 800px;
-    }
-    .roadmap th {
-      background: transparent;
-      color: #787774;
-      padding: 0.5rem 0.8rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      font-weight: 500;
-      font-size: 0.78rem;
-      white-space: nowrap;
-    }
-    .roadmap td {
-      padding: 0.6rem 0.8rem;
-      border-bottom: 1px solid var(--border-light);
-      color: var(--text);
-      vertical-align: top;
-    }
-    .roadmap tr:hover td { background: var(--bg-card); }
-    .roadmap .gen-label {
-      font-weight: 600;
-      color: #1a1a1a;
-      white-space: nowrap;
-    }
-
-    /* Interconnect diagram */
-    .interconnect-visual {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      padding: 1.8rem 1rem;
-      background: var(--bg-card);
-      border: none;
-      border-radius: 4px;
-      margin-bottom: 1.5rem;
-    }
-    .iv-node {
-      text-align: center;
-      padding: 0.8rem 1.3rem;
-      border: none;
-      border-radius: 4px;
-      background: var(--bg);
-      min-width: 130px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-    }
-    .iv-node .label { font-size: 0.72rem; color: #787774; }
-    .iv-node .value { font-size: 1.15rem; font-weight: 700; color: #1a1a1a; }
-    .iv-arrow {
-      font-size: 1.3rem;
-      color: var(--nvidia-green);
-    }
-
-    /* Software stack */
-    .sw-stack {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
     }
-    .sw-layer {
-      padding: 0.9rem 1.3rem;
-      border: none;
-      border-radius: 4px;
-      text-align: center;
+    .page {
+      max-width: 600px;
+      width: 100%;
     }
-    .sw-layer h4 { font-size: 0.9rem; color: #1a1a1a; font-weight: 600; }
-    .sw-layer p { font-size: 0.8rem; color: #555; margin-top: 0.2rem; }
-    .sw-layer.l1 { background: #dbeddb; }
-    .sw-layer.l2 { background: #d3e5ef; }
-    .sw-layer.l3 { background: #e8deee; }
-    .sw-layer.l4 { background: #fadec9; }
-
-    /* Key numbers */
-    .key-numbers {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 0.6rem;
+    h1 {
+      font-size: 2.2rem;
+      color: #1a1a1a;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       margin-bottom: 2rem;
     }
-    .kn {
-      text-align: center;
-      padding: 1.3rem 0.8rem;
+    h1 span { color: var(--nvidia-green); }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .links a {
+      display: block;
+      color: #1a1a1a;
+      text-decoration: none;
       background: var(--bg-card);
-      border: none;
+      padding: 0.8rem 1.2rem;
       border-radius: 4px;
+      font-size: 0.95rem;
+      transition: background 0.15s;
     }
-    .kn .number {
-      font-size: 2rem;
-      font-weight: 700;
+    .links a:hover { background: var(--bg-hover); }
+    .links a .arrow {
       color: var(--nvidia-green);
-      line-height: 1.2;
+      margin-left: 0.3rem;
     }
-    .kn .unit {
-      font-size: 0.82rem;
-      color: #555;
-    }
-    .kn .desc {
-      font-size: 0.75rem;
-      color: #787774;
-      margin-top: 0.3rem;
-    }
-
-    /* Footer */
-    footer {
+    .sub-links {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
       border-top: 1px solid var(--border);
-      padding: 2rem;
-      text-align: center;
+    }
+    .sub-links .label {
+      font-size: 0.72rem;
       color: #787774;
-      font-size: 0.82rem;
+      margin-bottom: 0.4rem;
     }
-    footer a { color: var(--nvidia-green); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero { padding: 2.5rem 1.5rem 1.5rem; }
-      .hero h1 { font-size: 1.8rem; }
-      .hero p { font-size: 0.95rem; }
-      .section-title { font-size: 1.3rem; }
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-      .container { padding: 0 1rem; }
-      .iv-arrow { transform: rotate(90deg); }
+    .sub-links .items {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
     }
+    .sub-links a {
+      display: inline-block;
+      color: #787774;
+      text-decoration: none;
+      background: var(--bg-card);
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      transition: background 0.15s;
+    }
+    .sub-links a:hover { background: var(--bg-hover); color: #1a1a1a; }
   </style>
 </head>
 <body>
 
-<!-- Hero -->
-<header class="hero">
-  <h1><span>NVIDIA</span> 技術概要</h1>
-  <p>GPU、ネットワーキング、インターコネクト、ソフトウェアプラットフォームを網羅した NVIDIA データセンター技術の全体像</p>
-  <div class="date">調査日: 2026-02-27</div>
-  <div style="margin-top:1.2rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-    <a href="ai-datacenter-relations.html" style="display:inline-block; color:#1a1a1a; text-decoration:none; background:#dbeddb; padding:0.25rem 0.7rem; border-radius:3px; font-size:0.85rem;"
-       onmouseover="this.style.background='#c8e0c8'" onmouseout="this.style.background='#dbeddb'">
-      NVIDIA AI データセンター技術の関連性マップ &rarr;
-    </a>
-    <a href="non-nvidia-ai-datacenter.html" style="display:inline-block; color:#1a1a1a; text-decoration:none; background:#dbeddb; padding:0.25rem 0.7rem; border-radius:3px; font-size:0.85rem;"
-       onmouseover="this.style.background='#c8e0c8'" onmouseout="this.style.background='#dbeddb'">
-      NVIDIA 以外の AI データセンター構成 &rarr;
-    </a>
+<div class="page">
+  <h1><span>NVIDIA</span> 技術調査</h1>
+  <div class="links">
+    <a href="ai-datacenter-relations.html">AI データセンター技術の関連性マップ<span class="arrow">&rarr;</span></a>
+    <a href="non-nvidia-ai-datacenter.html">NVIDIA 以外の AI データセンター構成<span class="arrow">&rarr;</span></a>
   </div>
-  <div style="margin-top:0.6rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-    <span style="font-size:0.72rem; color:#787774; margin-right:0.2rem;">デザイン:</span>
-    <a href="design-samples.html" style="display:inline-block; color:#787774; text-decoration:none; background:#f7f6f3; padding:0.2rem 0.6rem; border-radius:3px; font-size:0.78rem;"
-       onmouseover="this.style.background='#efeeeb'" onmouseout="this.style.background='#f7f6f3'">
-      10 デザイン比較
-    </a>
-    <a href="design-samples-02.html" style="display:inline-block; color:#787774; text-decoration:none; background:#f7f6f3; padding:0.2rem 0.6rem; border-radius:3px; font-size:0.78rem;"
-       onmouseover="this.style.background='#efeeeb'" onmouseout="this.style.background='#f7f6f3'">
-      Light Clean 派生
-    </a>
-    <a href="design-samples-readability.html" style="display:inline-block; color:#787774; text-decoration:none; background:#f7f6f3; padding:0.2rem 0.6rem; border-radius:3px; font-size:0.78rem;"
-       onmouseover="this.style.background='#efeeeb'" onmouseout="this.style.background='#f7f6f3'">
-      可読性改善案
-    </a>
+  <div class="sub-links">
+    <div class="label">デザイン</div>
+    <div class="items">
+      <a href="design-samples.html">10 デザイン比較</a>
+      <a href="design-samples-02.html">Light Clean 派生</a>
+      <a href="design-samples-readability.html">可読性改善案</a>
+    </div>
   </div>
-</header>
-
-<main class="container">
-
-  <!-- Key Numbers -->
-  <section class="section">
-    <h2 class="section-title">Rubin 世代の主要スペック</h2>
-    <p class="section-desc">2026 年後半に登場する次世代 Rubin プラットフォームのハイライト</p>
-    <div class="key-numbers">
-      <div class="kn">
-        <div class="number">50</div>
-        <div class="unit">PFLOPS</div>
-        <div class="desc">Rubin GPU 演算性能</div>
-      </div>
-      <div class="kn">
-        <div class="number">3.6</div>
-        <div class="unit">TB/s</div>
-        <div class="desc">NVLink 6 GPU 間帯域幅</div>
-      </div>
-      <div class="kn">
-        <div class="number">1.6</div>
-        <div class="unit">Tb/s</div>
-        <div class="desc">ConnectX-9 ネットワーク帯域幅</div>
-      </div>
-      <div class="kn">
-        <div class="number">260</div>
-        <div class="unit">TB/s</div>
-        <div class="desc">Vera Rubin NVL72 scale-up 帯域幅</div>
-      </div>
-      <div class="kn">
-        <div class="number">72</div>
-        <div class="unit">GPU</div>
-        <div class="desc">NVL72 搭載 GPU 数</div>
-      </div>
-      <div class="kn">
-        <div class="number">400</div>
-        <div class="unit">Tb/s</div>
-        <div class="desc">Spectrum-X Photonics 最大帯域幅</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GPU / CPU -->
-  <section class="section">
-    <h2 class="section-title">GPU / CPU アーキテクチャ</h2>
-    <p class="section-desc">データセンター向け GPU と CPU の世代別ラインナップ</p>
-    <div class="grid grid-2">
-
-      <!-- Rubin -->
-      <div class="card">
-        <div class="card-header">
-          <h3>Rubin GPU<small>次世代アーキテクチャ (2026)</small></h3>
-          <span class="badge badge-red">2026 H2</span>
-        </div>
-        <p>Blackwell の次世代。HBM4 メモリと新 Transformer Engine を搭載。トレーニング 3.5 倍、推論 5 倍の性能向上。</p>
-        <div class="specs">
-          <span class="spec">50 PFLOPS</span>
-          <span class="spec">HBM4 288GB</span>
-          <span class="spec">NVLink 6</span>
-        </div>
-      </div>
-
-      <!-- Rubin CPX -->
-      <div class="card">
-        <div class="card-header">
-          <h3>Rubin CPX<small>大規模コンテキスト推論特化 (2026)</small></h3>
-          <span class="badge badge-red">2026 末</span>
-        </div>
-        <p>100 万トークン級のコーディングや生成動画アプリケーション向けの推論特化 GPU。</p>
-        <div class="specs">
-          <span class="spec">大規模コンテキスト最適化</span>
-        </div>
-      </div>
-
-      <!-- Blackwell Ultra B300 -->
-      <div class="card">
-        <div class="card-header">
-          <h3>Blackwell Ultra B300<small>現行最新 GPU (2025)</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>208B トランジスタ、デュアルレチクル設計。リーズニング・エージェント型 AI に最適化。</p>
-        <div class="specs">
-          <span class="spec">15 PFLOPS FP4</span>
-          <span class="spec">HBM3e 288GB</span>
-          <span class="spec">8 TB/s 帯域幅</span>
-          <span class="spec">NVLink 5</span>
-        </div>
-      </div>
-
-      <!-- H100 / H200 -->
-      <div class="card">
-        <div class="card-header">
-          <h3>Hopper H100 / H200<small>前世代 (2022-2024)</small></h3>
-          <span class="badge badge-blue">運用中</span>
-        </div>
-        <p>広く普及した前世代 GPU。H200 は HBM3e 141GB に強化。現在も多くのデータセンターで稼働。</p>
-        <div class="specs">
-          <span class="spec">80-141GB HBM3e</span>
-          <span class="spec">NVLink 4</span>
-          <span class="spec">900 GB/s</span>
-        </div>
-      </div>
-
-      <!-- Vera CPU -->
-      <div class="card">
-        <div class="card-header">
-          <h3>Vera CPU<small>次世代 Arm CPU (2026)</small></h3>
-          <span class="badge badge-red">2026 H2</span>
-        </div>
-        <p>88 個の Olympus コア搭載。FP8 対応 CPU。Rubin GPU と Superchip を構成。Grace 比 2 倍の性能。</p>
-        <div class="specs">
-          <span class="spec">88 コア / 176 スレッド</span>
-          <span class="spec">1.2 TB/s メモリ帯域幅</span>
-          <span class="spec">TDP 50W</span>
-        </div>
-      </div>
-
-      <!-- Grace CPU -->
-      <div class="card">
-        <div class="card-header">
-          <h3>Grace CPU<small>現行 Arm CPU</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>72 個の Arm Neoverse V2 コア搭載。LPDDR5X メモリで高いエネルギー効率を実現。</p>
-        <div class="specs">
-          <span class="spec">72 コア</span>
-          <span class="spec">500 GB/s メモリ帯域幅</span>
-          <span class="spec">NVLink-C2C 900 GB/s</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Networking -->
-  <section class="section">
-    <h2 class="section-title">ネットワーキング</h2>
-    <p class="section-desc">NIC / SuperNIC、DPU、Ethernet / InfiniBand スイッチの製品ライン</p>
-
-    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">NIC / SuperNIC</h3>
-    <div class="grid grid-3" style="margin-bottom: 2rem;">
-      <div class="card">
-        <div class="card-header">
-          <h3>ConnectX-9<small>Rubin 世代</small></h3>
-          <span class="badge badge-red">2026 H2</span>
-        </div>
-        <p>GPU あたり 1.6 Tb/s。InfiniBand / Ethernet 両対応。</p>
-        <div class="specs">
-          <span class="spec">1.6 Tb/s</span>
-          <span class="spec">IB + Ethernet</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>ConnectX-8<small>Blackwell 世代</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>800G SuperNIC。PCIe Gen6 スイッチ内蔵。NCCL all-to-all 2 倍高速化。</p>
-        <div class="specs">
-          <span class="spec">800 Gb/s</span>
-          <span class="spec">PCIe Gen6</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>ConnectX-7<small>Hopper 世代</small></h3>
-          <span class="badge badge-blue">運用中</span>
-        </div>
-        <p>400 Gb/s InfiniBand NDR / Ethernet 対応の前世代 NIC。</p>
-        <div class="specs">
-          <span class="spec">400 Gb/s</span>
-          <span class="spec">PCIe Gen5</span>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">DPU (Data Processing Unit)</h3>
-    <div class="grid grid-3" style="margin-bottom: 2rem;">
-      <div class="card">
-        <div class="card-header">
-          <h3>BlueField-4<small>Rubin 世代</small></h3>
-          <span class="badge badge-red">2026 H2</span>
-        </div>
-        <p>Grace CPU + ConnectX-9 統合。BlueField-3 比 6 倍のコンピュート。BlueField Astra セキュリティ搭載。</p>
-        <div class="specs">
-          <span class="spec">800 Gb/s</span>
-          <span class="spec">Grace CPU 統合</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>BlueField-3<small>現行世代</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>8 Arm コア、400 Gb/s。DPU / SuperNIC 両モードに対応。</p>
-        <div class="specs">
-          <span class="spec">400 Gb/s</span>
-          <span class="spec">8 Arm コア</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>BlueField-2<small>前世代</small></h3>
-          <span class="badge badge-purple">レガシー</span>
-        </div>
-        <p>200 Gb/s 対応の初期世代 DPU。</p>
-        <div class="specs">
-          <span class="spec">200 Gb/s</span>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600;">スイッチ</h3>
-    <div class="grid grid-2">
-      <div class="card">
-        <div class="card-header">
-          <h3>Spectrum-X Photonics<small>次世代 Ethernet (CPO)</small></h3>
-          <span class="badge badge-red">2026 H2</span>
-        </div>
-        <p>Co-Packaged Optics 採用。128~512 ポート x 800G。従来比 3.5 倍の電力効率で数百万 GPU を接続可能。</p>
-        <div class="specs">
-          <span class="spec">最大 400 Tb/s</span>
-          <span class="spec">Silicon Photonics</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>Spectrum-X / Spectrum-4<small>現行 Ethernet</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>AI 最適化 Ethernet。RoCE adaptive routing / congestion control で最大 95% 有効帯域幅。</p>
-        <div class="specs">
-          <span class="spec">51.2 Tb/s</span>
-          <span class="spec">128 x 400G</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>Quantum-X Photonics<small>次世代 InfiniBand (CPO)</small></h3>
-          <span class="badge badge-red">2026 H1</span>
-        </div>
-        <p>144 ポート x 800G InfiniBand。115 Tb/s スループット。液冷設計。</p>
-        <div class="specs">
-          <span class="spec">115 Tb/s</span>
-          <span class="spec">800G IB</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>Quantum-2 (QM9700)<small>現行 InfiniBand</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>NDR 400G InfiniBand。SHARP In-Network Computing、adaptive routing 対応。</p>
-        <div class="specs">
-          <span class="spec">51.2 Tb/s</span>
-          <span class="spec">64 x 400G</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Interconnect -->
-  <section class="section">
-    <h2 class="section-title">インターコネクト技術</h2>
-    <p class="section-desc">GPU 間・チップ間の高速接続を実現する NVLink エコシステム</p>
-
-    <div class="interconnect-visual">
-      <div class="iv-node">
-        <div class="label">NVLink 4 (Hopper)</div>
-        <div class="value">900 GB/s</div>
-      </div>
-      <div class="iv-arrow">&rarr;</div>
-      <div class="iv-node">
-        <div class="label">NVLink 5 (Blackwell)</div>
-        <div class="value">1.8 TB/s</div>
-      </div>
-      <div class="iv-arrow">&rarr;</div>
-      <div class="iv-node" style="border-color: var(--nvidia-accent);">
-        <div class="label">NVLink 6 (Rubin)</div>
-        <div class="value">3.6 TB/s</div>
-      </div>
-    </div>
-
-    <div class="grid grid-2">
-      <div class="card">
-        <div class="card-header">
-          <h3>NVSwitch</h3>
-        </div>
-        <p>NVLink ファブリックをノード規模に拡張。NVL72 で 72 GPU を 130 TB/s で non-blocking 接続。576 GPU で 1 PB/s の合計帯域幅。</p>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>NVLink Spine</h3>
-        </div>
-        <p>ラック内 72 GPU を接続する物理インターコネクト構造体。130 TB/s 持続スループット。NVLink Fusion スイッチチップで 14.4 TB/s non-blocking。</p>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>NVLink Fusion</h3>
-        </div>
-        <p>カスタム CPU / XPU を NVLink に統合可能にするオープンプラットフォーム。MediaTek, Marvell, Fujitsu, Qualcomm 等がパートナー。</p>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>NVLink-C2C</h3>
-        </div>
-        <p>チップ間直接接続。Grace-Hopper: 900 GB/s、Vera Rubin: 1.8 TB/s。CPU-GPU 間のコヒーレント接続を実現。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Software -->
-  <section class="section">
-    <h2 class="section-title">ソフトウェアプラットフォーム</h2>
-    <p class="section-desc">GPU からネットワーク、管理まで網羅するソフトウェアスタック</p>
-
-    <div class="grid grid-2" style="margin-bottom: 2rem;">
-      <div>
-        <h3 style="color: var(--text-heading); margin-bottom: 1rem; font-size: 1.05rem; font-weight: 600;">ソフトウェアスタック構造</h3>
-        <div class="sw-stack">
-          <div class="sw-layer l1">
-            <h4>AI フレームワーク / アプリケーション</h4>
-            <p>PyTorch, TensorFlow, etc.</p>
-          </div>
-          <div class="sw-layer l2">
-            <h4>通信ライブラリ</h4>
-            <p>NCCL, NVSHMEM, UCX, Magnum IO</p>
-          </div>
-          <div class="sw-layer l3">
-            <h4>プラットフォーム SDK</h4>
-            <p>CUDA (GPU) / DOCA (DPU)</p>
-          </div>
-          <div class="sw-layer l4">
-            <h4>ネットワーク OS / 管理</h4>
-            <p>Cumulus Linux, SONiC, NetQ, Mission Control</p>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="grid" style="grid-template-columns: 1fr; gap: 1rem;">
-          <div class="card">
-            <h3>CUDA</h3>
-            <p>GPU プログラミングの基盤。C++, Python, Fortran 対応の並列計算プラットフォーム。</p>
-          </div>
-          <div class="card">
-            <h3>DOCA</h3>
-            <p>BlueField DPU / SuperNIC 向け SDK。RDMA, ネットワーク, セキュリティ, ストレージの各 SDK を含む。</p>
-          </div>
-          <div class="card">
-            <h3>NCCL</h3>
-            <p>GPU 間 collective communication ライブラリ。AllReduce, AllGather 等の分散 AI トレーニング通信を最適化。最新: v2.26。</p>
-          </div>
-          <div class="card">
-            <h3>Magnum IO</h3>
-            <p>NCCL, NVSHMEM, GPUDirect, SHARP, UCX を統合したデータセンター IO スタック。</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AI Infrastructure -->
-  <section class="section">
-    <h2 class="section-title">AI / データセンター基盤</h2>
-    <p class="section-desc">DGX システムから AI ファクトリまで、エンドツーエンドの AI インフラストラクチャ</p>
-
-    <div class="grid grid-2">
-      <div class="card">
-        <div class="card-header">
-          <h3>Vera Rubin NVL72<small>次世代 AI スーパーコンピュータ</small></h3>
-          <span class="badge badge-red">2026 H2</span>
-        </div>
-        <p>72 Rubin GPU + 36 Vera CPU を 1 システムに統合。260 TB/s scale-up 帯域幅。Blackwell 比 5 倍の推論性能。</p>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>DGX B300<small>最新世代 DGX</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>Blackwell Ultra GPU 搭載。推論 192 PFLOPS / トレーニング 70 PFLOPS。液冷ラックスケールアーキテクチャ。</p>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>DGX SuperPOD<small>ターンキー AI データセンター</small></h3>
-          <span class="badge badge-green">出荷中</span>
-        </div>
-        <p>複数 DGX を統合。GB300 NVL72 構成で 1.1 exaFLOPS。Lilly（1,016 GPU）、Mayo Clinic 等が導入。</p>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h3>Instant AI Factory<small>マネージドサービス</small></h3>
-          <span class="badge badge-orange">Equinix 提供</span>
-        </div>
-        <p>Equinix マネージドの Blackwell Ultra DGX SuperPOD。Mission Control 搭載で完全プロビジョニング済み。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Other Technologies -->
-  <section class="section">
-    <h2 class="section-title">その他の主要技術</h2>
-    <p class="section-desc">データ移動最適化、In-Network Computing、シミュレーション基盤</p>
-
-    <div class="grid grid-3">
-      <div class="card">
-        <h3>GPUDirect RDMA / Storage</h3>
-        <p>GPU メモリへの直接データ交換。RDMA による GPU 間通信と、ストレージからの直接ロードで CPU オーバーヘッドを排除。</p>
-      </div>
-      <div class="card">
-        <h3>SHARP</h3>
-        <p>InfiniBand スイッチ上の In-Network Computing。AllReduce 5 倍、Barrier 9 倍の高速化。ネットワーク転送量を半減。</p>
-      </div>
-      <div class="card">
-        <h3>Silicon Photonics / CPO</h3>
-        <p>光通信をスイッチ ASIC に統合。3.5 倍の電力効率、63 倍の信号完全性。数百万 GPU の接続を可能に。</p>
-      </div>
-      <div class="card">
-        <h3>BlueField Astra</h3>
-        <p>BlueField-4 DPU のセキュリティアーキテクチャ。East-West ファブリックの管理・ポリシー適用を拡張。</p>
-      </div>
-      <div class="card">
-        <h3>NVIDIA Air</h3>
-        <p>クラウドホスト型ネットワークシミュレーション。データセンターネットワークのデジタルツインを構築・検証。</p>
-      </div>
-      <div class="card">
-        <h3>NVIDIA Omniverse</h3>
-        <p>物理 AI シミュレーション基盤。産業デジタルツイン、ロボティクスシミュレーション向けプラットフォーム。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Roadmap -->
-  <section class="section">
-    <h2 class="section-title">技術ロードマップ</h2>
-    <p class="section-desc">2022 年から 2028 年に至る NVIDIA プラットフォームの進化</p>
-
-    <div class="roadmap">
-      <table>
-        <thead>
-          <tr>
-            <th>時期</th>
-            <th>GPU</th>
-            <th>CPU</th>
-            <th>NIC</th>
-            <th>DPU</th>
-            <th>スイッチ</th>
-            <th>NVLink</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="gen-label">2022-2024</td>
-            <td>Hopper<br>(H100 / H200)</td>
-            <td>Grace<br>(72 Neoverse V2)</td>
-            <td>ConnectX-7<br>(400G)</td>
-            <td>BlueField-3</td>
-            <td>Quantum-2<br>Spectrum-4</td>
-            <td>NVLink 4<br>(900 GB/s)</td>
-          </tr>
-          <tr>
-            <td class="gen-label">2024-2025</td>
-            <td>Blackwell<br>(B200 / B300)</td>
-            <td>Grace</td>
-            <td>ConnectX-8<br>(800G)</td>
-            <td>BlueField-3</td>
-            <td>Quantum-2<br>Spectrum-4</td>
-            <td>NVLink 5<br>(1.8 TB/s)</td>
-          </tr>
-          <tr style="background: #dbeddb;">
-            <td class="gen-label" style="color: var(--nvidia-green);">2026-</td>
-            <td>Rubin<br>Rubin CPX</td>
-            <td>Vera<br>(88 Olympus)</td>
-            <td>ConnectX-9<br>(1.6T)</td>
-            <td>BlueField-4</td>
-            <td>Quantum-X<br>Spectrum-X Photonics</td>
-            <td>NVLink 6<br>(3.6 TB/s)</td>
-          </tr>
-          <tr>
-            <td class="gen-label">2027-</td>
-            <td>Rubin Ultra</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td class="gen-label">2028-</td>
-            <td>Feynman</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <p>NVIDIA 技術概要 &mdash; 調査日: 2026-02-27 | 出典: <a href="https://www.nvidia.com/" target="_blank">nvidia.com</a>, <a href="https://developer.nvidia.com/" target="_blank">developer.nvidia.com</a>, <a href="https://nvidianews.nvidia.com/" target="_blank">nvidianews.nvidia.com</a></p>
-</footer>
+</div>
 
 </body>
 </html>
