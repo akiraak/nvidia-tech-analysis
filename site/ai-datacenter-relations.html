@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI データセンター技術の関連性マップ - NVIDIA</title>
+  <style>
+    :root {
+      --nvidia-green: #76b900;
+      --nvidia-green-dark: #5a8f00;
+      --nvidia-black: #1a1a2e;
+      --nvidia-dark: #16213e;
+      --nvidia-accent: #e94560;
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-card-hover: #1c2333;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-heading: #f0f6fc;
+      --blue: #58a6ff;
+      --purple: #bc8cff;
+      --orange: #e3963e;
+      --red: #e94560;
+      --cyan: #56d4dd;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* Navigation */
+    .topnav {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 2rem;
+      font-size: 0.85rem;
+    }
+    .topnav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topnav a:hover { color: var(--nvidia-green); }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--nvidia-black) 0%, #0e1a2b 50%, #0a2a1a 100%);
+      border-bottom: 3px solid var(--nvidia-green);
+      padding: 3.5rem 2rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.4rem;
+      color: var(--text-heading);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 span { color: var(--nvidia-green); }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0.6rem auto 0;
+    }
+
+    /* Container */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Section */
+    .section { padding: 3rem 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+    .section-title {
+      font-size: 1.6rem;
+      color: var(--text-heading);
+      margin-bottom: 0.3rem;
+    }
+    .section-num {
+      color: var(--nvidia-green);
+      font-weight: 800;
+      margin-right: 0.4rem;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+      font-size: 0.92rem;
+    }
+
+    /* Grid */
+    .grid { display: grid; gap: 1.2rem; }
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .card:hover { border-color: var(--nvidia-green); background: var(--bg-card-hover); }
+    .card h3 {
+      font-size: 1.05rem;
+      color: var(--text-heading);
+      margin-bottom: 0.5rem;
+    }
+    .card p, .card li {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .card li { margin-bottom: 0.2rem; }
+    .card-accent-green { border-left: 3px solid var(--nvidia-green); }
+    .card-accent-blue { border-left: 3px solid var(--blue); }
+    .card-accent-purple { border-left: 3px solid var(--purple); }
+    .card-accent-orange { border-left: 3px solid var(--orange); }
+    .card-accent-red { border-left: 3px solid var(--red); }
+    .card-accent-cyan { border-left: 3px solid var(--cyan); }
+
+    /* Diagram box */
+    .diagram {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    .diagram pre {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre;
+      margin: 0;
+    }
+    .diagram-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 0.6rem;
+      font-style: italic;
+    }
+
+    /* Pillar visual */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-bottom: 1.5rem;
+    }
+    .pillar {
+      text-align: center;
+      padding: 1.2rem 0.8rem;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .pillar:first-child { border-radius: 10px 0 0 10px; }
+    .pillar:last-child { border-radius: 0 10px 10px 0; }
+    .pillar h4 {
+      font-size: 0.85rem;
+      margin-bottom: 0.6rem;
+    }
+    .pillar .items {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .pillar-compute { background: rgba(118,185,0,0.08); border-color: rgba(118,185,0,0.25); }
+    .pillar-compute h4 { color: var(--nvidia-green); }
+    .pillar-interconnect { background: rgba(86,212,221,0.08); border-color: rgba(86,212,221,0.25); }
+    .pillar-interconnect h4 { color: var(--cyan); }
+    .pillar-network { background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.25); }
+    .pillar-network h4 { color: var(--blue); }
+    .pillar-software { background: rgba(188,140,255,0.08); border-color: rgba(188,140,255,0.25); }
+    .pillar-software h4 { color: var(--purple); }
+
+    /* Scale comparison */
+    .scale-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .scale-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+    }
+    .scale-box h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.8rem;
+    }
+    .scale-up h3 { color: var(--cyan); }
+    .scale-out h3 { color: var(--blue); }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      min-width: 600px;
+    }
+    th {
+      background: rgba(118,185,0,0.1);
+      color: var(--nvidia-green);
+      padding: 0.7rem 0.8rem;
+      text-align: left;
+      border-bottom: 2px solid rgba(118,185,0,0.3);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    tr:hover td { background: var(--bg-card-hover); }
+    .td-label { font-weight: 600; color: var(--text-heading); white-space: nowrap; }
+
+    /* Flow steps */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .flow-step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 0;
+    }
+    .flow-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .flow-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--nvidia-green);
+      background: var(--bg);
+      flex-shrink: 0;
+      margin-top: 1.2rem;
+    }
+    .flow-dot.active { background: var(--nvidia-green); }
+    .flow-line {
+      width: 2px;
+      flex: 1;
+      background: var(--border);
+    }
+    .flow-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .flow-content h4 {
+      font-size: 0.95rem;
+      color: var(--text-heading);
+      margin-bottom: 0.3rem;
+    }
+    .flow-content p {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    .flow-techs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+    .flow-tech {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .ft-green { background: rgba(118,185,0,0.15); color: var(--nvidia-green); }
+    .ft-blue { background: rgba(88,166,255,0.15); color: var(--blue); }
+    .ft-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
+    .ft-cyan { background: rgba(86,212,221,0.15); color: var(--cyan); }
+    .ft-orange { background: rgba(227,150,62,0.15); color: var(--orange); }
+
+    /* NVLink evolution */
+    .nvlink-evo {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 1.5rem;
+    }
+    .nvlink-gen {
+      flex: 1;
+      text-align: center;
+      padding: 1rem 0.5rem;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .nvlink-gen:first-child { border-radius: 10px 0 0 10px; }
+    .nvlink-gen:last-child { border-radius: 0 10px 10px 0; }
+    .nvlink-gen .gen-name { font-size: 0.75rem; color: var(--text-muted); }
+    .nvlink-gen .gen-bw { font-size: 1.4rem; font-weight: 800; color: var(--text-heading); }
+    .nvlink-gen .gen-arch { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+    .nvlink-gen .gen-arrow { font-size: 1.2rem; color: var(--nvidia-green); }
+    .nvlink-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 0.3rem;
+      font-size: 1.3rem;
+      color: var(--nvidia-green);
+    }
+    .nvlink-gen.current {
+      background: rgba(118,185,0,0.08);
+      border-color: rgba(118,185,0,0.4);
+    }
+    .nvlink-gen.next {
+      background: rgba(233,69,96,0.06);
+      border-color: rgba(233,69,96,0.3);
+    }
+    .nvlink-gen.next .gen-bw { color: var(--red); }
+
+    /* NCCL decision tree */
+    .decision-tree {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .dt-node {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .dt-question {
+      background: rgba(88,166,255,0.1);
+      border: 1px solid rgba(88,166,255,0.25);
+      color: var(--blue);
+      font-weight: 600;
+    }
+    .dt-answer {
+      margin-left: 1.5rem;
+      background: rgba(118,185,0,0.08);
+      border: 1px solid rgba(118,185,0,0.2);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dt-answer .label {
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+    }
+    .dt-yes .label { background: rgba(118,185,0,0.2); color: var(--nvidia-green); }
+    .dt-no .label { background: rgba(233,69,96,0.15); color: var(--red); }
+
+    /* Generation compare */
+    .gen-timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    .gen-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.3rem;
+    }
+    .gen-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .gen-card.gen-hopper h3 { color: var(--blue); border-color: rgba(88,166,255,0.3); }
+    .gen-card.gen-blackwell h3 { color: var(--nvidia-green); border-color: rgba(118,185,0,0.3); }
+    .gen-card.gen-rubin h3 { color: var(--red); border-color: rgba(233,69,96,0.3); }
+    .gen-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      font-size: 0.82rem;
+      border-bottom: 1px solid rgba(48,54,61,0.5);
+    }
+    .gen-item:last-child { border-bottom: none; }
+    .gen-item .gi-label { color: var(--text-muted); }
+    .gen-item .gi-value { color: var(--text-heading); font-weight: 600; text-align: right; }
+
+    /* DPU before/after */
+    .dpu-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .dpu-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.3rem;
+    }
+    .dpu-box h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .dpu-without h4 { color: var(--red); border-color: rgba(233,69,96,0.3); }
+    .dpu-with h4 { color: var(--nvidia-green); border-color: rgba(118,185,0,0.3); }
+    .dpu-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0;
+      font-size: 0.84rem;
+    }
+    .dpu-chip {
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .chip-cpu { background: rgba(227,150,62,0.15); color: var(--orange); }
+    .chip-dpu { background: rgba(118,185,0,0.15); color: var(--nvidia-green); }
+    .chip-free { background: rgba(86,212,221,0.1); color: var(--cyan); }
+
+    /* Bar chart simple */
+    .bar-group { margin-bottom: 1.5rem; }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 80px;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .bar-label { font-size: 0.8rem; color: var(--text-muted); text-align: right; }
+    .bar-track {
+      height: 22px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+    .bar-value { font-size: 0.8rem; color: var(--text-heading); font-weight: 600; }
+
+    /* Ethernet vs IB */
+    .vs-table th:first-child { width: 120px; }
+
+    /* Analogy box */
+    .analogy {
+      background: rgba(118,185,0,0.06);
+      border: 1px solid rgba(118,185,0,0.2);
+      border-left: 4px solid var(--nvidia-green);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.3rem;
+      margin: 1rem 0;
+      font-size: 0.88rem;
+    }
+    .analogy-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--nvidia-green);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+    .analogy p { color: var(--text); margin-bottom: 0.3rem; }
+    .analogy p:last-child { margin-bottom: 0; }
+
+    /* Explain box */
+    .explain {
+      background: rgba(88,166,255,0.06);
+      border: 1px solid rgba(88,166,255,0.2);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.3rem;
+      margin: 1rem 0;
+      font-size: 0.88rem;
+    }
+    .explain-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+    .explain p { color: var(--text); margin-bottom: 0.3rem; }
+    .explain p:last-child { margin-bottom: 0; }
+
+    /* Concept cards for intro */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.2rem;
+      margin: 1.5rem 0;
+    }
+    .concept {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.3rem;
+      transition: border-color 0.2s;
+    }
+    .concept:hover { border-color: var(--nvidia-green); }
+    .concept h4 {
+      font-size: 0.95rem;
+      color: var(--text-heading);
+      margin-bottom: 0.2rem;
+    }
+    .concept .concept-sub {
+      font-size: 0.78rem;
+      color: var(--nvidia-green);
+      margin-bottom: 0.6rem;
+    }
+    .concept p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .concept .concept-analogy {
+      font-size: 0.82rem;
+      color: var(--text);
+      background: rgba(118,185,0,0.06);
+      border-radius: 6px;
+      padding: 0.5rem 0.8rem;
+      margin-top: 0.6rem;
+    }
+    .concept .concept-analogy::before {
+      content: '';
+      font-size: 0.7rem;
+      display: block;
+      color: var(--nvidia-green);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Number highlight */
+    .num-highlight {
+      display: inline-block;
+      background: rgba(118,185,0,0.12);
+      border: 1px solid rgba(118,185,0,0.2);
+      border-radius: 6px;
+      padding: 0.1rem 0.5rem;
+      font-weight: 700;
+      color: var(--nvidia-green);
+      font-size: 0.88rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--nvidia-green); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .pillars { grid-template-columns: repeat(2, 1fr); }
+      .pillar:first-child { border-radius: 10px 0 0 0; }
+      .pillar:nth-child(2) { border-radius: 0 10px 0 0; }
+      .pillar:nth-child(3) { border-radius: 0 0 0 10px; }
+      .pillar:last-child { border-radius: 0 0 10px 0; }
+      .gen-timeline { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; }
+      .dpu-compare { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.7rem; }
+      .container { padding: 0 1rem; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .nvlink-evo { flex-direction: column; }
+      .nvlink-gen:first-child { border-radius: 10px 10px 0 0; }
+      .nvlink-gen:last-child { border-radius: 0 0 10px 10px; }
+      .nvlink-arrow { justify-content: center; transform: rotate(90deg); }
+      .bar-row { grid-template-columns: 80px 1fr 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html">&larr; 技術概要トップへ戻る</a>
+</nav>
+
+<header class="hero">
+  <h1>AI データセンター<span>技術の関連性</span>マップ</h1>
+  <p class="subtitle">GPU、ネットワーク、インターコネクト、ソフトウェアが AI ワークロードの中でどう連携するか。個別スペックではなく技術間の依存関係とデータフローに焦点を当てる。</p>
+</header>
+
+<main class="container">
+
+  <!-- ========== 0. Introduction ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">00</span>はじめに：AI データセンター（AI ファクトリ）とは</h2>
+    <p class="section-desc">そもそもなぜ大規模な AI データセンターが必要なのか？技術の詳細に入る前に、前提知識を整理する。</p>
+
+    <!-- AI Factory explanation -->
+    <div class="card" style="margin-bottom:1.5rem;">
+      <h3>「AI ファクトリ」= インテリジェンスを製造する工場</h3>
+      <p>NVIDIA CEO Jensen Huang が提唱した概念。従来のデータセンターが Web サービスやデータ処理を行う汎用施設なのに対し、AI ファクトリは <strong style="color:var(--text-heading)">AI トークン（推論結果）を大規模に生産する専用施設</strong>。</p>
+      <div class="analogy">
+        <div class="analogy-title">例え話：自動車工場との比較</div>
+        <p>自動車工場が <strong style="color:var(--text-heading)">鉄鋼 &rarr; 自動車</strong> を製造するように、AI ファクトリは <strong style="color:var(--text-heading)">データ + 電力 &rarr; インテリジェンス（AI の回答や判断）</strong> を製造する。原材料はテキスト・画像などのデータ、製造装置は GPU クラスタ、製品は AI トークン。</p>
+      </div>
+      <div class="table-wrap" style="margin-top:1rem;">
+        <table>
+          <thead><tr><th>項目</th><th>従来のデータセンター</th><th>AI ファクトリ</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">主な目的</td><td>多様なワークロードの処理・データ保存</td><td>AI モデルのトレーニング・推論に特化</td></tr>
+            <tr><td class="td-label">計算資源</td><td>汎用 CPU 中心</td><td>GPU 中心（10 万 GPU 以上の規模）</td></tr>
+            <tr><td class="td-label">ネットワーク</td><td>標準的な Ethernet</td><td>高帯域・低遅延の専用ネットワーク</td></tr>
+            <tr><td class="td-label">電力規模</td><td>数 MW〜数十 MW</td><td>ギガワット級（1 GW 以上）</td></tr>
+            <tr><td class="td-label">冷却</td><td>空冷中心</td><td>液冷が主流（高密度 GPU の発熱対策）</td></tr>
+            <tr><td class="td-label">成果物</td><td>Web サービス・データ処理結果</td><td>AI モデル・リアルタイム推論結果</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Why so many GPUs -->
+    <div class="card" style="margin-bottom:1.5rem;">
+      <h3>なぜ大量の GPU が必要なのか？</h3>
+      <p>大規模言語モデル（LLM）のトレーニングには膨大なメモリと計算能力が必要で、1 台の GPU では到底足りない。</p>
+      <div class="explain">
+        <div class="explain-title">メモリが足りない</div>
+        <p>トレーニング時は、モデルの重み・勾配・オプティマイザの状態を全て GPU メモリに保持する必要がある。<strong style="color:var(--text-heading)">1 パラメータあたり約 16 バイト</strong>が必要（重み 2B + 勾配 2B + Adam optimizer 12B）。</p>
+      </div>
+      <div class="table-wrap" style="margin:1rem 0;">
+        <table>
+          <thead><tr><th>モデル</th><th>パラメータ数</th><th>トレーニング時メモリ</th><th>H100 (80GB) 最低台数</th><th>実際に使用した台数</th></tr></thead>
+          <tbody>
+            <tr><td class="td-label">Llama 3 8B</td><td>80 億</td><td>約 128 GB</td><td>2 台</td><td>-</td></tr>
+            <tr><td class="td-label">Llama 3 70B</td><td>700 億</td><td>約 1.1 TB</td><td>14 台</td><td>-</td></tr>
+            <tr><td class="td-label">Llama 3.1 405B</td><td>4,050 億</td><td>約 6.5 TB</td><td>81 台</td><td><span class="num-highlight">16,384 台で 54 日</span></td></tr>
+            <tr><td class="td-label">GPT-4 (推定)</td><td>非公開</td><td>-</td><td>-</td><td><span class="num-highlight">~25,000 台で 90 日</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="analogy">
+        <div class="analogy-title">例え話：百科事典の暗記</div>
+        <p>7B パラメータ = 70 億個の数値を記憶する脳。405B = 4,050 億個。「百科事典 1 冊を暗記するか、図書館全体を暗記するか」の違い。1 人（1 GPU）では到底無理なので、数千〜数万人（GPU）で分担して暗記する。</p>
+      </div>
+      <div class="explain" style="margin-top:1rem;">
+        <div class="explain-title">時間も足りない</div>
+        <p>Llama 3.1 405B は 16,384 GPU で 54 日。仮に 1,000 GPU なら約 <strong style="color:var(--text-heading)">885 日（2.4 年）</strong>。1 GPU なら数百年〜数千年。現実的な時間で完了するには大量の GPU が不可欠。</p>
+      </div>
+    </div>
+
+    <!-- Key concepts -->
+    <h3 style="color:var(--text-heading); font-size:1.15rem; margin-bottom:0.8rem;">キーコンセプト解説</h3>
+    <p class="section-desc">このページで頻出する技術用語を、例え話を交えて解説する。</p>
+
+    <div class="concept-grid">
+      <div class="concept">
+        <h4>RDMA</h4>
+        <div class="concept-sub">Remote Direct Memory Access</div>
+        <p>あるコンピュータのメモリから別のコンピュータのメモリへ、<strong style="color:var(--text-heading)">CPU を介さず直接</strong>データを転送する技術。</p>
+        <p>通常の TCP/IP ではデータが何回もコピーされ CPU が処理に忙殺されるが、RDMA ではゼロコピーで直通転送。レイテンシは TCP/IP の数十〜数百 &micro;s に対し、RDMA は <strong style="color:var(--text-heading)">1〜5 &micro;s</strong>。</p>
+        <div class="concept-analogy">従来の TCP/IP が「宅配業者が何度も中継する配送」なら、RDMA は「送り主から届け先まで直通のベルトコンベア」。CPU（宅配業者）は他の仕事に専念できる。</div>
+      </div>
+
+      <div class="concept">
+        <h4>GPUDirect RDMA</h4>
+        <div class="concept-sub">GPU メモリへの直接アクセス</div>
+        <p>通常の RDMA でも GPU &rarr; CPU メモリ &rarr; NIC の経路が必要だった。GPUDirect RDMA は NIC が <strong style="color:var(--text-heading)">GPU メモリ（VRAM）に直接</strong>読み書きし、CPU メモリを一切経由しない。</p>
+        <p>実績: データ処理性能 74% 向上、CPU 使用率 43% 削減。</p>
+        <div class="concept-analogy">ベルトコンベアが倉庫（CPU メモリ）を経由せず、工場の生産ライン（GPU）に直接つながるイメージ。</div>
+      </div>
+
+      <div class="concept">
+        <h4>Collective Communication</h4>
+        <div class="concept-sub">集団通信（AllReduce, AllGather 等）</div>
+        <p>複数の GPU が協調してデータを交換・集約する通信パターン。AI トレーニングでは全 GPU の勾配（学習結果）を合計して平均化する <strong style="color:var(--text-heading)">AllReduce</strong> が最も頻繁に使われる。</p>
+        <p>Llama 3.1 405B では毎イテレーション <strong style="color:var(--text-heading)">約 810 GB</strong> の勾配データを全 GPU 間で交換する必要がある。</p>
+        <div class="concept-analogy">30 人のクラスで全員の平均点を計算する場面。AllReduce = 全員の点数を集めて合計し、結果を全員に配る操作。全員の提出を待つ必要があるため、最も遅い 1 人が全体のボトルネックになる。</div>
+      </div>
+
+      <div class="concept">
+        <h4>NVLink vs PCIe</h4>
+        <div class="concept-sub">GPU 間の高速接続 vs 汎用バス</div>
+        <p>PCIe は CPU と周辺機器をつなぐ汎用規格。NVLink は GPU 間専用の高速インターコネクト。NVLink 5 は PCIe Gen5 の <strong style="color:var(--text-heading)">14 倍</strong>の帯域幅（1.8 TB/s vs 128 GB/s）。</p>
+        <p>100 GB の転送: PCIe = 0.78 秒、NVLink = 0.056 秒。毎イテレーション数百回の交換ではこの差が致命的。</p>
+        <div class="concept-analogy">PCIe が「一般家庭の水道管」なら、NVLink は「工業用の大口径パイプ」。AI トレーニングは「プール何杯分もの水を秒単位で移動させる」必要があり、家庭用水道管では追いつかない。</div>
+      </div>
+
+      <div class="concept">
+        <h4>SHARP</h4>
+        <div class="concept-sub">In-Network Computing</div>
+        <p>InfiniBand スイッチ上で AllReduce 等の計算を直接実行する技術。各 GPU がデータを 1 回だけ送信し、<strong style="color:var(--text-heading)">スイッチが途中で集約</strong>するため、ネットワーク上のデータ量が約半分に削減。性能は 2〜5 倍向上。</p>
+        <div class="concept-analogy">全国投票の集計で、全票を中央に送る代わりに各地方選管がその場で集計し、集計結果だけを上位に送る方式。中央に届くのは票そのものではなく集計数だけなので、郵便物の量が大幅に減る。</div>
+      </div>
+
+      <div class="concept">
+        <h4>RoCE</h4>
+        <div class="concept-sub">RDMA over Converged Ethernet</div>
+        <p>標準 Ethernet 上で RDMA を実現するプロトコル。InfiniBand の専用ネットワーク不要で既存インフラを活用可能。Spectrum-X の adaptive routing や congestion control により、<strong style="color:var(--text-heading)">従来 Ethernet 比 2 倍の実効性能</strong>を達成。</p>
+        <div class="concept-analogy">InfiniBand が「専用高速道路（高速だが建設コストが高い）」なら、RoCE は「一般道を高速道路並みに改良したもの（コスト効率が良い）」。Spectrum-X は信号の最適化や車線拡張にあたる。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 1. 4 Pillars ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">01</span>AI データセンターを支える 4 つの柱</h2>
+    <p class="section-desc">AI ファクトリは 4 つの技術領域が密接に連携して動作する。どれが欠けてもシステム全体が機能しない。</p>
+
+    <div class="pillars">
+      <div class="pillar pillar-compute">
+        <h4>コンピュート</h4>
+        <div class="items">GPU (Rubin / Blackwell)<br>CPU (Vera / Grace)<br>Tensor Core<br>HBM メモリ</div>
+      </div>
+      <div class="pillar pillar-interconnect">
+        <h4>インターコネクト</h4>
+        <div class="items">NVLink<br>NVSwitch<br>NVLink Spine<br>NVLink-C2C<br>NVLink Fusion</div>
+      </div>
+      <div class="pillar pillar-network">
+        <h4>ネットワーク</h4>
+        <div class="items">ConnectX SuperNIC<br>BlueField DPU<br>Spectrum-X (Ethernet)<br>Quantum (InfiniBand)<br>Silicon Photonics</div>
+      </div>
+      <div class="pillar pillar-software">
+        <h4>ソフトウェア</h4>
+        <div class="items">CUDA / DOCA<br>NCCL / NVSHMEM<br>GPUDirect<br>Magnum IO<br>Cumulus / NetQ</div>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-title">ポイント：なぜ 4 つ全てが必要か</div>
+      <p>AI システムの性能は <strong style="color:var(--text-heading);">GPU 演算性能 &times; メモリ帯域幅 &times; GPU 間通信帯域幅 &times; ネットワーク帯域幅</strong> の積で決まる。4 車線の高速道路でも 1 車線に事故があれば全体が渋滞するように、いずれか 1 つがボトルネックになるとシステム全体が律速される。</p>
+    </div>
+  </section>
+
+  <!-- ========== 2. Scale-up vs Scale-out ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">02</span>Scale-up と Scale-out：二層のネットワーク構造</h2>
+    <p class="section-desc">AI データセンターのネットワークは「ノード内（Scale-up）」と「ノード間（Scale-out）」の二層で設計される。この理解が各技術の役割を把握する鍵。</p>
+
+    <div class="analogy" style="margin-bottom:1.5rem;">
+      <div class="analogy-title">例え話：会社の会議</div>
+      <p><strong style="color:var(--text-heading)">Scale-up = 同じ部屋の中の会話</strong>。同じ会議室にいる人同士は声だけで即座にやり取りできる（NVLink = 超高速・超低遅延）。<strong style="color:var(--text-heading)">Scale-out = 別のビルとのビデオ会議</strong>。別拠点とのやり取りはネットワーク経由で少し遅延があるが、世界中のオフィスと繋がれる（NIC + スイッチ = 大規模接続）。</p>
+    </div>
+
+    <div class="scale-row">
+      <div class="scale-box scale-up">
+        <h3>Scale-up（ノード内 / ラック内）</h3>
+        <div class="diagram">
+          <pre>
+  ┌─────┐ NVLink 6  ┌─────┐ NVLink 6  ┌─────┐
+  │GPU 0├───────────┤GPU 1├───────────┤GPU 2│
+  └──┬──┘ 3.6 TB/s  └──┬──┘ 3.6 TB/s  └──┬──┘
+     │                  │                  │
+     └──────┬───────────┘                  │
+        ┌───┴────┐                         │
+        │NVSwitch├─────────────────────────┘
+        └───┬────┘      ... &times; 72 GPU
+       ┌────┴─────┐
+       │NVLink    │   130 TB/s 持続
+       │  Spine   │
+       └──────────┘
+
+  ┌──────┐ NVLink-C2C  ┌──────┐
+  │ Vera ├─────────────┤Rubin │ &times; 36 Superchip
+  │ CPU  │  1.8 TB/s   │ GPU  │
+  └──────┘             └──────┘</pre>
+        </div>
+        <div style="margin-top:1rem;">
+          <div class="flow-techs">
+            <span class="flow-tech ft-cyan">NVLink</span>
+            <span class="flow-tech ft-cyan">NVSwitch</span>
+            <span class="flow-tech ft-cyan">NVLink Spine</span>
+            <span class="flow-tech ft-cyan">NVLink-C2C</span>
+            <span class="flow-tech ft-cyan">NVLink Fusion</span>
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.6rem;">帯域幅: TB/s 級 / レイテンシ: ナノ秒級<br>目標: 72 GPU を「1 つの巨大な GPU」として振る舞わせる</p>
+        </div>
+      </div>
+
+      <div class="scale-box scale-out">
+        <h3>Scale-out（ノード間 / ラック間）</h3>
+        <div class="diagram">
+          <pre>
+  ┌──────────┐                  ┌──────────┐
+  │  NVL72   │  ConnectX-9      │  NVL72   │
+  │ ラック A  │&lt;── 1.6 Tb/s ──&gt;│ ラック B  │
+  │          │      │           │          │
+  │BlueField4│      │           │BlueField4│
+  └──────────┘      │           └──────────┘
+                    │
+           ┌────────┴────────┐
+           │  Spectrum-X     │  Ethernet
+           │  Photonics      │  400 Tb/s
+           │  ─────────────  │
+           │  Quantum-X      │  InfiniBand
+           │  Photonics      │  115 Tb/s
+           └─────────────────┘</pre>
+        </div>
+        <div style="margin-top:1rem;">
+          <div class="flow-techs">
+            <span class="flow-tech ft-blue">ConnectX SuperNIC</span>
+            <span class="flow-tech ft-blue">BlueField DPU</span>
+            <span class="flow-tech ft-blue">Spectrum-X</span>
+            <span class="flow-tech ft-blue">Quantum</span>
+            <span class="flow-tech ft-blue">Silicon Photonics</span>
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-top:0.6rem;">帯域幅: Tb/s 級 / レイテンシ: マイクロ秒級<br>目標: 数千〜数百万 GPU をスケーラブルに接続</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parallelism mapping -->
+    <h3 style="color:var(--text-heading); font-size:1.05rem; margin-bottom:0.8rem;">並列化戦略と通信ドメインの対応</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>並列化手法</th>
+            <th>通信パターン</th>
+            <th>使用ドメイン</th>
+            <th>重要な技術</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-label">Tensor Parallelism</td>
+            <td>1 レイヤーを複数 GPU に分割、高頻度な中間結果交換</td>
+            <td><span class="flow-tech ft-cyan">Scale-up 必須</span></td>
+            <td>NVLink + NVSwitch</td>
+          </tr>
+          <tr>
+            <td class="td-label">Pipeline Parallelism</td>
+            <td>レイヤー群をグループに分割、パイプライン的に処理</td>
+            <td><span class="flow-tech ft-cyan">Scale-up</span> 内で実行</td>
+            <td>NVLink, NCCL</td>
+          </tr>
+          <tr>
+            <td class="td-label">Data Parallelism</td>
+            <td>同じモデルを異なるデータで学習、勾配同期</td>
+            <td><span class="flow-tech ft-blue">Scale-out でも可</span></td>
+            <td>NCCL, GPUDirect RDMA, SHARP</td>
+          </tr>
+          <tr>
+            <td class="td-label">Expert Parallelism (MoE)</td>
+            <td>各エキスパートを異なる GPU に配置、all-to-all 通信</td>
+            <td><span class="flow-tech ft-blue">Scale-out</span> の all-to-all 性能が鍵</td>
+            <td>ConnectX SuperNIC, NCCL</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== 3. Data Flow ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">03</span>データフロー：AI トレーニング 1 ステップの技術連携</h2>
+    <p class="section-desc">分散 AI トレーニングの 1 イテレーションで、どの段階でどの技術が関与するかを追う。</p>
+
+    <div class="explain" style="margin-bottom:1.5rem;">
+      <div class="explain-title">AI トレーニングの基本的な流れ</div>
+      <p>AI モデルのトレーニングは「データを読む &rarr; 予測する &rarr; 正解と比較して誤差を計算する &rarr; 誤差を全 GPU で共有する &rarr; モデルを修正する」のサイクルを数百万回繰り返す作業。このサイクル 1 回分を「イテレーション」と呼ぶ。以下はそのイテレーションの中で、どのハードウェア・ソフトウェアがどの段階で登場するかを示す。</p>
+    </div>
+
+    <div class="flow">
+      <!-- Step 1 -->
+      <div class="flow-step">
+        <div class="flow-indicator">
+          <div class="flow-dot active"></div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-content">
+          <h4>1. データロード</h4>
+          <p>SSD などのストレージからトレーニングデータ（テキスト、画像など）を GPU メモリ (HBM) へ転送する。GPUDirect Storage により CPU メモリを経由せず直接ロードするため、CPU のボトルネックを回避できる。</p>
+          <div class="flow-techs">
+            <span class="flow-tech ft-green">GPUDirect Storage</span>
+            <span class="flow-tech ft-green">HBM メモリ</span>
+            <span class="flow-tech ft-purple">CUDA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="flow-step">
+        <div class="flow-indicator">
+          <div class="flow-dot active"></div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-content">
+          <h4>2. Forward / Backward Pass（計算）</h4>
+          <p>GPU の Tensor Core でモデルの計算（行列演算）を実行する。Forward Pass でデータから予測を出し、Backward Pass で誤差（勾配）を計算する。モデルが大きすぎて 1 GPU に収まらない場合は Tensor Parallelism で複数 GPU に分割し、NVLink 経由で中間結果をやり取りする。</p>
+          <div class="flow-techs">
+            <span class="flow-tech ft-green">Tensor Core</span>
+            <span class="flow-tech ft-green">Transformer Engine</span>
+            <span class="flow-tech ft-cyan">NVLink</span>
+            <span class="flow-tech ft-cyan">NVSwitch</span>
+            <span class="flow-tech ft-purple">CUDA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="flow-step">
+        <div class="flow-indicator">
+          <div class="flow-dot active"></div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-content">
+          <h4>3. 勾配同期（ノード内）</h4>
+          <p>各 GPU が計算した勾配（「モデルをどう修正すべきか」の情報）を、ラック内の 72 GPU 全てで合計・平均化する（AllReduce）。NVLink + NVSwitch の超高速接続（3.6 TB/s）を使うため、ナノ秒級の低遅延で完了する。NCCL が GPU 間の接続トポロジを自動検出し、最適な通信アルゴリズムを選択する。</p>
+          <div class="flow-techs">
+            <span class="flow-tech ft-cyan">NVLink + NVSwitch</span>
+            <span class="flow-tech ft-purple">NCCL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="flow-step">
+        <div class="flow-indicator">
+          <div class="flow-dot active"></div>
+          <div class="flow-line"></div>
+        </div>
+        <div class="flow-content">
+          <h4>4. 勾配同期（ノード間）</h4>
+          <p>ラック間の勾配同期はネットワーク経由で行う。GPUDirect RDMA により GPU メモリから ConnectX SuperNIC へ直接データを送出し、CPU メモリのコピーを排除する。InfiniBand 環境では SHARP がスイッチ上で AllReduce の計算自体をオフロードし、ネットワーク上の転送データ量を約半分に削減する。Ethernet 環境では Spectrum-X の adaptive routing が輻輳を回避する。</p>
+          <div class="flow-techs">
+            <span class="flow-tech ft-blue">ConnectX SuperNIC</span>
+            <span class="flow-tech ft-blue">GPUDirect RDMA</span>
+            <span class="flow-tech ft-blue">Spectrum-X / Quantum</span>
+            <span class="flow-tech ft-orange">SHARP</span>
+            <span class="flow-tech ft-purple">NCCL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="flow-step">
+        <div class="flow-indicator">
+          <div class="flow-dot active"></div>
+          <div class="flow-line" style="background:transparent;"></div>
+        </div>
+        <div class="flow-content">
+          <h4>5. パラメータ更新</h4>
+          <p>全 GPU で同期された勾配を使い、各 GPU がオプティマイザ（Adam 等）でモデルのパラメータ（重み）を更新する。これでモデルが少し賢くなり、次のイテレーションへ進む。この 1〜5 の流れを数百万回繰り返すことで、モデルが完成する。</p>
+          <div class="flow-techs">
+            <span class="flow-tech ft-green">GPU (CUDA)</span>
+            <span class="flow-tech ft-green">HBM メモリ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 4. NCCL Decision ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">04</span>NCCL の通信パス選択ロジック</h2>
+    <p class="section-desc">NCCL（NVIDIA Collective Communications Library）は AI トレーニングの集団通信において中心的な役割を担い、環境に応じて最適な通信パスを自動選択する。</p>
+
+    <div class="explain" style="margin-bottom:1rem;">
+      <div class="explain-title">NCCL とは</div>
+      <p>PyTorch などの AI フレームワークが「全 GPU の勾配を合計して」と命令すると、実際の通信処理を担当するのが NCCL。プログラマは通信の詳細を意識する必要がなく、NCCL が接続環境（NVLink があるか、InfiniBand か Ethernet か）を自動判定して最適な方法を選ぶ。いわば <strong style="color:var(--text-heading)">GPU 通信のカーナビ</strong>のような存在。</p>
+    </div>
+
+    <div class="decision-tree">
+      <div class="dt-node dt-question">NCCL AllReduce が呼び出される</div>
+
+      <div class="dt-node dt-answer dt-yes" style="margin-top:0.5rem;">
+        <span class="label">判定</span> 通信先はノード内 GPU か？
+      </div>
+
+      <div class="dt-node dt-answer dt-yes" style="margin-left:3rem;">
+        <span class="label">YES</span>
+        <span>NVLink + NVSwitch を使用（最速パス）。NCCL が NVLink トポロジを自動検出</span>
+      </div>
+
+      <div class="dt-node dt-answer dt-no" style="margin-left:3rem;">
+        <span class="label">NO</span>
+        <span>ノード間通信 → ネットワーク経由</span>
+      </div>
+
+      <div class="dt-node dt-answer dt-yes" style="margin-left:4.5rem; margin-top:0.5rem;">
+        <span class="label">判定</span> InfiniBand 環境か？
+      </div>
+
+      <div class="dt-node dt-answer dt-yes" style="margin-left:6rem;">
+        <span class="label">YES</span>
+        <span>GPUDirect RDMA + InfiniBand verbs → SHARP 対応ならスイッチ上で AllReduce オフロード</span>
+      </div>
+
+      <div class="dt-node dt-answer dt-no" style="margin-left:6rem;">
+        <span class="label">NO</span>
+        <span>GPUDirect RDMA + RoCE → Spectrum-X adaptive routing で輻輳回避</span>
+      </div>
+
+      <div class="dt-node dt-answer dt-yes" style="margin-left:3rem; margin-top:0.5rem;">
+        <span class="label">最適化</span>
+        <span>Ring / Tree / NVLS アルゴリズムを自動選択して実行</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5. SW-HW Mapping ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">05</span>ソフトウェアとハードウェアの対応関係</h2>
+    <p class="section-desc">各ソフトウェアがどのハードウェア上で動作し、何と連携するか。</p>
+
+    <!-- Layer diagram -->
+    <div class="diagram" style="margin-bottom:1.5rem;">
+      <pre>
+  ┌──────────────────────────────────────────────────────────┐
+  │  AI フレームワーク (PyTorch, TensorFlow, JAX)             │
+  ├──────────────────────────────────────────────────────────┤
+  │  通信ライブラリ                                          │
+  │  ┌────────┐ ┌────────┐ ┌──────┐ ┌────────────────────┐  │
+  │  │ NCCL   │ │NVSHMEM │ │ UCX  │ │    GPUDirect       │  │
+  │  │集団通信 │ │ PGAS   │ │抽象化│ │  RDMA / Storage    │  │
+  │  └───┬────┘ └───┬────┘ └──┬───┘ └────────┬───────────┘  │
+  │      └──────────┴─────────┴──────────────┘              │
+  │                      Magnum IO                          │
+  ├────────────────────────────┬─────────────────────────────┤
+  │  CUDA                      │  DOCA                       │
+  │  → GPU 演算                │  → DPU / SuperNIC           │
+  │  → Tensor Core             │  → ネットワーク処理          │
+  │  → メモリ管理              │  → セキュリティ              │
+  ├────────────────────────────┴─────────────────────────────┤
+  │  ネットワーク OS / 管理                                   │
+  │  ┌───────────┐ ┌─────┐ ┌─────┐ ┌───────────────────┐   │
+  │  │Cumulus    │ │SONiC│ │NetQ │ │ Mission Control   │   │
+  │  │Linux     │ │     │ │監視 │ │ 統合管理           │   │
+  │  └───────────┘ └─────┘ └─────┘ └───────────────────┘   │
+  ├──────────────────────────────────────────────────────────┤
+  │  ハードウェア                                             │
+  │  ┌────┐ ┌─────┐ ┌─────────┐ ┌─────────┐ ┌───────────┐ │
+  │  │GPU │ │ CPU │ │SuperNIC │ │  DPU    │ │ スイッチ   │ │
+  │  └────┘ └─────┘ └─────────┘ └─────────┘ └───────────┘ │
+  └──────────────────────────────────────────────────────────┘</pre>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ソフトウェア</th>
+            <th>動作 HW</th>
+            <th>主な役割</th>
+            <th>連携先</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-label">CUDA</td><td>GPU</td><td>GPU プログラミング基盤</td><td>NCCL, NVSHMEM, GPUDirect</td></tr>
+          <tr><td class="td-label">DOCA</td><td>BlueField DPU / ConnectX</td><td>NW/Storage/Security 処理</td><td>Cumulus Linux, NetQ</td></tr>
+          <tr><td class="td-label">NCCL</td><td>GPU + NVLink + NIC</td><td>分散集団通信の最適化</td><td>CUDA, GPUDirect RDMA, SHARP</td></tr>
+          <tr><td class="td-label">NVSHMEM</td><td>GPU + NVLink + NIC</td><td>GPU 間 PGAS メモリモデル</td><td>CUDA, UCX, NVLink</td></tr>
+          <tr><td class="td-label">UCX</td><td>CPU + GPU + NIC</td><td>通信プロトコル抽象化</td><td>NCCL, NVSHMEM, IB verbs</td></tr>
+          <tr><td class="td-label">GPUDirect RDMA</td><td>GPU + ConnectX NIC</td><td>GPU-NIC 間の直接転送</td><td>NCCL, InfiniBand / RoCE</td></tr>
+          <tr><td class="td-label">GPUDirect Storage</td><td>GPU + NVMe SSD</td><td>Storage-GPU 間の直接転送</td><td>CUDA, NVMe ドライバ</td></tr>
+          <tr><td class="td-label">SHARP</td><td>Quantum IB スイッチ</td><td>In-Network AllReduce</td><td>NCCL, InfiniBand</td></tr>
+          <tr><td class="td-label">Cumulus Linux</td><td>Spectrum スイッチ</td><td>スイッチ OS</td><td>NetQ, DOCA</td></tr>
+          <tr><td class="td-label">NetQ</td><td>Spectrum + NVLink SW</td><td>テレメトリ・監視</td><td>Mission Control, Cumulus</td></tr>
+          <tr><td class="td-label">Mission Control</td><td>DGX SuperPOD 全体</td><td>統合運用管理</td><td>NetQ, DOCA, Kubernetes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== 6. Generation Sync ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">06</span>世代間の同期進化</h2>
+    <p class="section-desc">NVIDIA は GPU だけでなく全コンポーネントを世代単位で同時刷新する。1 箇所だけ高速化しても他がボトルネックになるため、全体を同期的に引き上げる戦略。</p>
+
+    <div class="analogy" style="margin-bottom:1.5rem;">
+      <div class="analogy-title">例え話：工場の生産ライン</div>
+      <p>工場のプレス機（GPU）だけ高速化しても、ベルトコンベア（NVLink）や搬入口（NIC）が遅ければ、プレス機は材料待ちでアイドル状態になる。NVIDIA は「プレス機もベルトコンベアも搬入口もトラック（スイッチ）も同時に更新する」ことで、生産ライン全体の速度を引き上げている。</p>
+    </div>
+
+    <!-- Bar chart: evolution -->
+    <h3 style="color:var(--text-heading); font-size:1rem; margin-bottom:1rem;">NVLink 帯域幅の世代推移</h3>
+    <div class="nvlink-evo">
+      <div class="nvlink-gen">
+        <div class="gen-name">NVLink 4</div>
+        <div class="gen-bw">900 GB/s</div>
+        <div class="gen-arch">Hopper (2022)</div>
+      </div>
+      <div class="nvlink-arrow">&rarr;</div>
+      <div class="nvlink-gen current">
+        <div class="gen-name">NVLink 5</div>
+        <div class="gen-bw">1.8 TB/s</div>
+        <div class="gen-arch">Blackwell (2024)</div>
+      </div>
+      <div class="nvlink-arrow">&rarr;</div>
+      <div class="nvlink-gen next">
+        <div class="gen-name">NVLink 6</div>
+        <div class="gen-bw">3.6 TB/s</div>
+        <div class="gen-arch">Rubin (2026)</div>
+      </div>
+    </div>
+
+    <!-- Generation cards -->
+    <div class="gen-timeline">
+      <div class="gen-card gen-hopper">
+        <h3>Hopper 世代 (2022-2024)</h3>
+        <div class="gen-item"><span class="gi-label">GPU</span><span class="gi-value">H100 / H200</span></div>
+        <div class="gen-item"><span class="gi-label">CPU</span><span class="gi-value">Grace (72 コア)</span></div>
+        <div class="gen-item"><span class="gi-label">NVLink</span><span class="gi-value">4.0 (900 GB/s)</span></div>
+        <div class="gen-item"><span class="gi-label">NIC</span><span class="gi-value">ConnectX-7 (400G)</span></div>
+        <div class="gen-item"><span class="gi-label">DPU</span><span class="gi-value">BlueField-3</span></div>
+        <div class="gen-item"><span class="gi-label">スイッチ</span><span class="gi-value">Quantum-2 / Spectrum-4</span></div>
+      </div>
+      <div class="gen-card gen-blackwell">
+        <h3>Blackwell 世代 (2024-2025)</h3>
+        <div class="gen-item"><span class="gi-label">GPU</span><span class="gi-value">B200 / B300</span></div>
+        <div class="gen-item"><span class="gi-label">CPU</span><span class="gi-value">Grace</span></div>
+        <div class="gen-item"><span class="gi-label">NVLink</span><span class="gi-value">5.0 (1.8 TB/s)</span></div>
+        <div class="gen-item"><span class="gi-label">NIC</span><span class="gi-value">ConnectX-8 (800G)</span></div>
+        <div class="gen-item"><span class="gi-label">DPU</span><span class="gi-value">BlueField-3</span></div>
+        <div class="gen-item"><span class="gi-label">スイッチ</span><span class="gi-value">Spectrum-X</span></div>
+        <div class="gen-item"><span class="gi-label">新技術</span><span class="gi-value">NVFP4, NVLink Spine</span></div>
+      </div>
+      <div class="gen-card gen-rubin">
+        <h3>Rubin 世代 (2026-)</h3>
+        <div class="gen-item"><span class="gi-label">GPU</span><span class="gi-value">Rubin / Rubin CPX</span></div>
+        <div class="gen-item"><span class="gi-label">CPU</span><span class="gi-value">Vera (88 Olympus)</span></div>
+        <div class="gen-item"><span class="gi-label">NVLink</span><span class="gi-value">6.0 (3.6 TB/s)</span></div>
+        <div class="gen-item"><span class="gi-label">NIC</span><span class="gi-value">ConnectX-9 (1.6T)</span></div>
+        <div class="gen-item"><span class="gi-label">DPU</span><span class="gi-value">BlueField-4 + Astra</span></div>
+        <div class="gen-item"><span class="gi-label">スイッチ</span><span class="gi-value">Photonics (CPO)</span></div>
+        <div class="gen-item"><span class="gi-label">新技術</span><span class="gi-value">HBM4, Si Photonics, Fusion</span></div>
+      </div>
+    </div>
+
+    <!-- Bottleneck bar -->
+    <h3 style="color:var(--text-heading); font-size:1rem; margin: 1.5rem 0 1rem;">世代別の帯域幅比較（相対値）</h3>
+    <div class="bar-group">
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.8rem;">GPU 演算 (PFLOPS)</p>
+      <div class="bar-row">
+        <span class="bar-label">Hopper</span>
+        <div class="bar-track"><div class="bar-fill" style="width:3%; background:var(--blue);"></div></div>
+        <span class="bar-value">~4 PF</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Blackwell</span>
+        <div class="bar-track"><div class="bar-fill" style="width:30%; background:var(--nvidia-green);"></div></div>
+        <span class="bar-value">15 PF</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Rubin</span>
+        <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--red);"></div></div>
+        <span class="bar-value">50 PF</span>
+      </div>
+    </div>
+    <div class="bar-group">
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.8rem;">NVLink 帯域幅 (TB/s per GPU)</p>
+      <div class="bar-row">
+        <span class="bar-label">NVLink 4</span>
+        <div class="bar-track"><div class="bar-fill" style="width:25%; background:var(--blue);"></div></div>
+        <span class="bar-value">0.9 TB/s</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">NVLink 5</span>
+        <div class="bar-track"><div class="bar-fill" style="width:50%; background:var(--nvidia-green);"></div></div>
+        <span class="bar-value">1.8 TB/s</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">NVLink 6</span>
+        <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--red);"></div></div>
+        <span class="bar-value">3.6 TB/s</span>
+      </div>
+    </div>
+    <div class="bar-group">
+      <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.8rem;">NIC 帯域幅 (Gb/s per GPU)</p>
+      <div class="bar-row">
+        <span class="bar-label">ConnectX-7</span>
+        <div class="bar-track"><div class="bar-fill" style="width:25%; background:var(--blue);"></div></div>
+        <span class="bar-value">400G</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">ConnectX-8</span>
+        <div class="bar-track"><div class="bar-fill" style="width:50%; background:var(--nvidia-green);"></div></div>
+        <span class="bar-value">800G</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">ConnectX-9</span>
+        <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--red);"></div></div>
+        <span class="bar-value">1.6T</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 7. Ethernet vs IB ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">07</span>Ethernet vs InfiniBand：共通基盤と選択</h2>
+    <p class="section-desc">AI ネットワークの 2 大プロトコル。競合しつつも ConnectX SuperNIC という共通ハードウェア基盤を持つ。</p>
+
+    <div class="explain" style="margin-bottom:1.5rem;">
+      <div class="explain-title">なぜ 2 つのプロトコルがあるのか</div>
+      <p><strong style="color:var(--text-heading)">InfiniBand</strong> は HPC（スーパーコンピュータ）の世界で長年使われてきた高性能専用ネットワーク。最低遅延で SHARP による In-Network Computing も可能だが、専用機器が必要でコストが高い。<strong style="color:var(--text-heading)">Ethernet</strong> は世界中で使われている標準ネットワーク。従来は AI には不向きだったが、NVIDIA の Spectrum-X プラットフォームが RoCE adaptive routing 等の AI 最適化を追加し、InfiniBand に迫る性能を実現。Meta, Oracle などのクラウド企業が大規模に採用している。</p>
+      <p style="margin-top:0.4rem;">重要なのは、NVIDIA の ConnectX SuperNIC が <strong style="color:var(--text-heading)">両方に対応するデュアルプロトコル設計</strong> であること。ユーザーは同じ NIC で InfiniBand にも Ethernet にも接続でき、環境に応じて選択できる。</p>
+    </div>
+
+    <div class="grid grid-3" style="margin-bottom:1.5rem;">
+      <div class="card card-accent-cyan">
+        <h3>共通基盤</h3>
+        <ul>
+          <li><strong>ConnectX SuperNIC</strong> が IB / Ethernet 両対応のデュアルプロトコル</li>
+          <li><strong>RDMA</strong> で GPU メモリへ直接アクセス（IB native / RoCE）</li>
+          <li><strong>NCCL</strong> が IB verbs / RoCE を透過的に使用</li>
+          <li><strong>GPUDirect RDMA</strong> が両方で動作</li>
+        </ul>
+      </div>
+      <div class="card card-accent-blue">
+        <h3>Ethernet (Spectrum-X)</h3>
+        <ul>
+          <li>業界標準、既存インフラと互換</li>
+          <li>RoCE + adaptive routing で AI 最適化</li>
+          <li>クラウド / エンタープライズ向け</li>
+          <li>採用: Meta, Oracle</li>
+          <li>比較的低コスト</li>
+        </ul>
+      </div>
+      <div class="card card-accent-purple">
+        <h3>InfiniBand (Quantum)</h3>
+        <ul>
+          <li>最低レイテンシ（ロスレスファブリック）</li>
+          <li>SHARP による In-Network Computing</li>
+          <li>HPC / スーパーコンピュータで実績</li>
+          <li>TOP500 で広く採用</li>
+          <li>最高性能、専用機器</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-wrap vs-table">
+      <table>
+        <thead>
+          <tr><th>観点</th><th>InfiniBand (Quantum)</th><th>Ethernet (Spectrum-X)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-label">レイテンシ</td><td>最低（ロスレス）</td><td>低（RoCE + adaptive routing）</td></tr>
+          <tr><td class="td-label">SHARP</td><td>対応（スイッチ上 AllReduce）</td><td>非対応</td></tr>
+          <tr><td class="td-label">エコシステム</td><td>NVIDIA 専用</td><td>業界標準、既存 NW と互換</td></tr>
+          <tr><td class="td-label">スケール実績</td><td>TOP500 で実証済み</td><td>Spectrum-X で AI 最適化を追加</td></tr>
+          <tr><td class="td-label">コスト</td><td>高い（専用機器）</td><td>比較的安い（汎用互換）</td></tr>
+          <tr><td class="td-label">次世代 (CPO)</td><td>Quantum-X Photonics (115 Tb/s)</td><td>Spectrum-X Photonics (400 Tb/s)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== 8. DPU Role ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">08</span>DPU の位置づけ：CPU オフロードの仕組み</h2>
+    <p class="section-desc">BlueField DPU は GPU でも CPU でもないが、両者の性能を最大化するために不可欠。インフラ処理を引き受け、CPU を AI ワークロードに専念させる。</p>
+
+    <div class="analogy" style="margin-bottom:1.5rem;">
+      <div class="analogy-title">例え話：レストランの裏方</div>
+      <p>CPU をシェフ、GPU を調理器具に例えると、DPU は「食器洗い・食材の搬入・セキュリティカメラの監視」を担当する裏方スタッフ。これらの仕事をシェフ（CPU）が兼務すると料理（AI ワークロード）に集中できなくなる。DPU が裏方作業を全て引き受けることで、シェフは料理に全力を注げる。</p>
+    </div>
+
+    <div class="dpu-compare">
+      <div class="dpu-box dpu-without">
+        <h4>DPU なし</h4>
+        <div class="dpu-row"><span class="dpu-chip chip-cpu">CPU</span> ネットワーク処理</div>
+        <div class="dpu-row"><span class="dpu-chip chip-cpu">CPU</span> ストレージ処理</div>
+        <div class="dpu-row"><span class="dpu-chip chip-cpu">CPU</span> セキュリティ</div>
+        <div class="dpu-row"><span class="dpu-chip chip-cpu">CPU</span> 仮想化管理</div>
+        <div class="dpu-row" style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed var(--border);">
+          <span class="dpu-chip" style="background:rgba(233,69,96,0.15); color:var(--red);">残り僅か</span> AI ワークロード管理
+        </div>
+        <p style="font-size:0.8rem; color:var(--red); margin-top:0.8rem;">CPU サイクルがインフラ処理で消費され、AI に割けるリソースが不足</p>
+      </div>
+      <div class="dpu-box dpu-with">
+        <h4>DPU あり (BlueField)</h4>
+        <div class="dpu-row"><span class="dpu-chip chip-dpu">DPU</span> ネットワーク処理</div>
+        <div class="dpu-row"><span class="dpu-chip chip-dpu">DPU</span> ストレージ処理</div>
+        <div class="dpu-row"><span class="dpu-chip chip-dpu">DPU</span> セキュリティ</div>
+        <div class="dpu-row"><span class="dpu-chip chip-dpu">DPU</span> 仮想化管理</div>
+        <div class="dpu-row" style="margin-top:0.5rem; padding-top:0.5rem; border-top:1px dashed var(--border);">
+          <span class="dpu-chip chip-free">CPU 全力</span> AI ワークロード管理に専念
+        </div>
+        <p style="font-size:0.8rem; color:var(--nvidia-green); margin-top:0.8rem;">CPU を解放し、AI ワークロードにフルパワーを投入</p>
+      </div>
+    </div>
+
+    <h3 style="color:var(--text-heading); font-size:1rem; margin: 1.5rem 0 0.8rem;">BlueField 世代の進化</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>世代</th><th>統合 NIC</th><th>統合 CPU</th><th>帯域幅</th><th>新機能</th><th>対応 GPU 世代</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-label">BlueField-2</td><td>ConnectX-6</td><td>8 Arm A72</td><td>200G</td><td>基本オフロード</td><td>Ampere</td>
+          </tr>
+          <tr>
+            <td class="td-label">BlueField-3</td><td>ConnectX-7</td><td>8 Arm A78</td><td>400G</td><td>SuperNIC モード</td><td>Hopper / Blackwell</td>
+          </tr>
+          <tr>
+            <td class="td-label">BlueField-4</td><td>ConnectX-9</td><td>Grace CPU コア</td><td>800G</td><td>BlueField Astra</td><td>Rubin</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== 9. Silicon Photonics ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">09</span>Silicon Photonics / CPO：次世代スケーリングの鍵</h2>
+    <p class="section-desc">数百万 GPU を接続する次世代 AI データセンターを実現するための光通信技術。Spectrum-X / Quantum-X 双方に適用。</p>
+
+    <div class="explain" style="margin-bottom:1.5rem;">
+      <div class="explain-title">なぜ「光」が必要なのか</div>
+      <p>GPU の数が数万〜数百万に増えると、ラック間のケーブルを流れるデータ量も爆発的に増加する。従来は「pluggable トランシーバ」と呼ばれる着脱可能な光モジュールを使っていたが、モジュールの消費電力と信号劣化が限界に達しつつある。<strong style="color:var(--text-heading)">CPO（Co-Packaged Optics）</strong> はスイッチチップの中に光通信エンジンを直接統合することで、電気信号 &rarr; 光信号の変換ロスを最小化し、消費電力を 3.5 分の 1 に削減する。</p>
+    </div>
+
+    <div class="grid grid-2" style="margin-bottom:1.5rem;">
+      <div class="diagram">
+        <pre>
+  従来 (pluggable トランシーバ):
+
+  スイッチ  ──電気信号──► pluggable  ──光──► ファイバ
+   ASIC        ↑ 損失大    モジュール   ↑ 消費電力大
+
+
+  CPO (Co-Packaged Optics):
+
+  スイッチ  ──光信号──► ファイバ（直接）
+   ASIC
+    └── Silicon Photonics エンジン統合
+           ↑ 損失小、消費電力小</pre>
+        <div class="diagram-label">pluggable vs CPO の構造比較</div>
+      </div>
+      <div>
+        <div class="card card-accent-green" style="margin-bottom:1rem;">
+          <h3>CPO の利点</h3>
+          <ul>
+            <li><strong>3.5 倍</strong> の電力効率</li>
+            <li><strong>63 倍</strong> の信号完全性</li>
+            <li><strong>10 倍</strong> のネットワーク回復力</li>
+            <li>レーザー数 <strong>1/4</strong></li>
+            <li>デプロイ速度 <strong>1.3 倍</strong></li>
+          </ul>
+        </div>
+        <div class="card card-accent-blue">
+          <h3>適用先</h3>
+          <ul>
+            <li><strong>Spectrum-X Photonics</strong> → Ethernet scale-out (400 Tb/s)</li>
+            <li><strong>Quantum-X Photonics</strong> → InfiniBand scale-out (115 Tb/s)</li>
+            <li>共通の TSMC 3D Hybrid Bonding 技術基盤</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 10. Dependency Summary ========== -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">10</span>技術間の依存関係サマリ</h2>
+    <p class="section-desc">各技術の役割と、最も強く結びついている関連技術の一覧。「最も強い関連先」は、その技術が機能するために最も依存しているコンポーネントを示す。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>技術</th><th>役割</th><th>最も強い関連先</th><th>関係の内容</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-label">GPU (Rubin/Blackwell)</td>
+            <td>AI 演算の心臓部</td>
+            <td>NVLink, HBM</td>
+            <td>GPU 間通信に NVLink 必須、演算に HBM 帯域幅が律速</td>
+          </tr>
+          <tr>
+            <td class="td-label">CPU (Vera/Grace)</td>
+            <td>ホスト管理</td>
+            <td>NVLink-C2C</td>
+            <td>GPU との高速コヒーレント接続で Superchip を構成</td>
+          </tr>
+          <tr>
+            <td class="td-label">NVLink</td>
+            <td>GPU 間高速通信</td>
+            <td>NVSwitch, NCCL</td>
+            <td>NVSwitch で多対多に拡張、NCCL が通信を最適化</td>
+          </tr>
+          <tr>
+            <td class="td-label">NVSwitch</td>
+            <td>NVLink の全対全化</td>
+            <td>NVLink Spine, GPU</td>
+            <td>Spine に搭載、72 GPU を non-blocking 接続</td>
+          </tr>
+          <tr>
+            <td class="td-label">ConnectX SuperNIC</td>
+            <td>ノード間通信の入口</td>
+            <td>GPUDirect RDMA, NCCL</td>
+            <td>GPU メモリから直接ネットワークへ送出</td>
+          </tr>
+          <tr>
+            <td class="td-label">BlueField DPU</td>
+            <td>インフラオフロード</td>
+            <td>ConnectX (内蔵), DOCA</td>
+            <td>NIC 機能を統合、DOCA でプログラミング</td>
+          </tr>
+          <tr>
+            <td class="td-label">Spectrum-X</td>
+            <td>AI 最適化 Ethernet</td>
+            <td>ConnectX / BlueField</td>
+            <td>エンドポイントの NIC/DPU と連携して RoCE 最適化</td>
+          </tr>
+          <tr>
+            <td class="td-label">Quantum</td>
+            <td>最高性能 InfiniBand</td>
+            <td>SHARP, ConnectX</td>
+            <td>SHARP がスイッチ ASIC に組み込み、ConnectX が接続</td>
+          </tr>
+          <tr>
+            <td class="td-label">CUDA</td>
+            <td>GPU プログラミング基盤</td>
+            <td>GPU, NCCL/GPUDirect</td>
+            <td>GPU 上で実行、通信ライブラリの基盤</td>
+          </tr>
+          <tr>
+            <td class="td-label">NCCL</td>
+            <td>分散通信最適化</td>
+            <td>NVLink + ConnectX</td>
+            <td>ノード内は NVLink、ノード間は NIC を自動選択</td>
+          </tr>
+          <tr>
+            <td class="td-label">SHARP</td>
+            <td>In-Network Computing</td>
+            <td>Quantum スイッチ, NCCL</td>
+            <td>スイッチ上で AllReduce、NCCL が自動活用</td>
+          </tr>
+          <tr>
+            <td class="td-label">Silicon Photonics</td>
+            <td>次世代光通信</td>
+            <td>Spectrum-X / Quantum-X</td>
+            <td>次世代スイッチの光インターフェースとして統合</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>AI データセンター技術の関連性マップ &mdash; 調査日: 2026-02-27 | <a href="index.html">技術概要トップへ</a></p>
+  <p style="margin-top:0.3rem;">出典: <a href="https://www.nvidia.com/" target="_blank">nvidia.com</a>, <a href="https://developer.nvidia.com/" target="_blank">developer.nvidia.com</a>, <a href="https://nvidianews.nvidia.com/" target="_blank">nvidianews.nvidia.com</a></p>
+</footer>
+
+</body>
+</html>
